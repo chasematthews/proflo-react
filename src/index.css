@@ -9,13 +9,14 @@
     --blue-green: #e3f7f5;
     --blue-green-dark: #4dffc9;
     --white: #ffffff;
+    --proflo-green: #3ac69c;
     --border-radius-l: 16px;
     --border-radius-s: 8px;
-    --spacing-xxs: 4px;
-    --spacing-xs: 8px;
-    --spacing-s: 16px;
-    --spacing-m: 32px;
-    --spacing-l: 64px;
-    --spacing-xl: 128px;
-    --spacing-xxl: 256px;
+    --spacing-xxs: 0.25vw;
+    --spacing-xs: 0.5vw;
+    --spacing-s: 1vw;
+    --spacing-m: 2vw;
+    --spacing-l: 4vw;
+    --spacing-xl: 8vw;
+    --spacing-xxl: 16vw;
 }

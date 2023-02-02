@@ -5,7 +5,7 @@ const HomePage = () => {
     return (
         <div className={styles.container}>
             <div className={styles.welcome}>
-                <div className={styles.logoWrapper}>
+                <div className={styles.profloLogoWrapper}>
                     <img 
                         src={require('./../images/proflo-logo.png')} 
                         alt={'ProFlo Logo'}
