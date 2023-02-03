@@ -11,21 +11,23 @@ import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddIcon from '@mui/icons-material/Add';
 
+const ProjectNav = ({toggleProjectModalHandleClick}) => {
+    
 
-const projectButtonsContent = [
-    {icon: ContentPasteIcon, text: 'Projects', id: 'Projects'},
-    {icon: CheckBoxIcon, text: 'Actions', id: 'Actions'},
-    {icon: DesignServicesIcon, text: 'Design Data', id: 'Design-Data'},
-    {icon: AttachMoneyIcon, text: 'Costing Data', id: 'Costing-Data'},
-]
 
-const generalButtonsContent = [
-    {icon: CircleNotificationsIcon, text: 'Notifications', id: 'Notifications'},
-    {icon: SettingsIcon, text: 'Settings', id: 'Settings'},
-    {icon: AddIcon, text: 'New Project', id: 'New Project'}
-]
+    const projectButtonsContent = [
+        {icon: ContentPasteIcon, text: 'Projects', id: 'Projects'},
+        {icon: CheckBoxIcon, text: 'Actions', id: 'Actions'},
+        {icon: DesignServicesIcon, text: 'Design Data', id: 'Design-Data'},
+        {icon: AttachMoneyIcon, text: 'Costing Data', id: 'Costing-Data'},
+    ]
+    
+    const generalButtonsContent = [
+        {icon: CircleNotificationsIcon, text: 'Notifications', id: 'Notifications'},
+        {icon: SettingsIcon, text: 'Settings', id: 'Settings'},
+        {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: toggleProjectModalHandleClick}
+    ]
 
-const ProjectNav = () => {
     return (
         <div className={styles.navigator}>
             <div className={styles.companyNameWrapper}></div>
@@ -35,6 +37,7 @@ const ProjectNav = () => {
                         Icon={projectButtonContent.icon}
                         text={projectButtonContent.text}
                         key={projectButtonContent.id}
+                        handleClick={projectButtonContent.handleClick}
                         />
                 })}
             </div>
@@ -44,7 +47,8 @@ const ProjectNav = () => {
                         Icon={generalButtonContent.icon}
                         text={generalButtonContent.text}
                         key={generalButtonContent.id}
-                        />
+                        handleClick={generalButtonContent.handleClick}
+                    />
                 })}
             </div>
         </div>

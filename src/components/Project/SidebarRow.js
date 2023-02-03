@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from '../../styles/Project.module.css'
 
-const SidebarRow = ({Icon, text}) => {
+const SidebarRow = ({Icon, text, handleClick}) => {
     return (
-        <div className={styles.sidebarRow}>
+        <div className={styles.sidebarRow} onClick={handleClick}>
             {<Icon />}
-            <p>{text}</p>
+            <h2>{text}</h2>
         </div>
     );
 };

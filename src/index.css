@@ -10,6 +10,8 @@
     --blue-green-dark: #4dffc9;
     --white: #ffffff;
     --proflo-green: #3ac69c;
+    --input-border: rgb(155, 155, 155);
+    --shadow: rgba(0,0,0,1) 0px 1px 4px;
     --border-radius-l: 16px;
     --border-radius-s: 8px;
     --spacing-xxs: 0.25vw;
