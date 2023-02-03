@@ -50,6 +50,15 @@ h3 {
     margin: 0px;
 }
 
+h4 {
+    font-size: 0.6vw;
+    font-weight: 400;
+    background-color: var(--light-green);
+    border: 1px solid var(--blue-green-dark);
+    padding: var(--spacing-xxxs);
+    border-radius: var(--border-radius-s);
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -88,8 +97,9 @@ input, textarea {
 
 .main {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-gap: 3vw;
 }
 
 .modal {
@@ -127,4 +137,28 @@ input, textarea {
 .formExitBtn:hover {
     cursor: pointer;
     filter: brightness(90%);
+}
+
+.projectCard {
+    background-color: aliceblue;
+    border-radius: var(--border-radius-l);
+    padding: var(--spacing-s);
+}
+
+.projectImageWrapper {
+    width: 100%;
+    display: flex;
+    margin-bottom: var(--spacing-xs);
+}
+
+.projectImage {
+    width: 100%;
+    border-radius: var(--border-radius-s);
+}
+
+.tagsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-xs);
 }

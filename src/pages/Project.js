@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import styles from '../styles/Project.module.css';
+import ProjectHeader from '../components/Project/ProjectHeader';
 import ProjectNav from '../components/Project/ProjectNav';
 import ProjectMain from '../components/Project/ProjectMain';
 import Modal from '../components/Project/AddProjectModal'
 
 const Project = () => {
+    //Define State Variables
     const [project, setProject] = useState({
         name: '',
         client: '',
@@ -13,13 +15,13 @@ const Project = () => {
         rawMaterial: '',
         product: '',
         projectStage: '',
-        team: [],
+        team: '',
     });
-
     const [projects, setProjects] = useState([]);
-
     const [projectModal, setProjectModal] = useState(false);
 
+
+    //Define Methods
     const toggleProjectModal = () => {
         setProjectModal(!projectModal)
     }
@@ -27,7 +29,20 @@ const Project = () => {
     const addProject = (event) => {
         event.preventDefault();
         toggleProjectModal();
-        console.log('hello');
+
+        setProjects(
+            projects.concat(project)
+        )
+    }
+
+    const handleProjectChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        
+        setProject(project => ({
+            ...project,
+            [name]: value
+        }))
     }
 
     return (
@@ -36,21 +51,16 @@ const Project = () => {
                 modal={projectModal} 
                 toggleModal={toggleProjectModal} 
                 addProject={addProject}
+                project={project}
+                onChange={handleProjectChange}
             />
-            <div className={styles.header}>
-                <div className={styles.profloLogoWrapper}>
-                    <img 
-                        src={require('./../images/proflo-logo.png')}
-                        alt={'ProFlo Logo'}
-                        className={styles.profloLogo}
-                    />
-                </div>
-                <h1>ProFlo</h1>
-            </div>
+            <ProjectHeader />
             <ProjectNav
                 toggleProjectModalHandleClick = {toggleProjectModal}
             />
-            <ProjectMain />
+            <ProjectMain 
+                projects = {projects}
+            />
         </div>
     )
 }

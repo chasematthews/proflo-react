@@ -12,8 +12,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AddIcon from '@mui/icons-material/Add';
 
 const ProjectNav = ({toggleProjectModalHandleClick}) => {
-    
-
 
     const projectButtonsContent = [
         {icon: ContentPasteIcon, text: 'Projects', id: 'Projects'},
