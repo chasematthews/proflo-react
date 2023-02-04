@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/Project.module.css'
+import styles from '../../styles/Home.module.css'
 import SidebarRow from './SidebarRow';
 
 //Import all of the required icons for the side bar
@@ -11,7 +11,7 @@ import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddIcon from '@mui/icons-material/Add';
 
-const ProjectNav = ({toggleProjectModalHandleClick}) => {
+const HomeNav = ({toggleProjectModalHandleClick}) => {
 
     const projectButtonsContent = [
         {icon: ContentPasteIcon, text: 'Projects', id: 'Projects'},
@@ -53,4 +53,4 @@ const ProjectNav = ({toggleProjectModalHandleClick}) => {
     )
 }
 
-export default ProjectNav;
+export default HomeNav;

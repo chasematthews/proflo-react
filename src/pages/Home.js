@@ -1,46 +1,68 @@
-import React from 'react';
-import styles from './../styles/Home.module.css';
-import {getAuth, GoogleAuthProvider, signInWithPopup} from 'firebase/auth'
+import React, {useState} from 'react';
+import styles from '../styles/Home.module.css';
+import HomeHeader from '../components/Home/HomeHeader';
+import HomeNav from '../components/Home/HomeNav';
+import HomeMain from '../components/Home/HomeMain';
+import Modal from '../components/Home/Project/AddProjectModal'
 
-const HomePage = () => {
+const Home = () => {
+    //Define State Variables
+    const [project, setProject] = useState({
+        name: '',
+        client: '',
+        description: '',
+        capacity: '',
+        rawMaterial: '',
+        product: '',
+        projectStage: '',
+        team: '',
+    });
+    const [projects, setProjects] = useState([]);
+    const [projectModal, setProjectModal] = useState(false);
 
-    //Sign in to ProFlo
-    const signIn = async(event) => {
+
+    //Define Methods
+    const toggleProjectModal = () => {
+        setProjectModal(!projectModal)
+    }
+
+    const addProject = (event) => {
         event.preventDefault();
-        //Sign in Firebase using popup auth and Google as the identity provider
-        var provider = new GoogleAuthProvider();
-        await signInWithPopup(getAuth(), provider)
+        toggleProjectModal();
+
+        setProjects(
+            projects.concat(project)
+        )
+    }
+
+    const handleProjectChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        
+        setProject(project => ({
+            ...project,
+            [name]: value
+        }))
     }
 
     return (
         <div className={styles.container}>
-            <div className={styles.welcome}>
-                <div className={styles.profloLogoWrapper}>
-                    <img 
-                        src={require('./../images/proflo-logo.png')} 
-                        alt={'ProFlo Logo'}
-                        className={styles.profloLogo}
-                    />
-                </div>
-                <h1>Welcome to ProFlo</h1>
-                <h2>Please enter your login credentials</h2>
-                <form>
-                    <input 
-                        type='text' 
-                        name='email' 
-                        placeholder='Email'
-                    />
-                    <input 
-                        type='text' 
-                        name='password' 
-                        placeholder='Password'
-                    />
-                    <button className={styles.signInButtonStandard}>Sign in</button>
-                    <button className={styles.signInButtonGoogle} onClick={(event) => signIn(event)}>Sign in with Google</button>
-                </form>           
-            </div>
+            <Modal 
+                modal={projectModal} 
+                toggleModal={toggleProjectModal} 
+                addProject={addProject}
+                project={project}
+                onChange={handleProjectChange}
+            />
+            <HomeHeader />
+            <HomeNav
+                toggleProjectModalHandleClick = {toggleProjectModal}
+            />
+            <HomeMain 
+                projects = {projects}
+            />
         </div>
     )
 }
 
-export default HomePage
+export default Home;

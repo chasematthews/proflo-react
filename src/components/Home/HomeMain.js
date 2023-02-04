@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from '../../styles/Project.module.css';
-import ProjectCard from './ProjectCard'
+import styles from '../../styles/Home.module.css';
+import ProjectCard from './Project/ProjectCard'
 
-const ProjectMain = ({projects}) => {
+const HomeMain = ({projects}) => {
     return (
         <div className={styles.main}>
             {projects.map((project) => {
@@ -16,4 +16,4 @@ const ProjectMain = ({projects}) => {
     )
 }
 
-export default ProjectMain;
+export default HomeMain;

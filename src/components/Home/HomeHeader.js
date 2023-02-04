@@ -1,7 +1,7 @@
 import React from 'react'
-import styles from '../../styles/Project.module.css'
+import styles from '../../styles/Home.module.css'
 
-const ProjectHeader = () => {
+const HomeHeader = () => {
     return (
         <div className={styles.header}>
             <div className={styles.profloLogoWrapper}>
@@ -16,4 +16,4 @@ const ProjectHeader = () => {
     )
 }
 
-export default ProjectHeader
+export default HomeHeader

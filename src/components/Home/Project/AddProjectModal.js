@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/Project.module.css'
+import styles from '../../../styles/Home.module.css'
 import CloseIcon from '@mui/icons-material/Close';
 
 const Modal = ({modal, toggleModal, addProject, project, onChange}) => {

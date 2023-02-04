@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/Project.module.css'
+import styles from '../../styles/Home.module.css'
 
 const SidebarRow = ({Icon, text, handleClick}) => {
     return (
