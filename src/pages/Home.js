@@ -1,7 +1,17 @@
 import React from 'react';
 import styles from './../styles/Home.module.css';
+import {getAuth, GoogleAuthProvider, signInWithPopup} from 'firebase/auth'
 
 const HomePage = () => {
+
+    //Sign in to ProFlo
+    const signIn = async(event) => {
+        event.preventDefault();
+        //Sign in Firebase using popup auth and Google as the identity provider
+        var provider = new GoogleAuthProvider();
+        await signInWithPopup(getAuth(), provider)
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.welcome}>
@@ -26,7 +36,7 @@ const HomePage = () => {
                         placeholder='Password'
                     />
                     <button className={styles.signInButtonStandard}>Sign in</button>
-                    <button className={styles.signInButtonGoogle}>Sign in with Google</button>
+                    <button className={styles.signInButtonGoogle} onClick={(event) => signIn(event)}>Sign in with Google</button>
                 </form>           
             </div>
         </div>
