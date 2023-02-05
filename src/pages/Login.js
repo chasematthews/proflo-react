@@ -1,14 +1,27 @@
 import React from 'react';
 import styles from './../styles/Login.module.css';
-import { useAuth } from '../contexts/AuthContext';
+import { UserAuth } from '../contexts/AuthContext'
 
 const Login = () => {
+    const { googleSignIn, user, logOut } = UserAuth()
 
-    const { signIn } = useAuth();
-    const { signOutUser } = useAuth();
-    // const { initFirebaseAuth } = useAuth()
-    
-    // initFirebaseAuth();
+    const handleGoogleSignIn = async(event) => {
+        event.preventDefault()
+        try {
+            await googleSignIn()
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    const handleSignOut = async(event) => {
+        event.preventDefault()
+        try {
+            await logOut()
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <div className={styles.container}>
@@ -34,8 +47,9 @@ const Login = () => {
                         placeholder='Password'
                     />
                     <button className={styles.signInButtonStandard}>Sign in</button>
-                    <button className={styles.signInButtonGoogle} onClick={(event) => signIn(event)}>Sign in with Google</button>
-                    <button className={styles.signInButtonGoogle} onClick={(event) => signOutUser(event)}>Sign out with Google</button>
+                    <button className={styles.signInButtonGoogle} onClick={(event) => handleGoogleSignIn(event)}>Sign in with Google</button>
+                    <button className={styles.signInButtonGoogle} onClick={(event) => handleSignOut(event)}>Sign out with Google</button>
+                    {user?.displayName ? <p>Welcome</p> : <p>Login</p>}
                 </form>           
             </div>
         </div>

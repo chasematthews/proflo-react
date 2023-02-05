@@ -1,62 +1,45 @@
-import React, { useContext } from 'react'
-import { GoogleAuthProvider, signInWithPopup, getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
+import { useContext, createContext, useEffect, useState } from "react";
+import { 
+    GoogleAuthProvider,
+    signInWithPopup,
+    getAuth,
+    signInWithRedirect,
+    signOut,
+    onAuthStateChanged
+} from 'firebase/auth';
 
-const AuthContext = React.createContext()
+const AuthContext = createContext()
 
-const useAuth = () => {
-    return useContext(AuthContext);
-}
+export const AuthContextProvider = ({children}) => {
 
-const AuthProvider = ({children, auth}) => {
+    const [user, setUser] = useState()
 
-    //Sign in to ProFlo
-    const signIn = async(event) => {
-        event.preventDefault();
-        //Sign in Firebase using popup auth and Google as the identity provider
-        var provider = new GoogleAuthProvider();
+    const googleSignIn = async() => {
+        const provider = new GoogleAuthProvider();
         await signInWithPopup(getAuth(), provider)
+    };
+
+    const logOut = () => {
+        signOut(getAuth())
     }
 
-    //Sign out of ProFlo
-    const signOutUser = async(event) => {
-        event.preventDefault();
-        signOut(getAuth());
-    }
-
-    onAuthStateChanged(auth, user => {
-        if(user != null) {
-            console.log('logged in')
-        } else {
-            console.log('logged out')
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
+            setUser(currentUser)
+            // console.log('User', user)
+        });
+        return () => {
+            unsubscribe();
         }
-    })
-
-    // //Monitor Authentication
-    // const initFirebaseAuth = () => {
-    //     onAuthStateChanged(getAuth(), authStateObserver)
-    // }
-      
-    // const authStateObserver = (user) => {
-    //     if (user) {
-    //         console.log('true');
-    //     } else {
-    //         console.log('false')
-    //     }
-    // }
-
-    const value = {
-        signIn,
-        signOutUser
-    }
+    }, [])
 
     return (
-        <AuthContext.Provider value={value}>
+        <AuthContext.Provider value = {{ googleSignIn, logOut, user }}>
             {children}
         </AuthContext.Provider>
     )
 }
 
-export {
-    useAuth,
-    AuthProvider
+export const UserAuth = () => {
+    return useContext(AuthContext)
 }
