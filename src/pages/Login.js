@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './../styles/Login.module.css';
 import { UserAuth } from '../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const { googleSignIn, user, logOut } = UserAuth()
+    const navigate = useNavigate()
 
     const handleGoogleSignIn = async(event) => {
         event.preventDefault()
@@ -14,14 +16,11 @@ const Login = () => {
         }
     }
 
-    const handleSignOut = async(event) => {
-        event.preventDefault()
-        try {
-            await logOut()
-        } catch (error) {
-            console.log(error)
+    useEffect(() => {
+        if(user != null) {
+            navigate('/home')
         }
-    }
+    }, [user])
 
     return (
         <div className={styles.container}>
@@ -48,8 +47,6 @@ const Login = () => {
                     />
                     <button className={styles.signInButtonStandard}>Sign in</button>
                     <button className={styles.signInButtonGoogle} onClick={(event) => handleGoogleSignIn(event)}>Sign in with Google</button>
-                    <button className={styles.signInButtonGoogle} onClick={(event) => handleSignOut(event)}>Sign out with Google</button>
-                    {user?.displayName ? <p>Welcome</p> : <p>Login</p>}
                 </form>           
             </div>
         </div>

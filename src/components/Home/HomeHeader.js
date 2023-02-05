@@ -1,7 +1,20 @@
 import React from 'react'
 import styles from '../../styles/Home.module.css'
+import { UserAuth } from '../../contexts/AuthContext'
 
 const HomeHeader = () => {
+
+    const { logOut } = UserAuth()
+
+    const handleSignOut = async(event) => {
+        event.preventDefault()
+        try {
+            await logOut()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div className={styles.header}>
             <div className={styles.profloLogoWrapper}>
@@ -12,6 +25,7 @@ const HomeHeader = () => {
                 />
             </div>
             <h1>ProFlo</h1>
+            <button onClick={handleSignOut}>SignOut</button>
         </div>
     )
 }
