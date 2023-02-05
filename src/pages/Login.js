@@ -6,9 +6,9 @@ const Login = () => {
 
     const { signIn } = useAuth();
     const { signOutUser } = useAuth();
-    const { initFirebaseAuth } = useAuth()
+    // const { initFirebaseAuth } = useAuth()
     
-    initFirebaseAuth();
+    // initFirebaseAuth();
 
     return (
         <div className={styles.container}>

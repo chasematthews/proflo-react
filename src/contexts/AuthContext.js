@@ -7,7 +7,7 @@ const useAuth = () => {
     return useContext(AuthContext);
 }
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({children, auth}) => {
 
     //Sign in to ProFlo
     const signIn = async(event) => {
@@ -23,23 +23,30 @@ const AuthProvider = ({children}) => {
         signOut(getAuth());
     }
 
-    //Monitor Authentication
-    const initFirebaseAuth = () => {
-        onAuthStateChanged(getAuth(), authStateObserver)
-    }
-      
-    const authStateObserver = (user) => {
-        if (user) {
-            console.log('true');
+    onAuthStateChanged(auth, user => {
+        if(user != null) {
+            console.log('logged in')
         } else {
-            console.log('false')
+            console.log('logged out')
         }
-    }
+    })
+
+    // //Monitor Authentication
+    // const initFirebaseAuth = () => {
+    //     onAuthStateChanged(getAuth(), authStateObserver)
+    // }
+      
+    // const authStateObserver = (user) => {
+    //     if (user) {
+    //         console.log('true');
+    //     } else {
+    //         console.log('false')
+    //     }
+    // }
 
     const value = {
         signIn,
-        signOutUser,
-        initFirebaseAuth
+        signOutUser
     }
 
     return (
