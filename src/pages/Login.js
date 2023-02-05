@@ -1,22 +1,14 @@
 import React from 'react';
 import styles from './../styles/Login.module.css';
-import {getAuth, GoogleAuthProvider, signInWithPopup, signOut} from 'firebase/auth'
+import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
 
-    //Sign in to ProFlo
-    const signIn = async(event) => {
-        event.preventDefault();
-        //Sign in Firebase using popup auth and Google as the identity provider
-        var provider = new GoogleAuthProvider();
-        await signInWithPopup(getAuth(), provider)
-    }
-
-    //Sign out to ProFlo
-    const signOutUser = async(event) => {
-        event.preventDefault();
-        signOut(getAuth());
-    }
+    const { signIn } = useAuth();
+    const { signOutUser } = useAuth();
+    const { initFirebaseAuth } = useAuth()
+    
+    initFirebaseAuth();
 
     return (
         <div className={styles.container}>
