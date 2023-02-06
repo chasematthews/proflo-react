@@ -35,7 +35,7 @@ const Home = () => {
         setProjects(
             projects.concat(project)
         )
-        
+
         saveProject(project)
     }
 
@@ -71,15 +71,19 @@ const Home = () => {
         const recentMessagesQuery = query(collection(getFirestore(), 'projects'))
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
-            snapshot.docs.forEach(doc => {
-                console.log(doc.data())
-            })
+            setProjects(snapshot.docs.map(doc => doc.data()));
+            console.log(projects)
         })
     }
 
     useEffect(() => {
         loadProjects();
     }, [])
+
+
+    // useEffect(() => {
+    //     loadProjects();
+    // }, [])
 
     return (
         <div className={styles.container}>
