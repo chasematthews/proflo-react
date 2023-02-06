@@ -13,7 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 const HomeNav = ({toggleProjectModalHandleClick}) => {
 
-    const projectButtonsContent = [
+    const homeButtonsContent = [
         {icon: ContentPasteIcon, text: 'Projects', id: 'Projects'},
         {icon: CheckBoxIcon, text: 'Actions', id: 'Actions'},
         {icon: DesignServicesIcon, text: 'Design Data', id: 'Design-Data'},
@@ -30,12 +30,12 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
         <div className={styles.navigator}>
             <div className={styles.companyNameWrapper}></div>
             <div className={styles.projectButtonsWrapper}>
-                {projectButtonsContent.map((projectButtonContent) => {
+                {homeButtonsContent.map((homeButtonContent) => {
                     return <SidebarRow 
-                        Icon={projectButtonContent.icon}
-                        text={projectButtonContent.text}
-                        key={projectButtonContent.id}
-                        handleClick={projectButtonContent.handleClick}
+                        Icon={homeButtonContent.icon}
+                        text={homeButtonContent.text}
+                        key={homeButtonContent.id}
+                        handleClick={homeButtonContent.handleClick}
                         />
                 })}
             </div>

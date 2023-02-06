@@ -1,9 +1,15 @@
 import React from "react"
+import HomeHeader from "../components/Home/HomeHeader"
+import ProjectMain from "../components/Project/ProjectMain"
+import ProjectNavMain from "../components/Project/ProjectNavMain"
+import styles from '../styles/Project.module.css'
 
 const ProjectOne = () => {
     return (
-        <div>
-            Hello
+        <div className={styles.container}>
+            <HomeHeader />
+            <ProjectNavMain />
+            <ProjectMain />
         </div>
     )
 }
