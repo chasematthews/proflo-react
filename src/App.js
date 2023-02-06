@@ -10,14 +10,7 @@ const App = () => {
     <AuthContextProvider>
       <BrowserRouter>
           <Routes>
-              <Route 
-                element={
-                  <Protected>
-                    <Home />
-                  </Protected>
-                  } 
-                path='/home' 
-              />
+              <Route element={<Protected><Home /></Protected>} path='/' />
               <Route element={<Login />} path='/login' />
           </Routes>
       </BrowserRouter>

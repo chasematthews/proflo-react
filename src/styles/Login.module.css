@@ -13,48 +13,57 @@
     height: 90%;
     background-color: var(--white);
     border-radius: var(--border-radius-l);
-    padding: var(--spacing-l) var(--spacing-xxl);
+    padding: var(--spacing-l) var(--spacing-xl);
 }
 
 .profloLogo {
-    height: 150px;
+    height: 8vw;
 }
 
-form {
+.signInForm {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-s);
-    width: 100%;
 }
 
-h1 {
-    margin-bottom: var(--spacing-l);
-    font-size: xx-large;
+.title {
+    margin-bottom: var(--spacing-s);
+    font-size: 2vw;
     text-align: center;
 }
 
-h2 {
-    margin-bottom: var(--spacing-l);
-    font-size: large;
+.welcomeInstructions {
+    margin-bottom: var(--spacing-m);
+    font-size: 0.8vw;
     font-weight: 400;
     text-align: center;
 }
 
-input, button {
-    padding: var(--spacing-xxs);
-    border-radius: var(--border-radius-s);
-    border: solid 1px black;
+.signInFormLabel {
+    font-size: 0.8vw;
+    font-weight: 600;
 }
 
-button:hover {
+.signInFormInput, .signInFormButton {
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-xs);
+    border: solid 1px black;
+    width: 20vw;
+    font-size: 0.8vw;
+    margin-bottom: var(--spacing-s);
+
+}
+
+.signInFormButton {
+    background-color: var(--blue-green-dark);
+    font-weight: 600;
+}
+
+.signInFormButton:hover {
     cursor: pointer;
     filter: brightness(90%);
 }
 
-.signInButtonStandard {
-    background-color: var(--blue-green-dark);
-}
-
-.signInButtonGoogle {
-    background-color: white;
+hr {
+    margin-bottom: var(--spacing-s);
+    height: 1px;
 }
