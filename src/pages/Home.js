@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from '../styles/Home.module.css';
 import HomeHeader from '../components/Home/HomeHeader';
 import HomeNav from '../components/Home/HomeNav';
 import HomeMain from '../components/Home/HomeMain';
 import Modal from '../components/Home/Project/AddProjectModal'
-import { getFirestore, collection, addDoc } from 'firebase/firestore'
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, doc} from 'firebase/firestore'
 
 const Home = () => {
     //Define State Variables
@@ -50,7 +50,6 @@ const Home = () => {
     }
 
     const saveProject = async(project) => {
-        console.log(project)
         try {
             await addDoc(collection(getFirestore(), 'projects'), {
                 name: project.name,
@@ -67,6 +66,20 @@ const Home = () => {
             console.log('Error writing new project to Firebase Database');
         }
     }
+
+    const loadProjects = () => {
+        const recentMessagesQuery = query(collection(getFirestore(), 'projects'))
+
+        onSnapshot(recentMessagesQuery, (snapshot) => {
+            snapshot.docs.forEach(doc => {
+                console.log(doc.data())
+            })
+        })
+    }
+
+    useEffect(() => {
+        loadProjects();
+    }, [])
 
     return (
         <div className={styles.container}>
