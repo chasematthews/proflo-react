@@ -1,14 +1,16 @@
 import React from "react"
-import HomeHeader from "../components/Home/HomeHeader"
+import ProjectHeader from "../components/Project/ProjectHeader"
 import ProjectMain from "../components/Project/ProjectMain"
 import ProjectNavMain from "../components/Project/ProjectNavMain"
+import ProjectNavMinor from "../components/Project/ProjectNavMinor"
 import styles from '../styles/Project.module.css'
 
 const ProjectOne = () => {
     return (
         <div className={styles.container}>
-            <HomeHeader />
+            <ProjectHeader />
             <ProjectNavMain />
+            <ProjectNavMinor />
             <ProjectMain />
         </div>
     )

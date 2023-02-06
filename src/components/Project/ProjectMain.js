@@ -1,8 +1,9 @@
 import React from 'react'
+import styles from '../../styles/Project.module.css'
 
 const ProjectMain = () => {
     return (
-        <div>Hello</div>
+        <div className={styles.main}>Hello</div>
     )
 }
 

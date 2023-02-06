@@ -13,6 +13,8 @@ import AddIcon from '@mui/icons-material/Add';
 
 const HomeNav = ({toggleProjectModalHandleClick}) => {
 
+    const sidebarStyle = styles.sidebarRow
+
     const homeButtonsContent = [
         {icon: ContentPasteIcon, text: 'Projects', id: 'Projects'},
         {icon: CheckBoxIcon, text: 'Actions', id: 'Actions'},
@@ -36,6 +38,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
                         text={homeButtonContent.text}
                         key={homeButtonContent.id}
                         handleClick={homeButtonContent.handleClick}
+                        style={sidebarStyle}
                         />
                 })}
             </div>
@@ -46,6 +49,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
                         text={generalButtonContent.text}
                         key={generalButtonContent.id}
                         handleClick={generalButtonContent.handleClick}
+                        style={sidebarStyle}
                     />
                 })}
             </div>

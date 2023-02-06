@@ -9,6 +9,8 @@ import styles from '../../styles/Project.module.css'
 
 const ProjectNavMain = () => {
 
+    const sidebarStyle = styles.sidebarRow
+
     const projectButtonsContent = [
         {icon: WebAssetIcon, text: 'Design', id: 'Design'},
         {icon: CommentIcon, text: 'Comments Register', id: 'CommentsRegister'},
@@ -30,6 +32,7 @@ const ProjectNavMain = () => {
                         text={projectButtonContent.text}
                         key={projectButtonContent.id}
                         handleClick={projectButtonContent.handleClick}
+                        style={sidebarStyle}
                         />
                 })}
             </div>
@@ -40,6 +43,7 @@ const ProjectNavMain = () => {
                         text={generalButtonContent.text}
                         key={generalButtonContent.id}
                         handleClick={generalButtonContent.handleClick}
+                        style={sidebarStyle}
                     />
                 })}
             </div>
