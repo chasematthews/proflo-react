@@ -17,14 +17,16 @@ const HomeHeader = () => {
 
     return (
         <div className={styles.header}>
-            <div className={styles.profloLogoWrapper}>
-                <img 
-                    src={require('./../../images/proflo-logo.png')}
-                    alt={'ProFlo Logo'}
-                    className={styles.profloLogo}
-                />
+            <div className={styles.profloCompanyWrapper}>
+                <div className={styles.profloLogoWrapper}>
+                    <img
+                        src={require('./../../images/proflo-logo.png')}
+                        alt={'ProFlo Logo'}
+                        className={styles.profloLogo}
+                    />
+                </div>
+                <h1>ProFlo</h1>
             </div>
-            <h1>ProFlo</h1>
             <button onClick={handleSignOut}>SignOut</button>
         </div>
     )
