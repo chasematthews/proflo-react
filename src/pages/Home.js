@@ -4,7 +4,7 @@ import HomeHeader from '../components/Home/HomeHeader';
 import HomeNav from '../components/Home/HomeNav';
 import HomeMain from '../components/Home/HomeMain';
 import Modal from '../components/Home/Project/AddProjectModal'
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, doc} from 'firebase/firestore'
+import { getFirestore, collection, addDoc, query, onSnapshot} from 'firebase/firestore'
 
 const Home = () => {
     //Define State Variables
@@ -18,6 +18,7 @@ const Home = () => {
         projectStage: '',
         team: '',
     });
+
 
     const [projects, setProjects] = useState([]);
     const [projectModal, setProjectModal] = useState(false);
@@ -72,7 +73,6 @@ const Home = () => {
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             setProjects(snapshot.docs.map(doc => doc.data()));
-            console.log(projects)
         })
     }
 

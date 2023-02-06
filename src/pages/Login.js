@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import styles from './../styles/Login.module.css';
 import { UserAuth } from '../contexts/AuthContext'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import GoogleButton from 'react-google-button';
+
 
 const Login = () => {
     const { googleSignIn, user } = UserAuth()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const handleGoogleSignIn = async(event) => {
         event.preventDefault()
@@ -19,7 +21,9 @@ const Login = () => {
 
     useEffect(() => {
         if(user != null) {
-            navigate('/')
+            if (location.state?.from) {
+                navigate(location.state.from)
+            }
         }
     }, [user])
 
