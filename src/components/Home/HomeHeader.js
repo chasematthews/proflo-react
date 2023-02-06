@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../../styles/Home.module.css'
 import { UserAuth } from '../../contexts/AuthContext'
 
-const HomeHeader = () => {
+const HomeHeader = ({ headerStyle }) => {
 
     const { logOut, user } = UserAuth()
 
@@ -16,7 +16,7 @@ const HomeHeader = () => {
     }
 
     return (
-        <div className={styles.header}>
+        <div className={headerStyle}>
             <div className={styles.profloCompanyWrapper}>
                 <div className={styles.profloLogoWrapper}>
                     <img

@@ -19,6 +19,7 @@ const Home = () => {
         team: '',
     });
 
+    const headerStyle = styles.header
 
     const [projects, setProjects] = useState([]);
     const [projectModal, setProjectModal] = useState(false);
@@ -94,7 +95,9 @@ const Home = () => {
                 project={project}
                 onChange={handleProjectChange}
             />
-            <HomeHeader />
+            <HomeHeader 
+                headerStyle = {headerStyle}
+            />
             <HomeNav
                 toggleProjectModalHandleClick = {toggleProjectModal}
             />
