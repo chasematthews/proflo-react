@@ -15,8 +15,6 @@ const HomeHeader = () => {
         }
     }
 
-    console.log(user.photoURL)
-
     return (
         <div className={styles.header}>
             <div className={styles.profloCompanyWrapper}>

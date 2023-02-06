@@ -4,6 +4,7 @@ import HomeHeader from '../components/Home/HomeHeader';
 import HomeNav from '../components/Home/HomeNav';
 import HomeMain from '../components/Home/HomeMain';
 import Modal from '../components/Home/Project/AddProjectModal'
+import { getFirestore, collection, addDoc } from 'firebase/firestore'
 
 const Home = () => {
     //Define State Variables
@@ -17,6 +18,7 @@ const Home = () => {
         projectStage: '',
         team: '',
     });
+
     const [projects, setProjects] = useState([]);
     const [projectModal, setProjectModal] = useState(false);
 
@@ -33,6 +35,8 @@ const Home = () => {
         setProjects(
             projects.concat(project)
         )
+        
+        saveProject(project)
     }
 
     const handleProjectChange = (event) => {
@@ -43,6 +47,25 @@ const Home = () => {
             ...project,
             [name]: value
         }))
+    }
+
+    const saveProject = async(project) => {
+        console.log(project)
+        try {
+            await addDoc(collection(getFirestore(), 'projects'), {
+                name: project.name,
+                client: project.client,
+                description: project.description,
+                capacity: project.capacity,
+                rawMaterial: project.rawMaterial,
+                product: project.product,
+                projectStage: project.projectStage,
+                team: project.team
+            });
+        }
+        catch(error) {
+            console.log('Error writing new project to Firebase Database');
+        }
     }
 
     return (
