@@ -4,7 +4,7 @@ import { UserAuth } from '../../contexts/AuthContext'
 
 const HomeHeader = () => {
 
-    const { logOut } = UserAuth()
+    const { logOut, user } = UserAuth()
 
     const handleSignOut = async(event) => {
         event.preventDefault()
@@ -14,6 +14,8 @@ const HomeHeader = () => {
             console.log(error)
         }
     }
+
+    console.log(user.photoURL)
 
     return (
         <div className={styles.header}>
@@ -25,9 +27,19 @@ const HomeHeader = () => {
                         className={styles.profloLogo}
                     />
                 </div>
-                <h1>ProFlo</h1>
+                <h1 className={styles.headerPageLogoTitle}>ProFlo</h1>
             </div>
-            <button onClick={handleSignOut}>SignOut</button>
+            <div className={styles.userWrapper}>
+                <div className={styles.profilePicWrapper}>
+                    <img
+                        referrerPolicy='no-referrer'
+                        src={user.photoURL}
+                        alt='Profile Pic'
+                    />
+                </div>
+                <h2 className={styles.userName}>{user.displayName}</h2>
+                <button onClick={handleSignOut}>SignOut</button>
+            </div>
         </div>
     )
 }
