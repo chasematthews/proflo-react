@@ -1,9 +1,9 @@
-import React from 'react'
-import styles from '../../styles/Project.module.css'
+import React, { useEffect, useState } from 'react'
+import Drawing from './PFD/Drawing'
 
 const ProjectMain = () => {
     return (
-        <div className={styles.main}>Hello</div>
+        <Drawing />
     )
 }
 

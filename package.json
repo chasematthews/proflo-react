@@ -42,5 +42,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.0.0",
+    "html-loader": "^4.2.0",
+    "react-app-rewired": "^2.2.1"
   }
 }
