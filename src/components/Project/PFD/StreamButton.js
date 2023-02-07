@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StreamTable = ({ streamNumber }) => {
+const StreamButton = ({ streamNumber }) => {
     console.log(streamNumber.textContent)
     return (
         <div>
@@ -9,4 +9,4 @@ const StreamTable = ({ streamNumber }) => {
     )
 }
 
-export default StreamTable
+export default StreamButton
