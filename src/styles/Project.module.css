@@ -110,13 +110,20 @@
 }
 
 .streamTableExitBtn {
-    position: absolute;
     top: 0.5vw;
     right: 0.5vw;
-    background-color: var(--blue-green);
+    background-color: var(--blue-green-dark);
 }
 
 .streamTableExitBtn:hover {
     cursor: pointer;
     filter: brightness(90%);
+}
+
+.streamInfoHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    background-color: var(--blue-green-dark);
 }
