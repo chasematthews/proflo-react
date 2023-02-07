@@ -1,9 +1,9 @@
 import React from 'react';
+import StreamTableInfo from './StreamTableInfo';
 
 const StreamTable = ({ streamNumber, displayTable }) => {
 
     let showTable = displayTable.includes(streamNumber.textContent)
-    console.log(displayTable.includes(streamNumber.textContent))
 
     let position = streamNumber.getBoundingClientRect()
 
@@ -11,8 +11,8 @@ const StreamTable = ({ streamNumber, displayTable }) => {
         left: `${position.left + position.width}px`,
         top: `${position.top + position.height}px`,
         zIndex: '1',
-        height: '20px',
-        width: '20px',
+        height: '500px',
+        width: '50px',
         backgroundColor: 'white',
         position: 'fixed',
         display: `${showTable? "flex" : "none"}`,
@@ -20,7 +20,7 @@ const StreamTable = ({ streamNumber, displayTable }) => {
 
     return (
         <div style={styling}>
-            Stream Number
+            <StreamTableInfo streamNumber = {streamNumber}/>
         </div>
     )
 }
