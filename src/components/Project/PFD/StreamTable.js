@@ -2,7 +2,8 @@ import React from 'react';
 
 const StreamTable = ({ streamNumber, displayTable }) => {
 
-    console.log(displayTable)
+    let showTable = displayTable.includes(streamNumber.textContent)
+    console.log(displayTable.includes(streamNumber.textContent))
 
     let position = streamNumber.getBoundingClientRect()
 
@@ -14,7 +15,7 @@ const StreamTable = ({ streamNumber, displayTable }) => {
         width: '20px',
         backgroundColor: 'white',
         position: 'fixed',
-        display: 'none'
+        display: `${showTable? "flex" : "none"}`,
     }
 
     return (

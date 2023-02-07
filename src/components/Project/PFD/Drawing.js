@@ -5,7 +5,7 @@ import StreamTable from './StreamTable';
 const Drawing = () => {
     const[htmlFileString, setHtmlFileString] = useState();
     const[streamNumbersList, setStreamNumbersList] = useState([]);
-    const[displayTable, setDisplayTable] = useState();
+    const[displayTable, setDisplayTable] = useState([])
 
     async function fetchHtml() {
         setHtmlFileString(await ( await fetch('./resources/drawing.html')).text());
@@ -14,11 +14,11 @@ const Drawing = () => {
     const getElements = () => {
         const identifiers = document.getElementById("PFD").querySelectorAll("div");
         let streamNumbers = findStreamNumbers(identifiers);
-        setStreamNumbersList(streamNumbersList.concat(streamNumbers));
+
+        setStreamNumbersList(streamNumbersList.concat(streamNumbers), streamNumberStyling(identifiers))
     }
-    
-    const findStreamNumbers = (identifiers) => {
-        let streamNumbers = [];
+
+    const streamNumberStyling = (identifiers) => {
         identifiers.forEach(identifier => {
             if (identifier.textContent.substring(0,2) === "AS") {
                 identifier.onmouseover = function(){
@@ -30,9 +30,20 @@ const Drawing = () => {
                     identifier.style.scale = '1'
                 }
                 identifier.onclick = function() {
-                    console.log()
-                    setDisplayTable('flex');
-                };
+                    showTable(identifier)
+                }
+            }        
+        });
+    }
+
+    const showTable = (identifier) => {
+        setDisplayTable((displayTable) => displayTable.concat(identifier.textContent))
+    }
+    
+    const findStreamNumbers = (identifiers) => {
+        let streamNumbers = [];
+        identifiers.forEach(identifier => {
+            if (identifier.textContent.substring(0,2) === "AS") {
                 streamNumbers.push((identifier));
             }        
         });
@@ -44,7 +55,8 @@ const Drawing = () => {
     }, [])
 
     useEffect(() => {
-        getElements();
+        getElements()
+
     }, [htmlFileString])
 
     return (
@@ -52,10 +64,7 @@ const Drawing = () => {
             <div id="PFD" className={styles.PFDWrapper} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
             {streamNumbersList.map((streamNumber) => {
                 return (
-                    <StreamTable
-                        streamNumber = {streamNumber}
-                        displayTable = {displayTable}
-                    />
+                    <StreamTable streamNumber = {streamNumber} displayTable = {displayTable} />
                 )
             })}
         </div>
