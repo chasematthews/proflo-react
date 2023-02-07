@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../../../styles/Project.module.css'
-import StreamButton from './StreamButton';
+import StreamTable from './StreamTable';
 
 const Drawing = () => {
     const[htmlFileString, setHtmlFileString] = useState();
     const[streamNumbersList, setStreamNumbersList] = useState([]);
+    const[displayTable, setDisplayTable] = useState();
 
     async function fetchHtml() {
         setHtmlFileString(await ( await fetch('./resources/drawing.html')).text());
@@ -28,6 +29,10 @@ const Drawing = () => {
                     identifier.style.cursor = 'pointer';
                     identifier.style.scale = '1'
                 }
+                identifier.onclick = function() {
+                    console.log()
+                    setDisplayTable('flex');
+                };
                 streamNumbers.push((identifier));
             }        
         });
@@ -47,8 +52,9 @@ const Drawing = () => {
             <div id="PFD" className={styles.PFDWrapper} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
             {streamNumbersList.map((streamNumber) => {
                 return (
-                    <StreamButton
+                    <StreamTable
                         streamNumber = {streamNumber}
+                        displayTable = {displayTable}
                     />
                 )
             })}
