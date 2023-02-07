@@ -97,3 +97,26 @@
     overflow: hidden;
     position: relative;
 }
+
+.streamTable {
+    border-spacing: 0px;
+    padding: 0px var(--spacing-m);
+}
+
+.tableCell {
+    border: 0.5px solid var(--blue-green);
+    font-size: 12px;
+    padding: var(--spacing-xxxs)
+}
+
+.streamTableExitBtn {
+    position: absolute;
+    top: 0.5vw;
+    right: 0.5vw;
+    background-color: var(--blue-green);
+}
+
+.streamTableExitBtn:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}

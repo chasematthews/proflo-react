@@ -51,6 +51,13 @@ const Drawing = () => {
         return streamNumbers;
     }
 
+    const exitStreamTable = (event) => {
+        const removeIndex = displayTable.indexOf(event.target.id)
+        if (removeIndex > -1) {
+            setDisplayTable(arr => arr.filter((_, index) => index !== removeIndex))
+        }
+    }
+
     useEffect(() => {
         fetchHtml()
     }, [])
@@ -65,7 +72,7 @@ const Drawing = () => {
             <div id="PFD" className={styles.PFDWrapper} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
             {streamNumbersList.map((streamNumber) => {
                 return (
-                    <StreamTable streamNumber = {streamNumber} displayTable = {displayTable} />
+                    <StreamTable exitStreamTable = {exitStreamTable} streamNumber = {streamNumber} displayTable = {displayTable} />
                 )
             })}
         </div>
