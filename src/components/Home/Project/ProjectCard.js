@@ -1,9 +1,17 @@
 import React from 'react';
 import styles from '../../../styles/Home.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectCard = ({project}) => {
+
+    const navigate = useNavigate();
+
+    const goToProject = () => {
+        navigate(`/${project.name.replace(/\s+/g, '-')}`)
+    }
+
     return (
-        <div className={styles.projectCard}>
+        <div className={styles.projectCard} onClick={goToProject}>
             <div className={styles.projectImageWrapper}>
                 <img src={require('./../../../images/ProjectImage.jpg')} className={styles.projectImage} alt='Project'/>
             </div>
