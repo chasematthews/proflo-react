@@ -24,7 +24,6 @@ const Home = () => {
     const [projects, setProjects] = useState([]);
     const [projectModal, setProjectModal] = useState(false);
 
-
     //Define Methods
     const toggleProjectModal = () => {
         setProjectModal(!projectModal)

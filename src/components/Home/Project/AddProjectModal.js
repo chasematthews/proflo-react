@@ -70,7 +70,9 @@ const Modal = ({modal, toggleModal, addProject, project, onChange}) => {
                             />
                             <button 
                                 className={styles.newProjectBtn}
-                                onClick={(event) => addProject(event)}
+                                onClick={(event) => {
+                                    addProject(event);
+                                }}
                             >Create New Project</button>
                         </form>
                     </div>

@@ -127,3 +127,18 @@
     justify-content: right;
     background-color: var(--blue-green-dark);
 }
+
+.addCommentButton {
+    background-color: var(--blue-green);
+    border: none;
+    font-size: medium;
+    padding: var(--spacing-xs);
+    margin: var(--spacing-xs);
+    border-radius: var(--border-radius-s);
+    font-size: medium;
+ }
+ 
+ .addCommentButton:hover {
+     cursor: pointer;
+     filter: brightness(90%)
+ }

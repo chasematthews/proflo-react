@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import styles from './../../../styles/Project.module.css'
 
 
-const StreamTable = ({ streamNumber, displayTable, exitStreamTable }) => {
+const StreamTable = ({ streamNumber, displayTable, exitStreamTable, streamTableRef }) => {
 
     let position = streamNumber.getBoundingClientRect()
     let showTable = displayTable.includes(streamNumber.textContent)
@@ -27,7 +27,6 @@ const StreamTable = ({ streamNumber, displayTable, exitStreamTable }) => {
     }
 
     const elementDrag = (event) => {
-        console.log(event.target.parentNode)
         event = event || window.event;
         event.preventDefault();
         pos1 = pos3 - event.clientX;
@@ -53,6 +52,7 @@ const StreamTable = ({ streamNumber, displayTable, exitStreamTable }) => {
         overflow: 'auto',
         resize: 'both',
         flexDirection: 'column',
+        alignItems: 'center',
         border: 'solid 1px #4dffc9',
         borderRadiues: '8px',
         boxShadow: 'rgba(0,0,0,1) 0px 1px 4px'
@@ -64,6 +64,7 @@ const StreamTable = ({ streamNumber, displayTable, exitStreamTable }) => {
                 <CloseIcon id={streamNumber.textContent} onClick={exitStreamTable} className={styles.streamTableExitBtn}/>
             </div>
             <StreamTableInfo streamNumber = {streamNumber}/>
+            <button className={styles.addCommentButton}>Add Comment</button>
         </div>
     )
 }
