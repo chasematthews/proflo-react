@@ -1,9 +1,9 @@
 import Drawing from './PFD/Drawing'
 
-const ProjectMain = () => {
+const ProjectMain = ({toggleCommentModal}) => {
 
     return (
-        <Drawing />
+        <Drawing toggleCommentModal={toggleCommentModal}/>
     )
 }
 

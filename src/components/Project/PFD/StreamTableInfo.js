@@ -18,10 +18,10 @@ const StreamTableInfo = ({ streamNumber }) => {
         <table className={styles.streamTable}>
             <tbody>
                 {MEBData !== undefined &&
-                    Object.keys(MEBData).map((key) => {
-                        const parameterInfo = MEBData[key]
+                    Object.keys(MEBData).map((MEBItem, key) => {
+                        const parameterInfo = MEBData[MEBItem]
                         return (
-                            <tr>
+                            <tr key={key}>
                                 <td className={styles.tableCell}>{parameterInfo[0]}</td>
                                 <td className={styles.tableCell}>{parameterInfo[MEBData[0].indexOf(streamNumber.textContent)]}</td>
                             </tr>

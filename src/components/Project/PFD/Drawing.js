@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styles from '../../../styles/Project.module.css'
 import StreamTable from './StreamTable';
 
-const Drawing = () => {
+const Drawing = ({toggleCommentModal}) => {
 
     const[htmlFileString, setHtmlFileString] = useState();
     const[streamNumbersList, setStreamNumbersList] = useState([]);
@@ -70,9 +70,15 @@ const Drawing = () => {
     return (
         <div className={styles.main}>
             <div id="PFD" className={styles.PFDWrapper} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
-            {streamNumbersList.map((streamNumber) => {
+            {streamNumbersList.map((streamNumber, key) => {
                 return (
-                    <StreamTable exitStreamTable = {exitStreamTable} streamNumber = {streamNumber} displayTable = {displayTable} />
+                    <StreamTable 
+                    key={key}
+                    exitStreamTable = {exitStreamTable} 
+                    streamNumber = {streamNumber} 
+                    displayTable = {displayTable} 
+                    toggleCommentModal = {toggleCommentModal}
+                    />
                 )
             })}
         </div>

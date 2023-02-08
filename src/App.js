@@ -30,9 +30,9 @@ const App = () => {
               <Route element={<Protected><Home projects={projects} setProjects={setProjects}/></Protected>} path='/' />
               {/* <Route element={<Protected><ProjectOne /></Protected>} path='/project-one' /> */}
               <Route element={<Login />} path='/login' />
-              {projects.map((project) => {
+              {projects.map((project, key) => {
                 return (
-                  <Route element={<Protected><ProjectOne project={project}/></Protected>} path={`/${project.name.replace(/\s+/g, '-')}`} />
+                  <Route key={key} element={<Protected><ProjectOne project={project}/></Protected>} path={`/${project.name.replace(/\s+/g, '-')}`} />
                 )
               })}
           </Routes>
