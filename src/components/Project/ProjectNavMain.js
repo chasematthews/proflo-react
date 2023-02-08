@@ -4,7 +4,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import SidebarRow from '../Home/SidebarRow';
 import styles from '../../styles/Project.module.css'
 
-const ProjectNavMain = () => {
+const ProjectNavMain = ({project}) => {
 
     const sidebarStyle = styles.sidebarRow
 
@@ -15,7 +15,7 @@ const ProjectNavMain = () => {
 
     return (
         <div className={styles.navigator}>
-            <div className={styles.companyNameWrapper}></div>
+            <div className={styles.projectNameWrapper}>{project.name}</div>
             <div className={styles.projectButtonsWrapper}>
                 {projectButtonsContent.map((projectButtonContent) => {
                     return <SidebarRow 

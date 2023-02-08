@@ -5,7 +5,7 @@ import ProjectNavMain from "../components/Project/ProjectNavMain"
 import ProjectNavMinor from "../components/Project/ProjectNavMinor"
 import styles from '../styles/Project.module.css'
 
-const ProjectOne = () => {
+const ProjectOne = ({project}) => {
 
     const headerStyle = styles.header
 
@@ -14,7 +14,7 @@ const ProjectOne = () => {
             <HomeHeader
                 headerStyle={headerStyle} 
             />
-            <ProjectNavMain />
+            <ProjectNavMain project={project}/>
             <ProjectNavMinor />
             <ProjectMain />
         </div>
