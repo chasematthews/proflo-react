@@ -69,18 +69,21 @@ const Drawing = ({toggleCommentModal}) => {
 
     return (
         <div className={styles.main}>
-            <div id="PFD" className={styles.PFDWrapper} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
-            {streamNumbersList.map((streamNumber, key) => {
-                return (
-                    <StreamTable 
-                    key={key}
-                    exitStreamTable = {exitStreamTable} 
-                    streamNumber = {streamNumber} 
-                    displayTable = {displayTable} 
-                    toggleCommentModal = {toggleCommentModal}
-                    />
-                )
-            })}
+            <h2>Process Flow Diagram</h2>
+            <div className={styles.PFDWrapper}>
+                <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
+                {streamNumbersList.map((streamNumber, key) => {
+                    return (
+                        <StreamTable
+                        key={key}
+                        exitStreamTable = {exitStreamTable}
+                        streamNumber = {streamNumber}
+                        displayTable = {displayTable}
+                        toggleCommentModal = {toggleCommentModal}
+                        />
+                    )
+                })}
+            </div>
         </div>
     )
 }

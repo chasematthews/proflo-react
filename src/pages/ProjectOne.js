@@ -1,10 +1,11 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import HomeHeader from "../components/Home/HomeHeader"
 import ProjectMain from "../components/Project/ProjectMain"
 import ProjectNavMain from "../components/Project/ProjectNavMain"
 import ProjectNavMinor from "../components/Project/ProjectNavMinor"
 import AddCommentModal from "../components/Project/PFD/AddCommentModal"
 import styles from '../styles/Project.module.css'
+import { getFirestore, collection, addDoc, query, onSnapshot } from 'firebase/firestore'
 
 const ProjectOne = ({project}) => {
 
@@ -14,6 +15,7 @@ const ProjectOne = ({project}) => {
         dueDate: '',
         severity: '',
     });
+
     const [comments, setComments] = useState([]);
     const [commentModal, setCommentModal] = useState(false);
     
@@ -29,6 +31,8 @@ const ProjectOne = ({project}) => {
         )
 
         toggleCommentModal()
+
+        saveComment(comment)
     }
 
     const handleCommentChange = (event) => {
@@ -41,6 +45,32 @@ const ProjectOne = ({project}) => {
         }))
     }
 
+    const saveComment = async(comment) => {
+        try {
+            await addDoc(collection(getFirestore(), 'comments'), {
+                comment: comment.comment,
+                assignedTo: comment.assignedTo,
+                dueDate: comment.dueDate,
+                severity: comment.severity,
+            });
+        }
+        catch(error) {
+            console.log('Error writing new project to Firebase Database');
+        }
+    }
+
+    const loadComments = () => {
+        const recentMessagesQuery = query(collection(getFirestore(), 'comments'))
+    
+        onSnapshot(recentMessagesQuery, (snapshot) => {
+            setComments(snapshot.docs.map(doc => doc.data()));
+        })
+      }
+    
+      useEffect(() => {
+        loadComments();
+      }, [])
+
     const headerStyle = styles.header
 
     return (
@@ -50,7 +80,7 @@ const ProjectOne = ({project}) => {
             />
             <ProjectNavMain project={project}/>
             <ProjectNavMinor />
-            <ProjectMain toggleCommentModal={toggleCommentModal} />
+            <ProjectMain toggleCommentModal={toggleCommentModal} comments={comments}/>
             <AddCommentModal 
                 handleCommentChange = {handleCommentChange}
                 comment = {comment}

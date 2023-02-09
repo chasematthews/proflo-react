@@ -88,6 +88,12 @@
 }
 
 .PFDWrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.PFD {
     height: 100%;
     width: 100%;
     z-index: 0;
@@ -166,4 +172,8 @@
 
 .formTitle {
     margin-bottom: var(--spacing-s);
+}
+
+.commentsTable {
+    width: 100%;
 }
