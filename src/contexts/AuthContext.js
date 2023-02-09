@@ -8,7 +8,8 @@ import {
     OAuthProvider,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    updateProfile
 } from 'firebase/auth';
 
 const AuthContext = createContext()
@@ -27,8 +28,15 @@ export const AuthContextProvider = ({children}) => {
         await signInWithPopup(getAuth(), provider)
     };
 
-    const signUp = (email, password) => {
-        return createUserWithEmailAndPassword(getAuth(), email, password);
+    const signUp = (email, password, firstName, lastName) => {
+        createUserWithEmailAndPassword(getAuth(), email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            const username = firstName + ' ' + lastName;
+            updateProfile(user, {
+                displayName: username,
+            })
+        })
     };
 
     const emailSignIn = (email, password) => {

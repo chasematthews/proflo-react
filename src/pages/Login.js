@@ -17,6 +17,7 @@ const Login = () => {
         event.preventDefault()
         try {
             await googleSignIn()
+            navigate('/')
         } catch(error) {
             console.log(error)
         }
@@ -26,6 +27,7 @@ const Login = () => {
         event.preventDefault()
         try {
             await MSSignIn()
+            navigate('/')
         } catch(error) {
             console.log(error)
         }

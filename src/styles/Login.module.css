@@ -172,3 +172,23 @@ hr {
 .MSButton:hover {
     cursor: pointer;
 }
+
+.nameWrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 2vw;
+}
+
+.firstNameWrapper, .lastNameWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.signInFormInputName {
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-xs);
+    border: solid 1px black;
+    width: 9vw;
+    font-size: 0.8vw;
+    margin-bottom: var(--spacing-s);
+}
