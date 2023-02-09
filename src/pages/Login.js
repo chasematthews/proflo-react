@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styles from './../styles/Login.module.css';
 import { UserAuth } from '../contexts/AuthContext'
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import CustomGoogleButton from '../utils/GoogleButton';
 import CustomMSButton from '../utils/MicrosoftButton';
 
 const Login = () => {
     const { googleSignIn, MSSignIn, user, emailSignIn } = UserAuth()
     const navigate = useNavigate()
-    const location = useLocation()
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false)
     const emailRef = useRef();
@@ -34,12 +33,12 @@ const Login = () => {
 
     const handleEmailSignIn = async(event) => {
         event.preventDefault()
-        console.log('hello')
 
         try {
             setError('')
             setLoading(true)
             await emailSignIn(emailRef.current.value, passwordRef.current.value)
+            navigate('/')
         } catch {
             setError('Failed to sign in')
         }
@@ -48,10 +47,7 @@ const Login = () => {
 
     useEffect(() => {
         if(user != null) {
-            console.log(location)
-            if (location.state?.from) {
-                navigate(location.state.from)
-            }
+            navigate('/')
         }
     }, [user])
 
@@ -82,9 +78,10 @@ const Login = () => {
                         type='password' 
                         name='password' 
                         placeholder='Password'
-                        className={styles.signInFormInput}
+                        className={styles.signInFormInputPassword}
                         ref={passwordRef}
                     />
+                    <label className={styles.forgotPassWord}><Link to="/resetpassword">Forgot password</Link></label>
                     <button className={styles.signInFormButton} type='submit' disabled={loading}>Sign in</button>
                     <hr />
                     <CustomGoogleButton handleGoogleSignIn = {handleGoogleSignIn} />

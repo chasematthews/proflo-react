@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import ProjectOne from "./pages/ProjectOne";
 import SignUp from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import Protected from "./utils/Protected";
 import { query, collection, getFirestore, onSnapshot } from "firebase/firestore";
@@ -32,6 +33,7 @@ const App = () => {
               {/* <Route element={<Protected><ProjectOne /></Protected>} path='/project-one' /> */}
               <Route element={<Login />} path='/login' />
               <Route element={<SignUp />} path='/signup' />
+              <Route element={<ForgotPassword />} path='/resetpassword' />
               {projects.map((project, key) => {
                 return (
                   <Route key={key} element={<Protected><ProjectOne project={project}/></Protected>} path={`/${project.name.replace(/\s+/g, '-')}/*`} />

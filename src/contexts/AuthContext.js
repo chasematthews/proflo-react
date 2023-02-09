@@ -7,7 +7,8 @@ import {
     onAuthStateChanged,
     OAuthProvider,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail
 } from 'firebase/auth';
 
 const AuthContext = createContext()
@@ -27,15 +28,19 @@ export const AuthContextProvider = ({children}) => {
     };
 
     const signUp = (email, password) => {
-        createUserWithEmailAndPassword(getAuth(), email, password);
+        return createUserWithEmailAndPassword(getAuth(), email, password);
     };
 
     const emailSignIn = (email, password) => {
-        signInWithEmailAndPassword(getAuth(), email, password);
+        return signInWithEmailAndPassword(getAuth(), email, password);
     };
 
+    const resetPassword = (email) => {
+        return sendPasswordResetEmail(getAuth(), email);
+    }
+
     const logOut = () => {
-        signOut(getAuth())
+        return signOut(getAuth())
     }
 
     useEffect(() => {
@@ -48,7 +53,7 @@ export const AuthContextProvider = ({children}) => {
     }, [])
 
     return (
-        <AuthContext.Provider value = {{ googleSignIn, MSSignIn, signUp, emailSignIn, logOut, user }}>
+        <AuthContext.Provider value = {{ googleSignIn, MSSignIn, signUp, emailSignIn, logOut, resetPassword, user }}>
             {children}
         </AuthContext.Provider>
     )

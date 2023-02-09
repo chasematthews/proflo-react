@@ -53,6 +53,21 @@
 
 }
 
+.signInFormInputPassword {
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-xs);
+    border: solid 1px black;
+    width: 20vw;
+    font-size: 0.8vw;
+    margin-bottom: var(--spacing-xxxs);
+}
+
+.forgotPassWord {
+    font-size: 0.7vw;
+    font-weight: 400;
+    margin-bottom: var(--spacing-s);
+}
+
 .signInFormButton {
     background-color: var(--blue-green-dark);
     font-weight: 600;
