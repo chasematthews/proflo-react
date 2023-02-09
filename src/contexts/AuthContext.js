@@ -5,7 +5,9 @@ import {
     getAuth,
     signOut,
     onAuthStateChanged,
-    OAuthProvider
+    OAuthProvider,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword
 } from 'firebase/auth';
 
 const AuthContext = createContext()
@@ -24,6 +26,14 @@ export const AuthContextProvider = ({children}) => {
         await signInWithPopup(getAuth(), provider)
     };
 
+    const signUp = (email, password) => {
+        createUserWithEmailAndPassword(getAuth(), email, password);
+    };
+
+    const emailSignIn = (email, password) => {
+        signInWithEmailAndPassword(getAuth(), email, password);
+    };
+
     const logOut = () => {
         signOut(getAuth())
     }
@@ -38,7 +48,7 @@ export const AuthContextProvider = ({children}) => {
     }, [])
 
     return (
-        <AuthContext.Provider value = {{ googleSignIn, MSSignIn, logOut, user }}>
+        <AuthContext.Provider value = {{ googleSignIn, MSSignIn, signUp, emailSignIn, logOut, user }}>
             {children}
         </AuthContext.Provider>
     )

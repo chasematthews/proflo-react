@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styles from './../styles/Login.module.css';
 import { UserAuth } from '../contexts/AuthContext'
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import CustomGoogleButton from '../utils/GoogleButton';
 import CustomMSButton from '../utils/MicrosoftButton';
 
 const Login = () => {
-    const { googleSignIn, MSSignIn, user } = UserAuth()
+    const { googleSignIn, MSSignIn, user, emailSignIn } = UserAuth()
     const navigate = useNavigate()
     const location = useLocation()
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false)
+    const emailRef = useRef();
+    const passwordRef = useRef();
 
     const handleGoogleSignIn = async(event) => {
         event.preventDefault()
@@ -28,8 +32,23 @@ const Login = () => {
         }
     }
 
+    const handleEmailSignIn = async(event) => {
+        event.preventDefault()
+        console.log('hello')
+
+        try {
+            setError('')
+            setLoading(true)
+            await emailSignIn(emailRef.current.value, passwordRef.current.value)
+        } catch {
+            setError('Failed to sign in')
+        }
+        setLoading(false)
+    }
+
     useEffect(() => {
         if(user != null) {
+            console.log(location)
             if (location.state?.from) {
                 navigate(location.state.from)
             }
@@ -47,23 +66,26 @@ const Login = () => {
                     />
                 </div>
                 <h1 className={styles.title}>ProFlo</h1>
-                <h2 className={styles.welcomeInstructions}>Don't have an account? Sign up</h2>
-                <form className={styles.signInForm}>
+                <h2 className={styles.welcomeInstructions}>Don't have an account? <Link to="/signup">Sign up</Link></h2>
+                {error && <div>{error}</div>}
+                <form className={styles.signInForm} onSubmit={handleEmailSignIn}>
                     <label className={styles.signInFormLabel}>Email address</label>
                     <input 
                         type='text' 
                         name='email' 
                         placeholder='Email'
                         className={styles.signInFormInput}
+                        ref={emailRef}
                     />
                     <label className={styles.signInFormLabel}>Password</label>
                     <input 
-                        type='text' 
+                        type='password' 
                         name='password' 
                         placeholder='Password'
                         className={styles.signInFormInput}
+                        ref={passwordRef}
                     />
-                    <button className={styles.signInFormButton}>Sign in</button>
+                    <button className={styles.signInFormButton} type='submit' disabled={loading}>Sign in</button>
                     <hr />
                     <CustomGoogleButton handleGoogleSignIn = {handleGoogleSignIn} />
                     <CustomMSButton handleMSSignIn = {handleMSSignIn} />
