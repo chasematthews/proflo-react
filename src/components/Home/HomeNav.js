@@ -14,7 +14,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     const homeButtonsContent = [
         {icon: ContentPasteIcon, text: 'Projects', id: 'Projects'},
         {icon: CheckBoxIcon, text: 'Actions', id: 'Actions'},
-        {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: {toggleProjectModalHandleClick}}
+        {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: toggleProjectModalHandleClick}
     ]
 
     return (
