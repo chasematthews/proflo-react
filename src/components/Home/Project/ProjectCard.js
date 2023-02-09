@@ -7,7 +7,7 @@ const ProjectCard = ({project}) => {
     const navigate = useNavigate();
 
     const goToProject = () => {
-        navigate(`/${project.name.replace(/\s+/g, '-')}`)
+        navigate(`/${project.name.replace(/\s+/g, '-')}/design`)
     }
 
     return (

@@ -7,7 +7,7 @@ const StreamTableInfo = ({ streamNumber }) => {
     const [ MEBData, SetMEBData ] = useState()
 
     async function fetchCSV() {
-        SetMEBData((await Papa.parse(await (await fetch('./resources/PFD-MEB-v5.csv')).text())).data)
+        SetMEBData((await Papa.parse(await (await fetch('./../resources/PFD-MEB-v5.csv')).text())).data)
     }
 
     useEffect(() => {        

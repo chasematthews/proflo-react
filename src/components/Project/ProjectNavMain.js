@@ -1,16 +1,21 @@
 import React from 'react'
 import WebAssetIcon from '@mui/icons-material/WebAsset';
 import CommentIcon from '@mui/icons-material/Comment';
+import HomeIcon from '@mui/icons-material/Home';
 import SidebarRow from '../Home/SidebarRow';
 import styles from '../../styles/Project.module.css'
+import { useNavigate } from 'react-router-dom';
 
 const ProjectNavMain = ({project}) => {
+
+    const navigate = useNavigate()
 
     const sidebarStyle = styles.sidebarRow
 
     const projectButtonsContent = [
-        {icon: WebAssetIcon, text: 'Design', id: 'Design'},
-        {icon: CommentIcon, text: 'Comments Register', id: 'CommentsRegister'},
+        {icon: HomeIcon, text: 'Home', id: 'Home', handleClick: function() {navigate('/')}},
+        {icon: WebAssetIcon, text: 'Design', id: 'Design', handleClick: function() {navigate(`/${project.name.replace(/\s+/g, '-')}/design`)}},
+        {icon: CommentIcon, text: 'Comments Register', id: 'CommentsRegister', handleClick: function() {navigate(`/${project.name.replace(/\s+/g, '-')}/comments`)}},
     ]
 
     return (

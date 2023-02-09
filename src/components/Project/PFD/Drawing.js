@@ -9,7 +9,7 @@ const Drawing = ({toggleCommentModal}) => {
     const[displayTable, setDisplayTable] = useState([])
 
     async function fetchHtml() {
-        setHtmlFileString(await ( await fetch('./resources/drawing.html')).text());
+        setHtmlFileString(await ( await fetch('./../resources/drawing.html')).text());
     }
 
     const getElements = () => {
