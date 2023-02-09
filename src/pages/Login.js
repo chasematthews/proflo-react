@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import styles from './../styles/Login.module.css';
 import { UserAuth } from '../contexts/AuthContext'
 import { useNavigate, useLocation } from 'react-router-dom';
-import GoogleButton from 'react-google-button';
-
+import CustomGoogleButton from '../utils/GoogleButton';
+import CustomMSButton from '../utils/MicrosoftButton';
 
 const Login = () => {
-    const { googleSignIn, user } = UserAuth()
+    const { googleSignIn, MSSignIn, user } = UserAuth()
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -14,6 +14,15 @@ const Login = () => {
         event.preventDefault()
         try {
             await googleSignIn()
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    const handleMSSignIn = async(event) => {
+        event.preventDefault()
+        try {
+            await MSSignIn()
         } catch(error) {
             console.log(error)
         }
@@ -56,7 +65,8 @@ const Login = () => {
                     />
                     <button className={styles.signInFormButton}>Sign in</button>
                     <hr />
-                    <GoogleButton onClick={(event) => handleGoogleSignIn(event)} />
+                    <CustomGoogleButton handleGoogleSignIn = {handleGoogleSignIn} />
+                    <CustomMSButton handleMSSignIn = {handleMSSignIn} />
                 </form>           
             </div>
         </div>

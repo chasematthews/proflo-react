@@ -4,7 +4,8 @@ import {
     signInWithPopup,
     getAuth,
     signOut,
-    onAuthStateChanged
+    onAuthStateChanged,
+    OAuthProvider
 } from 'firebase/auth';
 
 const AuthContext = createContext()
@@ -15,6 +16,11 @@ export const AuthContextProvider = ({children}) => {
 
     const googleSignIn = async() => {
         const provider = new GoogleAuthProvider();
+        await signInWithPopup(getAuth(), provider)
+    };
+
+    const MSSignIn = async() => {
+        const provider = new OAuthProvider('microsoft.com');
         await signInWithPopup(getAuth(), provider)
     };
 
@@ -32,7 +38,7 @@ export const AuthContextProvider = ({children}) => {
     }, [])
 
     return (
-        <AuthContext.Provider value = {{ googleSignIn, logOut, user }}>
+        <AuthContext.Provider value = {{ googleSignIn, MSSignIn, logOut, user }}>
             {children}
         </AuthContext.Provider>
     )

@@ -67,3 +67,93 @@ hr {
     margin-bottom: var(--spacing-s);
     height: 1px;
 }
+
+.googleButton {
+    background-color: #4285F4;
+    height: 2vw;
+    border: none;
+    box-shadow: var(--shadow);
+    margin-bottom: var(--spacing-xs);
+}
+
+.googleButtonContentWrapper {
+    display: flex;
+    padding: 1px;
+    height: 100%;
+}
+
+.googleLogoWrapper {
+    background-color: white;
+    height: 100%;
+    padding: 2.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.googleLogoImage {
+    display: flex;
+    height: 100%;
+}
+
+.googleButtonTextWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.googleButtonText {
+    color: white;
+    font-size: 18px;
+}
+
+.googleButton:hover {
+    cursor: pointer;
+}
+
+.MSButton {
+    background-color: white;
+    height: 2vw;
+    border: 1px solid #737373;
+    box-shadow: var(--shadow);
+    margin-bottom: var(--spacing-xs);
+}
+
+.MSButtonContentWrapper {
+    display: flex;
+    padding: 1px;
+    height: 100%;
+}
+
+.MSLogoWrapper {
+    background-color: white;
+    height: 100%;
+    padding: 2.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.MSLogoImage {
+    display: flex;
+    height: 100%;
+}
+
+.MSButtonTextWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.MSButtonText {
+    color: #737373;
+    font-size: 18px;
+}
+
+.MSButton:hover {
+    cursor: pointer;
+}
