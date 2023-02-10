@@ -189,3 +189,14 @@ input, textarea {
 .uploadFileButton {
     
 }
+
+.companyNameWrapper {
+    height: 100px;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+}
+
+.companyLogoWrapper {
+    display: flex;
+}
