@@ -5,8 +5,12 @@ import HomeNav from '../components/Home/HomeNav';
 import HomeMain from '../components/Home/HomeMain';
 import Modal from '../components/Home/Project/AddProjectModal'
 import { getFirestore, collection, addDoc } from 'firebase/firestore'
+import { UserAuth } from '../contexts/AuthContext';
 
 const Home = ({ projects, setProjects}) => {
+    const { userRef } = UserAuth();
+    console.log(userRef)
+
     //Define State Variables
     const [project, setProject] = useState({
         name: '',

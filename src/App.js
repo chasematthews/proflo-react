@@ -8,10 +8,13 @@ import ForgotPassword from "./pages/ForgotPassword";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import Protected from "./utils/Protected";
 import { query, collection, getFirestore, onSnapshot } from "firebase/firestore";
+import { UserAuth } from "./contexts/AuthContext";
 
 const App = () => {
 
   const [projects, setProjects] = useState([]);
+  // const { userRef } = UserAuth();
+  // console.log(userRef);
 
   const loadProjects = () => {
     const recentMessagesQuery = query(collection(getFirestore(), 'projects'))

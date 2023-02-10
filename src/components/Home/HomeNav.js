@@ -3,7 +3,7 @@ import styles from '../../styles/Home.module.css'
 import SidebarRow from './SidebarRow';
 import { getAuth } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { getFirestore, setDoc, doc, addDoc, collection, query, onSnapshot } from 'firebase/firestore';
+import { getFirestore, setDoc, doc, query, onSnapshot } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
 //Import all of the required icons for the side bar
