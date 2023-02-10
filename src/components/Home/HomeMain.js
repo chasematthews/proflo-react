@@ -8,7 +8,7 @@ const HomeMain = ({projects}) => {
 
     return (
         <Routes>
-            <Route element={<ProjectDashboard projects={projects}/>} path='/projects'/>
+            <Route element={<ProjectDashboard projects={projects}/>} path='projects'/>
             <Route element={<ActionsRegister />} path='/actions'/>
         </Routes>
     )

@@ -13,7 +13,7 @@ const ProjectNavMain = ({project}) => {
     const sidebarStyle = styles.sidebarRow
 
     const projectButtonsContent = [
-        {icon: HomeIcon, text: 'Home', id: 'Home', handleClick: function() {navigate('/')}},
+        {icon: HomeIcon, text: 'Home', id: 'Home', handleClick: function() {navigate('/projects')}},
         {icon: WebAssetIcon, text: 'Design', id: 'Design', handleClick: function() {navigate(`/${project.name.replace(/\s+/g, '-')}/design`)}},
         {icon: CommentIcon, text: 'Comments Register', id: 'CommentsRegister', handleClick: function() {navigate(`/${project.name.replace(/\s+/g, '-')}/comments`)}},
     ]
