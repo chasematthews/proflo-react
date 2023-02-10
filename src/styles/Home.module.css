@@ -181,3 +181,11 @@ input, textarea {
     gap: var(--spacing-xs);
     margin-top: var(--spacing-xs);
 }
+
+.uploadFileInput {
+    display: none;
+}
+
+.uploadFileButton {
+    
+}

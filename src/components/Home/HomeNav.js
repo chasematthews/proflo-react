@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import styles from '../../styles/Home.module.css'
 import SidebarRow from './SidebarRow';
 
@@ -8,6 +8,14 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import AddIcon from '@mui/icons-material/Add';
 
 const HomeNav = ({toggleProjectModalHandleClick}) => {
+
+    const [companyLogo, setCompanyLogo] = useState();
+    const buttonUploadRef = useRef()
+
+    const addCompanyLogo = (event) => {
+        event.preventDefault();
+        buttonUploadRef.current.click();
+    }
 
     const sidebarStyle = styles.sidebarRow
 
@@ -19,7 +27,16 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
 
     return (
         <div className={styles.navigator}>
-            <div className={styles.companyNameWrapper}></div>
+            <div className={styles.companyNameWrapper}>
+                {companyLogo ? 
+                    (<div>Hello</div>) :
+                    (<div>
+                        <button className={styles.uploadFileButton} onClick={addCompanyLogo}>Add File</button>
+                        <input className={styles.uploadFileInput} ref={buttonUploadRef} type="file" />
+                    </div>
+                    )   
+                }
+            </div>
             <div className={styles.projectButtonsWrapper}>
                 {homeButtonsContent.map((homeButtonContent) => {
                     return <SidebarRow 
