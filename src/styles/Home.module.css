@@ -93,7 +93,7 @@ input, textarea {
 
 .navigator {
     display: grid;
-    grid-template-rows: 1fr 5fr 5fr;
+    grid-template-rows: 1fr 4fr;
 }
 
 .sidebarRow {
@@ -187,16 +187,79 @@ input, textarea {
 }
 
 .uploadFileButton {
-    
+    padding: var(--spacing-m);
+    border-radius: var(--border-radius-xs);
+    font-size: 0.8vw;
+    margin: 0px;
+    background-color: var(--light-green);
+    font-weight: 600;
+}
+
+.uploadFileButton:hover {
+    cursor: pointer;
+    filter: brightness(90%);
 }
 
 .companyNameWrapper {
-    height: 100px;
-    width: 100%;
-    justify-content: center;
     display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .companyLogoWrapper {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin: var(--spacing-s);
+}
+
+.companyLogoImage {
+    width: 50%;
+    display: block;
+}
+
+.inputWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.companyNameInput {
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-xs);
+    border: solid 1px black;
+    font-size: 0.8vw;
+    margin: 0px;
+}
+
+.companyNameBtn {
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-xs);
+    border: solid 1px black;
+    font-size: 0.8vw;
+    margin: 0px;
+    background-color: var(--light-green);
+    font-weight: 600;
+}
+
+.companyNameBtn:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
+
+.companyNameFormLabel {
+    font-size: 0.8vw;
+    font-weight: 600;
+}
+
+.companyName {
+    text-align: center;
+    font-size: large;
+    font-weight: 600;
+}
+
+hr {
+    margin-bottom: var(--spacing-s);
+    height: 1px;
 }

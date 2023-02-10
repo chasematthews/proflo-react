@@ -13,9 +13,9 @@ import AddIcon from '@mui/icons-material/Add';
 const HomeNav = ({toggleProjectModalHandleClick}) => {
 
     const [companyLogo, setCompanyLogo] = useState();
+    const [companyName, setCompanyName] = useState();
     const buttonUploadRef = useRef()
-
-    console.log(companyLogo)
+    const companyNameRef = useRef()
 
     const toggleUploadDialogue = (event) => {
         event.preventDefault();
@@ -32,6 +32,11 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
         saveLogo(publicImageUrl, fileSnapshot)
     }
 
+    const addCompanyName = (event) => {
+        event.preventDefault();
+        saveCompanyName(companyNameRef);
+    }
+
     const saveLogo = async(publicImageUrl, fileSnapshot) => {
         try {
             await setDoc(doc(getFirestore(), 'general', 'logo'), {
@@ -44,17 +49,37 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
         }
     }
 
+    const saveCompanyName = async(companyNameRef) => {
+        try {
+            await setDoc(doc(getFirestore(), 'general', 'companyName'), {
+                name: companyNameRef.current.value,
+            });
+        }
+        catch(error) {
+            console.log('Error writing company name to Firebase Database');
+        }
+    }
+
     const loadLogo = () => {
         const recentMessagesQuery = query(doc(getFirestore(), 'general', 'logo'))
+
+        onSnapshot(recentMessagesQuery, (snapshot) => {
+            snapshot.data() && setCompanyLogo((snapshot.data().imageUrl));
+        })
+    }
+
+    const loadCompanyName = () => {
+        const recentMessagesQuery = query(doc(getFirestore(), 'general', 'companyName'))
     
         onSnapshot(recentMessagesQuery, (snapshot) => {
-            setCompanyLogo((snapshot.data().imageUrl));
+            snapshot.data() && setCompanyName((snapshot.data().name));
         })
-      }
+    }
     
-      useEffect(() => {
+    useEffect(() => {
         loadLogo();
-      }, [])
+        loadCompanyName();
+    }, [])
 
     const sidebarStyle = styles.sidebarRow
 
@@ -69,12 +94,24 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
             <div className={styles.companyNameWrapper}>
                 {companyLogo ? 
                     (<div className={styles.companyLogoWrapper}><img src={`${companyLogo}`} alt='company logo' className={styles.companyLogoImage}/></div>) :
-                    (<div>
-                        <button className={styles.uploadFileButton} onClick={(event) => toggleUploadDialogue(event)}>Add File</button>
+                    (<div className={styles.companyLogoWrapper}>
+                        <button className={styles.uploadFileButton} onClick={(event) => toggleUploadDialogue(event)}>Add a Logo</button>
                         <input className={styles.uploadFileInput} ref={buttonUploadRef} onChange={(event) => onMediaFileSelected(event)} type="file" />
                     </div>
                     )   
                 }
+                {companyName ? 
+                    (<div className={styles.companyName}>{companyName}</div>) :
+                    (<form className={styles.companyNameForm} onSubmit={(event) => addCompanyName(event)}>
+                        <label className={styles.companyNameFormLabel}>Company Name</label>
+                        <div className={styles.inputWrapper}>
+                            <input type='text' className={styles.companyNameInput} ref={companyNameRef}></input>
+                            <button type='submit' className={styles.companyNameBtn}>OK</button>
+                        </div>
+                    </form>
+                    )   
+                }
+                <hr />
             </div>
             <div className={styles.projectButtonsWrapper}>
                 {homeButtonsContent.map((homeButtonContent) => {
