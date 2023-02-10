@@ -9,7 +9,6 @@ import { UserAuth } from '../contexts/AuthContext';
 
 const Home = ({ projects, setProjects}) => {
     const { userRef } = UserAuth();
-    console.log(userRef)
 
     //Define State Variables
     const [project, setProject] = useState({
@@ -39,8 +38,9 @@ const Home = ({ projects, setProjects}) => {
         setProjects(
             projects.concat(project)
         )
-
-        saveProject(project)
+        if (userRef) {
+            saveProject(project)
+        }
     }
 
     const handleProjectChange = (event) => {
@@ -55,7 +55,7 @@ const Home = ({ projects, setProjects}) => {
 
     const saveProject = async(project) => {
         try {
-            await addDoc(collection(getFirestore(), 'projects'), {
+            await addDoc(collection(userRef, 'projects'), {
                 name: project.name,
                 client: project.client,
                 description: project.description,

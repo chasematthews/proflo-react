@@ -6,6 +6,7 @@ import ProjectNavMinor from "../components/Project/ProjectNavMinor"
 import AddCommentModal from "../components/Project/PFD/AddCommentModal"
 import styles from '../styles/Project.module.css'
 import { getFirestore, collection, addDoc, query, onSnapshot } from 'firebase/firestore'
+import { UserAuth } from "../contexts/AuthContext"
 
 const ProjectOne = ({project}) => {
 
@@ -15,6 +16,8 @@ const ProjectOne = ({project}) => {
         dueDate: '',
         severity: '',
     });
+
+    const {userRef} = UserAuth();
 
     const [comments, setComments] = useState([]);
     const [commentModal, setCommentModal] = useState(false);
@@ -47,7 +50,7 @@ const ProjectOne = ({project}) => {
 
     const saveComment = async(comment) => {
         try {
-            await addDoc(collection(getFirestore(), 'comments'), {
+            await addDoc(collection(userRef, 'comments'), {
                 comment: comment.comment,
                 assignedTo: comment.assignedTo,
                 dueDate: comment.dueDate,
@@ -60,7 +63,7 @@ const ProjectOne = ({project}) => {
     }
 
     const loadComments = () => {
-        const recentMessagesQuery = query(collection(getFirestore(), 'comments'))
+        const recentMessagesQuery = query(collection(userRef, 'comments'))
     
         onSnapshot(recentMessagesQuery, (snapshot) => {
             setComments(snapshot.docs.map(doc => doc.data()));

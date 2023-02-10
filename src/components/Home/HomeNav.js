@@ -3,8 +3,9 @@ import styles from '../../styles/Home.module.css'
 import SidebarRow from './SidebarRow';
 import { getAuth } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { getFirestore, setDoc, doc, query, onSnapshot } from 'firebase/firestore';
+import { setDoc, doc, query, onSnapshot } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import { UserAuth } from '../../contexts/AuthContext';
 
 //Import all of the required icons for the side bar
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
@@ -12,6 +13,8 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import AddIcon from '@mui/icons-material/Add';
 
 const HomeNav = ({toggleProjectModalHandleClick}) => {
+
+    const { userRef } = UserAuth();
 
     const navigate = useNavigate()
 
@@ -32,7 +35,9 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
         const newImageRef = ref(getStorage(), filePath);
         const fileSnapshot = await uploadBytesResumable(newImageRef, file);
         const publicImageUrl = await getDownloadURL(newImageRef)
-        saveLogo(publicImageUrl, fileSnapshot)
+        if (userRef) {
+            saveLogo(publicImageUrl, fileSnapshot)
+        }
     }
 
     const addCompanyName = (event) => {
@@ -42,7 +47,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
 
     const saveLogo = async(publicImageUrl, fileSnapshot) => {
         try {
-            await setDoc(doc(getFirestore(), 'general', 'logo'), {
+            await setDoc(doc(userRef, 'general', 'logo'), {
                 imageUrl: publicImageUrl,
                 storageUri: fileSnapshot.metadata.fullPath
             });
@@ -54,7 +59,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
 
     const saveCompanyName = async(companyNameRef) => {
         try {
-            await setDoc(doc(getFirestore(), 'general', 'companyName'), {
+            await setDoc(doc(userRef, 'general', 'companyName'), {
                 name: companyNameRef.current.value,
             });
         }
@@ -64,7 +69,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     }
 
     const loadLogo = () => {
-        const recentMessagesQuery = query(doc(getFirestore(), 'general', 'logo'))
+        const recentMessagesQuery = query(doc(userRef, 'general', 'logo'))
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setCompanyLogo((snapshot.data().imageUrl));
@@ -72,7 +77,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     }
 
     const loadCompanyName = () => {
-        const recentMessagesQuery = query(doc(getFirestore(), 'general', 'companyName'))
+        const recentMessagesQuery = query(doc(userRef, 'general', 'companyName'))
     
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setCompanyName((snapshot.data().name));

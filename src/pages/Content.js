@@ -2,19 +2,23 @@ import React, {useState, useEffect} from 'react';
 import { Routes, Route } from 'react-router-dom'
 import Home from './Home';
 import ProjectOne from "./ProjectOne";
-import {query, collection, getFirestore, onSnapshot} from 'firebase/firestore'
+import {query, collection, onSnapshot} from 'firebase/firestore'
 import Protected from '../utils/Protected';
+import { UserAuth } from '../contexts/AuthContext';
 
 const Content = () => {
+
+    const {userRef} = UserAuth();
 
     const [projects, setProjects] = useState([]);
   
     const loadProjects = () => {
-      const recentMessagesQuery = query(collection(getFirestore(), 'projects'))
-  
-      onSnapshot(recentMessagesQuery, (snapshot) => {
+      if (userRef) {
+        const recentMessagesQuery = query(collection(userRef, 'projects'))
+        onSnapshot(recentMessagesQuery, (snapshot) => {
           setProjects(snapshot.docs.map(doc => doc.data()));
-      })
+        })
+      }
     }
   
     useEffect(() => {

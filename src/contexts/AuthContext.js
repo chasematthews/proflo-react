@@ -76,8 +76,7 @@ export const AuthContextProvider = ({children}) => {
             setUser(currentUser)
         });
         onAuthStateChanged(getAuth(), async(currentUser) => {
-            currentUser && await (setUserRef(doc(getFirestore(), 'users', `${currentUser.uid}`)))
-            // await setUserRef(userRef)
+            await (setUserRef(doc(getFirestore(), 'users', `${currentUser.uid}`)))
         })
         return () => {
             unsubscribe();
