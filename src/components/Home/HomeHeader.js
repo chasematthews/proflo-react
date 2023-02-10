@@ -29,14 +29,16 @@ const HomeHeader = ({ headerStyle }) => {
             </div>
             <div className={styles.userWrapper}>
                 <div className={styles.profilePicWrapper}>
-                    <img
-                        referrerPolicy='no-referrer'
-                        src={user.photoURL}
-                        alt='Profile Pic'
-                    />
+                    {user.photoURL && (
+                        <img
+                            referrerPolicy='no-referrer'
+                            src={user.photoURL}
+                            alt='Profile Pic'
+                        />
+                    )}
                 </div>
                 <h2 className={styles.userName}>{user.displayName}</h2>
-                <button onClick={handleSignOut}>SignOut</button>
+                <button className={styles.signOutButton} onClick={handleSignOut}>SignOut</button>
             </div>
         </div>
     )

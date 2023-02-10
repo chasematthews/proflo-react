@@ -17,7 +17,7 @@ const Login = () => {
         event.preventDefault()
         try {
             await googleSignIn()
-            navigate('/')
+            navigate('/projects')
         } catch(error) {
             console.log(error)
         }
@@ -27,7 +27,7 @@ const Login = () => {
         event.preventDefault()
         try {
             await MSSignIn()
-            navigate('/')
+            navigate('/projects')
         } catch(error) {
             console.log(error)
         }
@@ -40,7 +40,7 @@ const Login = () => {
             setError('')
             setLoading(true)
             await emailSignIn(emailRef.current.value, passwordRef.current.value)
-            navigate('/')
+            navigate('/projects')
         } catch {
             setError('Failed to sign in')
         }
@@ -49,7 +49,7 @@ const Login = () => {
 
     useEffect(() => {
         if(user != null) {
-            navigate('/')
+            navigate('/projects')
         }
     }, [user])
 

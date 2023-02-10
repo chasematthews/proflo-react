@@ -263,3 +263,17 @@ hr {
     margin-bottom: var(--spacing-s);
     height: 1px;
 }
+
+.signOutButton {
+    padding: var(--border-radius-xs) var(--border-radius-l);
+    border-radius: var(--border-radius-xs);
+    font-size: 0.8vw;
+    margin: 0px;
+    background-color: var(--light-green);
+    font-weight: 600;
+}
+
+.signOutButton:hover {
+    filter: brightness(90%);
+    cursor: pointer;
+}

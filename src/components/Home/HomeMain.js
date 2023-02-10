@@ -1,21 +1,16 @@
 import React from 'react';
-import styles from '../../styles/Home.module.css';
-import ProjectCard from './Project/ProjectCard';
+import { Route, Routes } from 'react-router-dom';
+import ProjectDashboard from './Project/ProjectDashboard';
+import ActionsRegister from './Actions/Actions';
 
 
 const HomeMain = ({projects}) => {
 
     return (
-        <div className={styles.main}>
-            {projects.map((project, key) => {
-                return (
-                    <ProjectCard
-                        project = {project}
-                        key = {key}
-                    />
-                )
-            })}
-        </div>
+        <Routes>
+            <Route element={<ProjectDashboard projects={projects}/>} path='/projects'/>
+            <Route element={<ActionsRegister />} path='/actions'/>
+        </Routes>
     )
 }
 

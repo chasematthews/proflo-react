@@ -4,6 +4,7 @@ import SidebarRow from './SidebarRow';
 import { getAuth } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { getFirestore, setDoc, doc, addDoc, collection, query, onSnapshot } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 //Import all of the required icons for the side bar
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
@@ -11,6 +12,8 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import AddIcon from '@mui/icons-material/Add';
 
 const HomeNav = ({toggleProjectModalHandleClick}) => {
+
+    const navigate = useNavigate()
 
     const [companyLogo, setCompanyLogo] = useState();
     const [companyName, setCompanyName] = useState();
@@ -84,8 +87,8 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     const sidebarStyle = styles.sidebarRow
 
     const homeButtonsContent = [
-        {icon: ContentPasteIcon, text: 'Projects', id: 'Projects'},
-        {icon: CheckBoxIcon, text: 'Actions', id: 'Actions'},
+        {icon: ContentPasteIcon, text: 'Projects', id: 'Projects', handleClick: function() {navigate('/projects')}},
+        {icon: CheckBoxIcon, text: 'Actions', id: 'Actions', handleClick: function() {navigate('/actions')}},
         {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: toggleProjectModalHandleClick}
     ]
 

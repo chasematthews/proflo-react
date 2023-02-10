@@ -29,7 +29,7 @@ const App = () => {
     <AuthContextProvider>
       <BrowserRouter>
           <Routes>
-              <Route element={<Protected><Home projects={projects} setProjects={setProjects}/></Protected>} path='/' />
+              <Route element={<Protected><Home projects={projects} setProjects={setProjects}/></Protected>} path='/*' />
               {/* <Route element={<Protected><ProjectOne /></Protected>} path='/project-one' /> */}
               <Route element={<Login />} path='/login' />
               <Route element={<SignUp />} path='/signup' />
