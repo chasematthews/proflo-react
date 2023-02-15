@@ -3,7 +3,7 @@ import styles from '../../../styles/Project.module.css'
 import StreamTable from './StreamTable';
 import { getFunctions, httpsCallable } from 'firebase/functions'
 import { getAuth } from 'firebase/auth'
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { UserAuth } from '../../../contexts/AuthContext';
 import { updateDoc, doc, query, onSnapshot } from 'firebase/firestore';
 
@@ -13,12 +13,12 @@ const Drawing = ({toggleCommentModal, project}) => {
     const[streamNumbersList, setStreamNumbersList] = useState([]);
     const[displayTable, setDisplayTable] = useState([]);
     const[drawingURL, setDrawingURL] = useState();
-
-    console.log(drawingURL)
+    const[dataURL, setDataURL] = useState();
 
     const { userRef } = UserAuth();
 
-    const buttonUploadRef = useRef()
+    const pdfUploadRef = useRef();
+    const xlsxUploadRef = useRef();
 
     const PDFtoHTML = httpsCallable(getFunctions(), 'PDFtoHTML');
 
@@ -72,7 +72,7 @@ const Drawing = ({toggleCommentModal, project}) => {
         }
     }
 
-    const onMediaFileSelected = async(event) => {
+    const onPDFFileSelected = async(event) => {
         event.preventDefault();
         let file = event.target.files[0];
         const filePath = `${getAuth().currentUser.uid}/${file.name}`;
@@ -82,9 +82,24 @@ const Drawing = ({toggleCommentModal, project}) => {
         PDFtoHTML({ URL: publicImageUrl }).then(result => saveURL(result.data))
     }
 
-    const toggleUploadDialogue = (event) => {
+    const onXLSXFileSelected = async(event) => {
         event.preventDefault();
-        buttonUploadRef.current.click();
+        let file = event.target.files[0];
+        const filePath = `${getAuth().currentUser.uid}/${file.name}`;
+        const newImageRef = ref(getStorage(), filePath);
+        const fileSnapshot = await uploadBytesResumable(newImageRef, file);
+        const XLSXURL = await getDownloadURL(newImageRef);
+        saveXLSX(XLSXURL)
+    }
+
+    const toggleUploadDialoguePDF = (event) => {
+        event.preventDefault();
+        pdfUploadRef.current.click();
+    }
+
+    const toggleUploadDialogueXLSX = (event) => {
+        event.preventDefault();
+        xlsxUploadRef.current.click();
     }
 
     const saveURL = async(drawingURL) => {
@@ -98,7 +113,18 @@ const Drawing = ({toggleCommentModal, project}) => {
         }
     }
 
-    const loadURL = () => {
+    const saveXLSX = async(XLSXURL) => {
+        try {
+            await updateDoc(doc(userRef, 'projects', `${project.name}`), {
+                XLSXURL: XLSXURL,
+            });
+        }
+        catch(error) {
+            console.log('Error writing logo information to Firebase Database');
+        }
+    }
+
+    const loadDrawingURL = () => {
         const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
@@ -106,27 +132,36 @@ const Drawing = ({toggleCommentModal, project}) => {
         })
     }
 
+    const loadDataURL = () => {
+        const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
+
+        onSnapshot(recentMessagesQuery, (snapshot) => {
+            snapshot.data() && setDataURL((snapshot.data().XLSXURL));
+        })
+    }
+
     useEffect(() => {
-        if(drawingURL) {
+        if(drawingURL && dataURL) {
             fetchHtml()
         }
     }, [drawingURL])
 
     useEffect(() => {
-        if(drawingURL) {
+        if(drawingURL && dataURL) {
             getElements()
         }
     }, [htmlFileString, drawingURL])
 
     useEffect(() => {
-        loadURL();
+        loadDrawingURL();
+        loadDataURL();
     }, [])
     
 
     return (
         <div className={styles.main}>
             <h2>Process Flow Diagram</h2>
-            {drawingURL ? 
+            {drawingURL && dataURL ? 
                 <div className={styles.PFDWrapper}>
                     <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
                     {streamNumbersList.map((streamNumber, key) => {
@@ -137,13 +172,28 @@ const Drawing = ({toggleCommentModal, project}) => {
                             streamNumber = {streamNumber}
                             displayTable = {displayTable}
                             toggleCommentModal = {toggleCommentModal}
+                            dataURL = {dataURL}
                             />
                         )
                     })}
                 </div> :
-                <div>
-                    <button onClick={(event) => toggleUploadDialogue(event)}>Add a Logo</button>
-                    <input ref={buttonUploadRef} onChange={(event) => onMediaFileSelected(event)} type="file" />
+                <div className={styles.documentUploadBox}>
+                    <form className={styles.documentUploadForm}>
+                        <button className={styles.addItemBtn} onClick={(event) => toggleUploadDialoguePDF(event)}>
+                            <img 
+                                src={require('./../../../images/pdf-logo.png')}
+                                alt={'PDF Logo'}
+                                className={styles.addItemLogo}
+                            ></img>Add a Drawing</button>
+                        <input className={styles.addItemInput} ref={pdfUploadRef} onChange={(event) => onPDFFileSelected(event)} type="file" />
+                        <button className={styles.addItemBtn} onClick={(event) => toggleUploadDialogueXLSX(event)}>
+                            <img 
+                                src={require('./../../../images/xlsx-logo.png')}
+                                alt={'XLSX Logo'}
+                                className={styles.addItemLogo}
+                            ></img>Add Data</button>
+                        <input className={styles.addItemInput} ref={xlsxUploadRef} onChange={(event) => onXLSXFileSelected(event)} type="file" />
+                    </form>
                 </div>
             }
         </div>

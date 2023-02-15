@@ -5,7 +5,7 @@ import ProjectNavMain from "../components/Project/ProjectNavMain"
 import ProjectNavMinor from "../components/Project/ProjectNavMinor"
 import AddCommentModal from "../components/Project/PFD/AddCommentModal"
 import styles from '../styles/Project.module.css'
-import { getFirestore, collection, addDoc, query, onSnapshot } from 'firebase/firestore'
+import { collection, addDoc, query, onSnapshot } from 'firebase/firestore'
 import { UserAuth } from "../contexts/AuthContext"
 
 const ProjectOne = ({project}) => {

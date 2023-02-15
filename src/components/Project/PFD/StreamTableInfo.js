@@ -2,12 +2,12 @@ import Papa from 'papaparse'
 import React, { useState, useEffect } from 'react'
 import styles from './../../../styles/Project.module.css'
 
-const StreamTableInfo = ({ streamNumber }) => {
+const StreamTableInfo = ({ streamNumber, dataURL }) => {
 
     const [ MEBData, SetMEBData ] = useState()
 
     async function fetchCSV() {
-        SetMEBData((await Papa.parse(await (await fetch('./../resources/PFD-MEB-v5.csv')).text())).data)
+        SetMEBData((await Papa.parse(await (await fetch(`${dataURL}`)).text())).data)
     }
 
     useEffect(() => {        
