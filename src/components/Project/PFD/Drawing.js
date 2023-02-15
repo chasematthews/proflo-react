@@ -14,11 +14,15 @@ const Drawing = ({toggleCommentModal, project}) => {
     const[displayTable, setDisplayTable] = useState([]);
     const[drawingURL, setDrawingURL] = useState();
     const[dataURL, setDataURL] = useState();
+    const[IDRef, setIDRef] = useState();
+
+    console.log(IDRef)
 
     const { userRef } = UserAuth();
 
     const pdfUploadRef = useRef();
     const xlsxUploadRef = useRef();
+    const idRef = useRef();
 
     const PDFtoHTML = httpsCallable(getFunctions(), 'PDFtoHTML');
 
@@ -78,7 +82,7 @@ const Drawing = ({toggleCommentModal, project}) => {
         const filePath = `${getAuth().currentUser.uid}/${file.name}`;
         const newImageRef = ref(getStorage(), filePath);
         const fileSnapshot = await uploadBytesResumable(newImageRef, file);
-        const publicImageUrl = await getDownloadURL(newImageRef)
+        let publicImageUrl = await getDownloadURL(newImageRef)
         PDFtoHTML({ URL: publicImageUrl }).then(result => saveURL(result.data))
     }
 
@@ -124,6 +128,22 @@ const Drawing = ({toggleCommentModal, project}) => {
         }
     }
 
+    const addIDPattern = (event) => {
+        event.preventDefault();
+        saveIDPattern(idRef);
+    }
+
+    const saveIDPattern = async(idRef) => {
+        try {
+            await updateDoc(doc(userRef, 'projects', `${project.name}`), {
+                IDReference: idRef.current.value,
+            });
+        }
+        catch(error) {
+            console.log('Error writing company name to Firebase Database');
+        }
+    }
+
     const loadDrawingURL = () => {
         const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
 
@@ -137,6 +157,14 @@ const Drawing = ({toggleCommentModal, project}) => {
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setDataURL((snapshot.data().XLSXURL));
+        })
+    }
+
+    const loadIDPattern = () => {
+        const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
+
+        onSnapshot(recentMessagesQuery, (snapshot) => {
+            snapshot.data() && setIDRef((snapshot.data().IDReference));
         })
     }
 
@@ -155,6 +183,7 @@ const Drawing = ({toggleCommentModal, project}) => {
     useEffect(() => {
         loadDrawingURL();
         loadDataURL();
+        loadIDPattern();
     }, [])
     
 
@@ -193,6 +222,8 @@ const Drawing = ({toggleCommentModal, project}) => {
                                 className={styles.addItemLogo}
                             ></img>Add Data</button>
                         <input className={styles.addItemInput} ref={xlsxUploadRef} onChange={(event) => onXLSXFileSelected(event)} type="file" />
+                        <input ref={idRef} type="text" />
+                        <button onClick={event => addIDPattern(event)}>OK</button>
                     </form>
                 </div>
             }
