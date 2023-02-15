@@ -38,6 +38,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
         if (userRef) {
             saveLogo(publicImageUrl, fileSnapshot)
         }
+        console.log(publicImageUrl)
     }
 
     const addCompanyName = (event) => {

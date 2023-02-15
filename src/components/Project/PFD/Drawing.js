@@ -9,7 +9,7 @@ const Drawing = ({toggleCommentModal}) => {
     const[displayTable, setDisplayTable] = useState([])
 
     async function fetchHtml() {
-        setHtmlFileString(await ( await fetch('./../resources/drawing.html')).text());
+        setHtmlFileString(await ( await fetch("https://api.apify.com/v2/key-value-stores/gelYPmckVpxXPauxC/records/OUTPUT")).text());
     }
 
     const getElements = () => {

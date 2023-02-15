@@ -2,7 +2,6 @@ import React from 'react';
 import styles from '../../../styles/Project.module.css'
 
 const Comments = ({comments}) => {
-    console.log(comments)
     return (
         <div className={styles.main}>
             <h2>Comments Register</h2>
