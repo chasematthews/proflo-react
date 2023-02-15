@@ -83,7 +83,7 @@ const ProjectOne = ({project}) => {
             />
             <ProjectNavMain project={project}/>
             <ProjectNavMinor />
-            <ProjectMain toggleCommentModal={toggleCommentModal} comments={comments}/>
+            <ProjectMain toggleCommentModal={toggleCommentModal} comments={comments} project={project}/>
             <AddCommentModal 
                 handleCommentChange = {handleCommentChange}
                 comment = {comment}

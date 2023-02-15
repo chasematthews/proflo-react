@@ -4,7 +4,7 @@ import HomeHeader from '../components/Home/HomeHeader';
 import HomeNav from '../components/Home/HomeNav';
 import HomeMain from '../components/Home/HomeMain';
 import Modal from '../components/Home/Project/AddProjectModal'
-import { getFirestore, collection, addDoc } from 'firebase/firestore'
+import { setDoc, doc } from 'firebase/firestore'
 import { UserAuth } from '../contexts/AuthContext';
 
 const Home = ({ projects, setProjects}) => {
@@ -55,7 +55,7 @@ const Home = ({ projects, setProjects}) => {
 
     const saveProject = async(project) => {
         try {
-            await addDoc(collection(userRef, 'projects'), {
+            await setDoc(doc(userRef, 'projects', `${project.name}`), {
                 name: project.name,
                 client: project.client,
                 description: project.description,
