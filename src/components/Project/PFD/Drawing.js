@@ -14,9 +14,7 @@ const Drawing = ({toggleCommentModal, project}) => {
     const[displayTable, setDisplayTable] = useState([]);
     const[drawingURL, setDrawingURL] = useState();
     const[dataURL, setDataURL] = useState();
-    const[IDRef, setIDRef] = useState();
-
-    console.log(IDRef)
+    const[IDPattern, setIDPattern] = useState();
 
     const { userRef } = UserAuth();
 
@@ -38,8 +36,26 @@ const Drawing = ({toggleCommentModal, project}) => {
     }
 
     const streamNumberStyling = (identifiers) => {
+
+        let regexString = "[";
+
+        for (let i = 0; i < IDPattern.length; i++) {
+            let char = IDPattern.charAt(i);
+            if (char === "^") {
+                regexString += "\\d"
+            } else if (char === "*") {
+                regexString += "\\w"
+            } else {
+                regexString += char
+            }
+        }
+
+        regexString += `]{${IDPattern.length}}$`
+
+        const regex = new RegExp(regexString)
+
         identifiers.forEach(identifier => {
-            if (identifier.textContent.substring(0,2) === "AS") {
+            if (identifier.textContent.match(regex)) {
                 identifier.onmouseover = function(){
                     identifier.style.cursor = 'pointer';
                     identifier.style.scale = '2'
@@ -60,9 +76,27 @@ const Drawing = ({toggleCommentModal, project}) => {
     }
     
     const findStreamNumbers = (identifiers) => {
+
+        let regexString = "[";
+
+        for (let i = 0; i < IDPattern.length; i++) {
+            let char = IDPattern.charAt(i);
+            if (char === "^") {
+                regexString += "\\d"
+            } else if (char === "*") {
+                regexString += "\\w"
+            } else {
+                regexString += char
+            }
+        }
+
+        regexString += `]{${IDPattern.length}}$`
+
+        const regex = new RegExp(regexString)
+
         let streamNumbers = [];
         identifiers.forEach(identifier => {
-            if (identifier.textContent.substring(0,2) === "AS") {
+            if (regex.test(identifier.textContent)) {
                 streamNumbers.push((identifier));
             }        
         });
@@ -164,7 +198,7 @@ const Drawing = ({toggleCommentModal, project}) => {
         const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
-            snapshot.data() && setIDRef((snapshot.data().IDReference));
+            snapshot.data() && setIDPattern((snapshot.data().IDReference));
         })
     }
 
