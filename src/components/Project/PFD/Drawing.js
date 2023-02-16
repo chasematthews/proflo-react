@@ -104,21 +104,10 @@ const Drawing = ({toggleCommentModal, project}) => {
         let streamNumbers = [];
         identifiers.forEach(identifier => {
             if (identifier.textContent.match(regex) && identifier.className[0] === "t") {
-                let indexStart = identifier.textContent.match(regex).index;
-                let indexEnd = indexStart + IDPattern.length
-                let string = identifier.textContent
-                let pre = string.substring(0, indexStart)
-                let phrase = string.substring(indexStart, indexEnd)
-                let post = string.substring(indexEnd, string.length)
-                string = pre + `<span>${phrase}</span>` + [post]
-                identifier.innerHTML = string;
-
-                const span = identifier.querySelector("span")
-
-                if (regex.test(span.textContent)) {
-                    streamNumbers.push((span));
-                }
-            }            
+                if (regex.test(identifier.textContent)) {
+                    streamNumbers.push((identifier));
+                }    
+            }       
         });
         return streamNumbers;
     }

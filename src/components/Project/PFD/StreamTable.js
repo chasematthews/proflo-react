@@ -6,11 +6,11 @@ import styles from './../../../styles/Project.module.css'
 
 const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommentModal, dataURL }) => {
 
+    const span = streamNumber.querySelector("span")
     console.log(streamNumber)
-    console.log(displayTable)
 
     let position = streamNumber.getBoundingClientRect()
-    let showTable = displayTable.includes(streamNumber.textContent)
+    let showTable = displayTable.includes(span.textContent)
 
     const [positionLeft, setPositionLeft] = useState(position.left + position.width);
     const [positionTop, setPositionTop] = useState(position.top + position.height);
@@ -64,9 +64,9 @@ const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommen
     return (
         <div style={styling}>
             <div onMouseDown = {dragMouseDown} className={styles.streamInfoHeader}>
-                <CloseIcon id={streamNumber.textContent} onClick={exitStreamTable} className={styles.streamTableExitBtn}/>
+                <CloseIcon id={span.textContent} onClick={exitStreamTable} className={styles.streamTableExitBtn}/>
             </div>
-            <StreamTableInfo streamNumber = {streamNumber} dataURL={dataURL}/>
+            <StreamTableInfo streamNumber = {span} dataURL={dataURL}/>
             <button className={styles.addCommentButton} onClick={toggleCommentModal}>Add Comment</button>
         </div>
     )
