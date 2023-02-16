@@ -6,6 +6,9 @@ import styles from './../../../styles/Project.module.css'
 
 const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommentModal, dataURL }) => {
 
+    console.log(streamNumber)
+    console.log(displayTable)
+
     let position = streamNumber.getBoundingClientRect()
     let showTable = displayTable.includes(streamNumber.textContent)
 
