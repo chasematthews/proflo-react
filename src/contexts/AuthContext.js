@@ -14,7 +14,9 @@ import {
 import {
     setDoc,
     getFirestore,
-    doc
+    doc,
+    updateDoc,
+    getDoc
 } from 'firebase/firestore'
 
 const AuthContext = createContext()
@@ -23,23 +25,33 @@ export const AuthContextProvider = ({children}) => {
 
     const [user, setUser] = useState()
     const [userRef, setUserRef] = useState()
+    const [companyRef, setCompanyRef] = useState()
 
     const googleSignIn = async() => {
         const provider = new GoogleAuthProvider();
         await signInWithPopup(getAuth(), provider)
-        .then((userCredential) => saveUser(userCredential))
+        .then(userCredential => assignUserCompany(userCredential))
     };
+
+    const assignUserCompany = async(userCredential) => {
+        const userSnap = await getDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`));
+        if (userSnap.data() === undefined) {
+            saveUser(userCredential)
+        } if (userSnap.data() === undefined) {
+            assignCompany(userCredential)
+        }
+    }
 
     const MSSignIn = async() => {
         const provider = new OAuthProvider('microsoft.com');
         await signInWithPopup(getAuth(), provider)
-        .then((userCredential) => saveUser(userCredential))
+        .then(userCredential => assignUserCompany(userCredential))
     };
 
     const signUp = (email, password, firstName, lastName) => {
         createUserWithEmailAndPassword(getAuth(), email, password)
         .then((userCredential) => {
-            saveUser(userCredential)
+            assignUserCompany(userCredential)
             const user = userCredential.user;
             const username = firstName + ' ' + lastName;
             updateProfile(user, {
@@ -49,14 +61,24 @@ export const AuthContextProvider = ({children}) => {
     };
 
     const saveUser = async(userCredential) => {
-        try {
-            await setDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`), {
-                name: userCredential.user.displayName
-            });
-        }
-        catch(error) {
-            console.log('Error writing new user to Firebase Database');
-        }
+        await setDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`), {
+            name: userCredential.user.displayName
+        })
+    }
+
+    const assignCompany = async(userCredential) => {
+        const companyUID = makeid(30);
+        await updateDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`), {
+            company: companyUID
+        });
+        await setDoc(doc(getFirestore(), 'companies', `${companyUID}`), {
+            adminUID: userCredential.user.uid,
+            adminName: userCredential.user.displayName
+        })
+        const companyDB = await doc(getFirestore(), 'companies', `${companyUID}`);
+        setDoc(doc(companyDB, 'users', `${userCredential.user.uid}`), {
+            name: userCredential.user.displayName
+        })
     }
 
     const emailSignIn = (email, password) => {
@@ -71,12 +93,25 @@ export const AuthContextProvider = ({children}) => {
         return signOut(getAuth())
     }
 
+    const makeid = (length) => {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            counter += 1;
+        }
+        return result
+    }
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
             setUser(currentUser)
         });
         onAuthStateChanged(getAuth(), async(currentUser) => {
             await (setUserRef(doc(getFirestore(), 'users', `${currentUser.uid}`)))
+            setCompanyRef(doc(getFirestore(), 'companies', `${(await getDoc(doc(getFirestore(), 'users', `${currentUser.uid}`))).data().company}`))
         })
         return () => {
             unsubscribe();
@@ -84,7 +119,7 @@ export const AuthContextProvider = ({children}) => {
     }, [])
 
     return (
-        <AuthContext.Provider value = {{ googleSignIn, MSSignIn, signUp, emailSignIn, logOut, resetPassword, userRef, user }}>
+        <AuthContext.Provider value = {{ googleSignIn, MSSignIn, signUp, emailSignIn, logOut, resetPassword, userRef, companyRef, user }}>
             {children}
         </AuthContext.Provider>
     )

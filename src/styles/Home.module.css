@@ -277,3 +277,20 @@ hr {
     filter: brightness(90%);
     cursor: pointer;
 }
+
+.addProjectInput {
+    border-radius: var(--border-radius-xs);
+    padding: var(--spacing-xxs);
+}
+
+.addProjectButton {
+    border-radius: var(--border-radius-xs);
+    padding: var(--spacing-xxs);
+    background-color: var(--light-green);
+    font-weight: 600;
+}
+
+.addProjectButton:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}

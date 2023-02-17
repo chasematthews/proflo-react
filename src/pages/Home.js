@@ -25,6 +25,7 @@ const Home = ({ projects, setProjects}) => {
     const headerStyle = styles.header
 
     const [projectModal, setProjectModal] = useState(false);
+    const [company, setCompany] = useState();
 
     //Define Methods
     const toggleProjectModal = () => {

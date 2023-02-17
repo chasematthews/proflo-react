@@ -17,14 +17,16 @@ const Modal = ({modal, toggleModal, addProject, project, onChange}) => {
                                 name='name'
                                 value={project.name}
                                 onChange={(event) => onChange(event)}
+                                className={styles.addProjectInput}
                             />
                             <h3>Project Description</h3>
                             <textarea
-                                cols='40'
+                                cols='60'
                                 rows='5'
                                 name='description'
                                 value={project.description}
                                 onChange={(event) => onChange(event)}
+                                className={styles.addProjectInput}
                             />
                             <h3>Client</h3>
                             <input
@@ -32,6 +34,7 @@ const Modal = ({modal, toggleModal, addProject, project, onChange}) => {
                                 name='client'
                                 value={project.client}
                                 onChange={(event) => onChange(event)}
+                                className={styles.addProjectInput}
                             />
                             <h3>Capacity</h3>
                             <input
@@ -39,6 +42,7 @@ const Modal = ({modal, toggleModal, addProject, project, onChange}) => {
                                 name='capacity'
                                 value={project.capacity}
                                 onChange={(event) => onChange(event)}
+                                className={styles.addProjectInput}
                             />
                             <h3>Raw Material</h3>
                             <input
@@ -46,6 +50,7 @@ const Modal = ({modal, toggleModal, addProject, project, onChange}) => {
                                 name='rawMaterial'
                                 value={project.rawMaterial}
                                 onChange={(event) => onChange(event)}
+                                className={styles.addProjectInput}
                             />
                             <h3>Product</h3>
                             <input
@@ -53,6 +58,7 @@ const Modal = ({modal, toggleModal, addProject, project, onChange}) => {
                                 name='product'
                                 value={project.product}
                                 onChange={(event) => onChange(event)}
+                                className={styles.addProjectInput}
                             />
                             <h3>Level of Engineering</h3>
                             <input
@@ -60,6 +66,7 @@ const Modal = ({modal, toggleModal, addProject, project, onChange}) => {
                                 name='projectStage'
                                 value={project.projectStage}
                                 onChange={(event) => onChange(event)}
+                                className={styles.addProjectInput}
                             />
                             <h3>Team</h3>
                             <input
@@ -67,9 +74,10 @@ const Modal = ({modal, toggleModal, addProject, project, onChange}) => {
                                 name='team'
                                 value={project.team}
                                 onChange={(event) => onChange(event)}
+                                className={styles.addProjectInput}
                             />
                             <button 
-                                className={styles.newProjectBtn}
+                                className={styles.addProjectButton}
                                 onClick={(event) => {
                                     addProject(event);
                                 }}
