@@ -27,6 +27,8 @@ export const AuthContextProvider = ({children}) => {
     const [userRef, setUserRef] = useState()
     const [companyRef, setCompanyRef] = useState()
 
+    console.log(companyRef)
+
     const googleSignIn = async() => {
         const provider = new GoogleAuthProvider();
         await signInWithPopup(getAuth(), provider)
@@ -107,14 +109,15 @@ export const AuthContextProvider = ({children}) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
-            setUser(currentUser)
+            setUser(currentUser);
         });
         onAuthStateChanged(getAuth(), async(currentUser) => {
+            console.log('hello')
             await (setUserRef(doc(getFirestore(), 'users', `${currentUser.uid}`)))
             setCompanyRef(doc(getFirestore(), 'companies', `${(await getDoc(doc(getFirestore(), 'users', `${currentUser.uid}`))).data().company}`))
         })
         return () => {
-            unsubscribe();
+            unsubscribe()
         }
     }, [])
 

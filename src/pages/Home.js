@@ -9,6 +9,10 @@ import { UserAuth } from '../contexts/AuthContext';
 
 const Home = ({ projects, setProjects}) => {
     const { userRef } = UserAuth();
+    const { companyRef } = UserAuth();
+    // const { user } = UserAuth();
+
+    // console.log(user)
 
     //Define State Variables
     const [project, setProject] = useState({
@@ -25,7 +29,6 @@ const Home = ({ projects, setProjects}) => {
     const headerStyle = styles.header
 
     const [projectModal, setProjectModal] = useState(false);
-    const [company, setCompany] = useState();
 
     //Define Methods
     const toggleProjectModal = () => {
@@ -39,7 +42,7 @@ const Home = ({ projects, setProjects}) => {
         setProjects(
             projects.concat(project)
         )
-        if (userRef) {
+        if (companyRef) {
             saveProject(project)
         }
     }
@@ -56,7 +59,7 @@ const Home = ({ projects, setProjects}) => {
 
     const saveProject = async(project) => {
         try {
-            await setDoc(doc(userRef, 'projects', `${project.name}`), {
+            await setDoc(doc(companyRef, 'projects', `${project.name}`), {
                 name: project.name,
                 client: project.client,
                 description: project.description,

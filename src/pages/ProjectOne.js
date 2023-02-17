@@ -18,6 +18,7 @@ const ProjectOne = ({project}) => {
     });
 
     const {userRef} = UserAuth();
+    const { companyRef } = UserAuth();
 
     const [comments, setComments] = useState([]);
     const [commentModal, setCommentModal] = useState(false);
@@ -50,7 +51,7 @@ const ProjectOne = ({project}) => {
 
     const saveComment = async(comment) => {
         try {
-            await addDoc(collection(userRef, 'comments'), {
+            await addDoc(collection(companyRef, 'comments'), {
                 comment: comment.comment,
                 assignedTo: comment.assignedTo,
                 dueDate: comment.dueDate,
@@ -63,7 +64,7 @@ const ProjectOne = ({project}) => {
     }
 
     const loadComments = () => {
-        const recentMessagesQuery = query(collection(userRef, 'comments'))
+        const recentMessagesQuery = query(collection(companyRef, 'comments'))
     
         onSnapshot(recentMessagesQuery, (snapshot) => {
             setComments(snapshot.docs.map(doc => doc.data()));

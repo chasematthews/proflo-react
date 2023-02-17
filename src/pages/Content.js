@@ -9,12 +9,15 @@ import { UserAuth } from '../contexts/AuthContext';
 const Content = () => {
 
     const {userRef} = UserAuth();
+    const {companyRef} = UserAuth();
+
+    console.log(companyRef)
 
     const [projects, setProjects] = useState([]);
   
     const loadProjects = () => {
-      if (userRef) {
-        const recentMessagesQuery = query(collection(userRef, 'projects'))
+      if (companyRef) {
+        const recentMessagesQuery = query(collection(companyRef, 'projects'))
         onSnapshot(recentMessagesQuery, (snapshot) => {
           setProjects(snapshot.docs.map(doc => doc.data()));
         })
@@ -22,8 +25,10 @@ const Content = () => {
     }
   
     useEffect(() => {
-      loadProjects();
-    }, [])
+      if (companyRef) {
+        loadProjects();
+      }
+    }, [companyRef])
   
     return (
     <Routes>

@@ -7,7 +7,6 @@ import styles from './../../../styles/Project.module.css'
 const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommentModal, dataURL }) => {
 
     const span = streamNumber.querySelector("span")
-    console.log(streamNumber)
 
     let position = streamNumber.getBoundingClientRect()
     let showTable = displayTable.includes(span.textContent)

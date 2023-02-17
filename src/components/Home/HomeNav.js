@@ -3,7 +3,7 @@ import styles from '../../styles/Home.module.css'
 import SidebarRow from './SidebarRow';
 import { getAuth } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { setDoc, doc, query, onSnapshot } from 'firebase/firestore';
+import { setDoc, doc, query, onSnapshot, getDoc, deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../../contexts/AuthContext';
 
@@ -15,6 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 const HomeNav = ({toggleProjectModalHandleClick}) => {
 
     const { userRef } = UserAuth();
+    const { companyRef } = UserAuth();
 
     const navigate = useNavigate()
 
@@ -35,10 +36,9 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
         const newImageRef = ref(getStorage(), filePath);
         const fileSnapshot = await uploadBytesResumable(newImageRef, file);
         const publicImageUrl = await getDownloadURL(newImageRef)
-        if (userRef) {
+        if (companyRef) {
             saveLogo(publicImageUrl, fileSnapshot)
         }
-        console.log(publicImageUrl)
     }
 
     const addCompanyName = (event) => {
@@ -47,30 +47,20 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     }
 
     const saveLogo = async(publicImageUrl, fileSnapshot) => {
-        try {
-            await setDoc(doc(userRef, 'general', 'logo'), {
-                imageUrl: publicImageUrl,
-                storageUri: fileSnapshot.metadata.fullPath
-            });
-        }
-        catch(error) {
-            console.log('Error writing logo information to Firebase Database');
-        }
+        await setDoc(doc(companyRef, 'general', 'logo'), {
+            imageUrl: publicImageUrl,
+            storageUri: fileSnapshot.metadata.fullPath
+        });
     }
 
     const saveCompanyName = async(companyNameRef) => {
-        try {
-            await setDoc(doc(userRef, 'general', 'companyName'), {
-                name: companyNameRef.current.value,
-            });
-        }
-        catch(error) {
-            console.log('Error writing company name to Firebase Database');
-        }
+        await setDoc(doc(companyRef, 'general', 'companyName'), {
+            name: companyNameRef.current.value,
+        });
     }
 
     const loadLogo = () => {
-        const recentMessagesQuery = query(doc(userRef, 'general', 'logo'))
+        const recentMessagesQuery = query(doc(companyRef, 'general', 'logo'))
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setCompanyLogo((snapshot.data().imageUrl));
@@ -78,7 +68,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     }
 
     const loadCompanyName = () => {
-        const recentMessagesQuery = query(doc(userRef, 'general', 'companyName'))
+        const recentMessagesQuery = query(doc(companyRef, 'general', 'companyName'))
     
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setCompanyName((snapshot.data().name));
@@ -86,9 +76,11 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     }
     
     useEffect(() => {
-        loadLogo();
-        loadCompanyName();
-    }, [])
+        if (companyRef) {
+            loadLogo();
+            loadCompanyName();
+        }
+    }, [companyRef])
 
     const sidebarStyle = styles.sidebarRow
 
