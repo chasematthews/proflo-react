@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const {ApifyClient} = require("apify-client");
+const { getAuth, sendSignInLinkToEmail } = require("firebase/auth");
 
 exports.PDFtoHTML = functions.https.onCall((data, context) => {
   const URL = data.URL

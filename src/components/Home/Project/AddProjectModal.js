@@ -19,7 +19,7 @@ const Modal = ({modal, toggleModal, addProject, project, onChange}) => {
                                 onChange={(event) => onChange(event)}
                                 className={styles.addProjectInput}
                             />
-                            <h3>Project Description</h3>
+                            {/* <h3>Project Description</h3>
                             <textarea
                                 cols='60'
                                 rows='5'
@@ -75,7 +75,7 @@ const Modal = ({modal, toggleModal, addProject, project, onChange}) => {
                                 value={project.team}
                                 onChange={(event) => onChange(event)}
                                 className={styles.addProjectInput}
-                            />
+                            /> */}
                             <button 
                                 className={styles.addProjectButton}
                                 onClick={(event) => {

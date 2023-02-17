@@ -212,3 +212,12 @@
 .addItemInput {
     display: none;
 }
+
+.projectNameWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: large;
+    font-weight: 500;
+    padding: var(--spacing-s);
+}

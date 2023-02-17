@@ -85,8 +85,8 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     const sidebarStyle = styles.sidebarRow
 
     const homeButtonsContent = [
-        {icon: ContentPasteIcon, text: 'Projects', id: 'Projects', handleClick: function() {navigate('/projects')}},
-        {icon: CheckBoxIcon, text: 'Actions', id: 'Actions', handleClick: function() {navigate('/actions')}},
+        // {icon: ContentPasteIcon, text: 'Projects', id: 'Projects', handleClick: function() {navigate('/projects')}},
+        // {icon: CheckBoxIcon, text: 'Actions', id: 'Actions', handleClick: function() {navigate('/actions')}},
         {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: toggleProjectModalHandleClick}
     ]
 

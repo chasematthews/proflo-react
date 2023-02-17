@@ -17,7 +17,7 @@ const ProjectOne = ({project}) => {
         severity: '',
     });
 
-    const {userRef} = UserAuth();
+    const { userRef } = UserAuth();
     const { companyRef } = UserAuth();
 
     const [comments, setComments] = useState([]);

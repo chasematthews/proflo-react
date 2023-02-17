@@ -16,11 +16,11 @@ const ProjectCard = ({project}) => {
                 <img src={require('./../../../images/ProjectImage.jpg')} className={styles.projectImage} alt='Project'/>
             </div>
             <h3>{project.name}</h3>
-            <div className={styles.tagsWrapper}>
+            {/* <div className={styles.tagsWrapper}>
                 <h4>{project.client}</h4>
                 <h4>{project.rawMaterial}</h4>
                 <h4>{project.product}</h4>
-            </div>
+            </div> */}
         </div>
     )
 }
