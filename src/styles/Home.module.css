@@ -294,3 +294,8 @@ hr {
     cursor: pointer;
     filter: brightness(90%);
 }
+
+.projectCard:hover {
+    cursor: pointer;
+    filter: brightness(90%); 
+}

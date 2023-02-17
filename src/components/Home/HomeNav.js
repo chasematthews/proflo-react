@@ -11,11 +11,12 @@ import { UserAuth } from '../../contexts/AuthContext';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import AddIcon from '@mui/icons-material/Add';
+import GroupsIcon from '@mui/icons-material/Groups';
 
-const HomeNav = ({toggleProjectModalHandleClick}) => {
+const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick}) => {
 
     const { userRef } = UserAuth();
-    const { companyRef } = UserAuth();
+    // const { companyRef } = UserAuth();
 
     const navigate = useNavigate()
 
@@ -36,7 +37,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
         const newImageRef = ref(getStorage(), filePath);
         const fileSnapshot = await uploadBytesResumable(newImageRef, file);
         const publicImageUrl = await getDownloadURL(newImageRef)
-        if (companyRef) {
+        if (userRef) {
             saveLogo(publicImageUrl, fileSnapshot)
         }
     }
@@ -47,20 +48,20 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     }
 
     const saveLogo = async(publicImageUrl, fileSnapshot) => {
-        await setDoc(doc(companyRef, 'general', 'logo'), {
+        await setDoc(doc(userRef, 'general', 'logo'), {
             imageUrl: publicImageUrl,
             storageUri: fileSnapshot.metadata.fullPath
         });
     }
 
     const saveCompanyName = async(companyNameRef) => {
-        await setDoc(doc(companyRef, 'general', 'companyName'), {
+        await setDoc(doc(userRef, 'general', 'companyName'), {
             name: companyNameRef.current.value,
         });
     }
 
     const loadLogo = () => {
-        const recentMessagesQuery = query(doc(companyRef, 'general', 'logo'))
+        const recentMessagesQuery = query(doc(userRef, 'general', 'logo'))
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setCompanyLogo((snapshot.data().imageUrl));
@@ -68,7 +69,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     }
 
     const loadCompanyName = () => {
-        const recentMessagesQuery = query(doc(companyRef, 'general', 'companyName'))
+        const recentMessagesQuery = query(doc(userRef, 'general', 'companyName'))
     
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setCompanyName((snapshot.data().name));
@@ -76,18 +77,17 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
     }
     
     useEffect(() => {
-        if (companyRef) {
-            loadLogo();
-            loadCompanyName();
-        }
-    }, [companyRef])
+        loadLogo();
+        loadCompanyName();
+    }, [])
 
     const sidebarStyle = styles.sidebarRow
 
     const homeButtonsContent = [
         {icon: ContentPasteIcon, text: 'Projects', id: 'Projects', handleClick: function() {navigate('/projects')}},
         {icon: CheckBoxIcon, text: 'Actions', id: 'Actions', handleClick: function() {navigate('/actions')}},
-        {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: toggleProjectModalHandleClick}
+        {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: toggleProjectModalHandleClick},
+        {icon: GroupsIcon, text: 'New Group', id: 'New Group', handleClick: toggleTeamModalHandleClick}
     ]
 
     return (
@@ -124,6 +124,7 @@ const HomeNav = ({toggleProjectModalHandleClick}) => {
                         style={sidebarStyle}
                         />
                 })}
+                <hr></hr>
             </div>
         </div>
     )

@@ -3,13 +3,14 @@ import styles from '../styles/Home.module.css';
 import HomeHeader from '../components/Home/HomeHeader';
 import HomeNav from '../components/Home/HomeNav';
 import HomeMain from '../components/Home/HomeMain';
-import Modal from '../components/Home/Project/AddProjectModal'
-import { setDoc, doc } from 'firebase/firestore'
+import AddProjectModal from '../components/Home/Project/AddProjectModal';
+import AddTeamModal from '../components/Home/AddTeamModal';
+import { setDoc, doc } from 'firebase/firestore';
 import { UserAuth } from '../contexts/AuthContext';
 
 const Home = ({ projects, setProjects}) => {
     const { userRef } = UserAuth();
-    const { companyRef } = UserAuth();
+    // const { companyRef } = UserAuth();
     // const { user } = UserAuth();
 
     // console.log(user)
@@ -29,10 +30,15 @@ const Home = ({ projects, setProjects}) => {
     const headerStyle = styles.header
 
     const [projectModal, setProjectModal] = useState(false);
+    const [teamModal, setTeamModal] = useState(false);
 
     //Define Methods
     const toggleProjectModal = () => {
         setProjectModal(!projectModal)
+    }
+
+    const toggleTeamModal = () => {
+        setTeamModal(!teamModal)
     }
 
     const addProject = (event) => {
@@ -42,7 +48,7 @@ const Home = ({ projects, setProjects}) => {
         setProjects(
             projects.concat(project)
         )
-        if (companyRef) {
+        if (userRef) {
             saveProject(project)
         }
     }
@@ -59,7 +65,7 @@ const Home = ({ projects, setProjects}) => {
 
     const saveProject = async(project) => {
         try {
-            await setDoc(doc(companyRef, 'projects', `${project.name}`), {
+            await setDoc(doc(userRef, 'projects', `${project.name}`), {
                 name: project.name,
                 client: project.client,
                 description: project.description,
@@ -77,18 +83,23 @@ const Home = ({ projects, setProjects}) => {
 
     return (
         <div className={styles.container}>
-            <Modal 
+            <AddProjectModal 
                 modal={projectModal} 
                 toggleModal={toggleProjectModal} 
                 addProject={addProject}
                 project={project}
                 onChange={handleProjectChange}
             />
+            <AddTeamModal
+                modal={teamModal} 
+                toggleModal={toggleTeamModal} 
+            />
             <HomeHeader 
                 headerStyle = {headerStyle}
             />
             <HomeNav
                 toggleProjectModalHandleClick = {toggleProjectModal}
+                toggleTeamModalHandleClick = {toggleTeamModal}
             />
             <HomeMain 
                 projects = {projects}

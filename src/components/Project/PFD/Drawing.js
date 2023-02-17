@@ -17,7 +17,7 @@ const Drawing = ({toggleCommentModal, project}) => {
     const[IDPattern, setIDPattern] = useState();
 
     const { userRef } = UserAuth();
-    const { companyRef } = UserAuth();
+    // const { companyRef } = UserAuth();
 
     const pdfUploadRef = useRef();
     const xlsxUploadRef = useRef();
@@ -152,7 +152,7 @@ const Drawing = ({toggleCommentModal, project}) => {
 
     const saveURL = async(drawingURL) => {
         try {
-            await updateDoc(doc(companyRef, 'projects', `${project.name}`), {
+            await updateDoc(doc(userRef, 'projects', `${project.name}`), {
                 drawingURL: drawingURL,
             });
         }
@@ -163,7 +163,7 @@ const Drawing = ({toggleCommentModal, project}) => {
 
     const saveXLSX = async(XLSXURL) => {
         try {
-            await updateDoc(doc(companyRef, 'projects', `${project.name}`), {
+            await updateDoc(doc(userRef, 'projects', `${project.name}`), {
                 XLSXURL: XLSXURL,
             });
         }
@@ -179,7 +179,7 @@ const Drawing = ({toggleCommentModal, project}) => {
 
     const saveIDPattern = async(idRef) => {
         try {
-            await updateDoc(doc(companyRef, 'projects', `${project.name}`), {
+            await updateDoc(doc(userRef, 'projects', `${project.name}`), {
                 IDReference: idRef.current.value,
             });
         }
@@ -189,7 +189,7 @@ const Drawing = ({toggleCommentModal, project}) => {
     }
 
     const loadDrawingURL = () => {
-        const recentMessagesQuery = query(doc(companyRef, 'projects', `${project.name}`))
+        const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setDrawingURL((snapshot.data().drawingURL));
@@ -197,7 +197,7 @@ const Drawing = ({toggleCommentModal, project}) => {
     }
 
     const loadDataURL = () => {
-        const recentMessagesQuery = query(doc(companyRef, 'projects', `${project.name}`))
+        const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setDataURL((snapshot.data().XLSXURL));
@@ -205,7 +205,7 @@ const Drawing = ({toggleCommentModal, project}) => {
     }
 
     const loadIDPattern = () => {
-        const recentMessagesQuery = query(doc(companyRef, 'projects', `${project.name}`))
+        const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setIDPattern((snapshot.data().IDReference));

@@ -39,8 +39,8 @@ export const AuthContextProvider = ({children}) => {
         const userSnap = await getDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`));
         if (userSnap.data() === undefined) {
             saveUser(userCredential)
-        } if (userSnap.data() === undefined) {
-            assignCompany(userCredential)
+        // } if (userSnap.data() === undefined) {
+        //     assignCompany(userCredential)
         }
     }
 
@@ -68,20 +68,20 @@ export const AuthContextProvider = ({children}) => {
         })
     }
 
-    const assignCompany = async(userCredential) => {
-        const companyUID = makeid(30);
-        await updateDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`), {
-            company: companyUID
-        });
-        await setDoc(doc(getFirestore(), 'companies', `${companyUID}`), {
-            adminUID: userCredential.user.uid,
-            adminName: userCredential.user.displayName
-        })
-        const companyDB = await doc(getFirestore(), 'companies', `${companyUID}`);
-        setDoc(doc(companyDB, 'users', `${userCredential.user.uid}`), {
-            name: userCredential.user.displayName
-        })
-    }
+    // const assignCompany = async(userCredential) => {
+    //     const companyUID = makeid(30);
+    //     await updateDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`), {
+    //         company: companyUID
+    //     });
+    //     await setDoc(doc(getFirestore(), 'companies', `${companyUID}`), {
+    //         adminUID: userCredential.user.uid,
+    //         adminName: userCredential.user.displayName
+    //     })
+    //     const companyDB = await doc(getFirestore(), 'companies', `${companyUID}`);
+    //     setDoc(doc(companyDB, 'users', `${userCredential.user.uid}`), {
+    //         name: userCredential.user.displayName
+    //     })
+    // }
 
     const emailSignIn = (email, password) => {
         return signInWithEmailAndPassword(getAuth(), email, password);
@@ -95,26 +95,24 @@ export const AuthContextProvider = ({children}) => {
         return signOut(getAuth())
     }
 
-    const makeid = (length) => {
-        let result = '';
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-        const charactersLength = characters.length;
-        let counter = 0;
-        while (counter < length) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-            counter += 1;
-        }
-        return result
-    }
+    // const makeid = (length) => {
+    //     let result = '';
+    //     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    //     const charactersLength = characters.length;
+    //     let counter = 0;
+    //     while (counter < length) {
+    //         result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    //         counter += 1;
+    //     }
+    //     return result
+    // }
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
             setUser(currentUser);
         });
         onAuthStateChanged(getAuth(), async(currentUser) => {
-            console.log('hello')
             await (setUserRef(doc(getFirestore(), 'users', `${currentUser.uid}`)))
-            setCompanyRef(doc(getFirestore(), 'companies', `${(await getDoc(doc(getFirestore(), 'users', `${currentUser.uid}`))).data().company}`))
         })
         return () => {
             unsubscribe()
