@@ -1,29 +1,33 @@
 import React, {useState, useRef} from 'react';
-import styles from '../styles/Login.module.css'
+import styles from '@styles/pages/AuthPages/Login.module.css';
 import { Link } from 'react-router-dom';
-import { UserAuth } from '../contexts/AuthContext'
+import { UserAuth } from '@contexts/AuthContext';
 
 const ForgotPassword = () => {
+    //declare refs
     const emailRef = useRef();
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false)
-    const [message, setMessage] = useState('')
 
+    //declare state variables
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
+
+    //import the resetPassword function from the AuthContext
     const { resetPassword } = UserAuth();
 
+    //Execute the resetPassword function
     const handleResetPassword = async(event) => {
-        event.preventDefault()
-
+        event.preventDefault();
         try {
-            setMessage('')
-            setError('')
-            setLoading(true)
-            await resetPassword(emailRef.current.value)
-            setMessage('Check your inbox for further instructions')
+            setMessage('');
+            setError('');
+            setLoading(true);
+            await resetPassword(emailRef.current.value);
+            setMessage('Check your inbox for further instructions');
         } catch {
-            setError('Failed to reset password')
+            setError('Failed to reset password');
         }
-        setLoading(false)
+        setLoading(false);
     }
 
     return (
@@ -31,7 +35,7 @@ const ForgotPassword = () => {
             <div className={styles.welcome}>
                 <div className={styles.profloLogoWrapper}>
                     <img 
-                        src={require('./../images/proflo-logo.png')} 
+                        src={require('./../../images/proflo-logo.png')} 
                         alt={'ProFlo Logo'}
                         className={styles.profloLogo}
                     />

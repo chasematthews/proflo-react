@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/Login.module.css'
+import styles from '@styles/pages/AuthPages/Login.module.css'
 
 const CustomGoogleButton = ({handleGoogleSignIn}) => {
     return (

@@ -1,36 +1,42 @@
 import React, {useState, useRef} from 'react';
-import styles from '../styles/Login.module.css'
+import styles from '@styles/pages/AuthPages/Login.module.css'
 import { Link, useNavigate } from 'react-router-dom';
-import { UserAuth } from '../contexts/AuthContext'
+import { UserAuth } from '@contexts/AuthContext'
 
 const SignUp = () => {
+    //Declare refs for signup details
     const emailRef = useRef();
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
     const firstNameRef = useRef();
     const lastNameRef = useRef();
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
 
+    //Declare state variables
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    //Declare navigate function
+    const navigate = useNavigate();
+
+    //Import the signin functions from the userAuth context.
     const { signUp } = UserAuth();
 
+    //Execute ths signup functions 
     const handleSignUp = async(event) => {
-        event.preventDefault()
-
+        event.preventDefault();
+        //Check that the passwords match
         if (passwordRef.current.value !== confirmPasswordRef.current.value) {
-            return setError('Passwords do not match')
+            return setError('Passwords do not match');
         }
-
         try {
-            setError('')
-            setLoading(true)
-            await signUp(emailRef.current.value, passwordRef.current.value, firstNameRef.current.value, lastNameRef.current.value)
-            navigate('/login')
+            setError('');
+            setLoading(true);
+            await signUp(emailRef.current.value, passwordRef.current.value, firstNameRef.current.value, lastNameRef.current.value);
+            navigate('/login');
         } catch {
-            setError('Failed to create and account')
+            setError('Failed to create and account');
         }
-        setLoading(false)
+        setLoading(false);
     }
 
     return (
@@ -38,7 +44,7 @@ const SignUp = () => {
             <div className={styles.welcome}>
                 <div className={styles.profloLogoWrapper}>
                     <img 
-                        src={require('./../images/proflo-logo.png')} 
+                        src={require('./../../images/proflo-logo.png')} 
                         alt={'ProFlo Logo'}
                         className={styles.profloLogo}
                     />

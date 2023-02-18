@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from "react"
-import HomeHeader from "../components/Home/HomeHeader"
-import ProjectMain from "../components/Project/ProjectMain"
-import ProjectNavMain from "../components/Project/ProjectNavMain"
-import ProjectNavMinor from "../components/Project/ProjectNavMinor"
-import AddCommentModal from "../components/Project/PFD/AddCommentModal"
-import styles from '../styles/Project.module.css'
+import HomeHeader from "../../components/Home/HomeHeader"
+import ProjectMain from "../../components/Project/ProjectMain"
+import ProjectNavMain from "../../components/Project/ProjectNavMain"
+import ProjectNavMinor from "../../components/Project/ProjectNavMinor"
+import AddCommentModal from "../../components/Project/PFD/AddCommentModal"
+import styles from '@styles/Project.module.css'
 import { collection, addDoc, query, onSnapshot } from 'firebase/firestore'
-import { UserAuth } from "../contexts/AuthContext"
+import { UserAuth } from "../../contexts/AuthContext"
 
-const ProjectOne = ({project}) => {
+const Project = ({project}) => {
 
     const [comment, setComment] = useState({
         comment: '',
@@ -69,11 +69,11 @@ const ProjectOne = ({project}) => {
         onSnapshot(recentMessagesQuery, (snapshot) => {
             setComments(snapshot.docs.map(doc => doc.data()));
         })
-      }
+    }
     
-      useEffect(() => {
+    useEffect(() => {
         loadComments();
-      }, [])
+    }, [])
 
     const headerStyle = styles.header
 
@@ -96,4 +96,4 @@ const ProjectOne = ({project}) => {
     )
 }
 
-export default ProjectOne
+export default Project

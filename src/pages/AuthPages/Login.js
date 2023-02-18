@@ -1,55 +1,65 @@
 import React, { useEffect, useState, useRef } from 'react';
-import styles from './../styles/Login.module.css';
-import { UserAuth } from '../contexts/AuthContext'
+import styles from '@styles/pages/AuthPages/Login.module.css';
+import { UserAuth } from '@contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import CustomGoogleButton from '../utils/GoogleButton';
-import CustomMSButton from '../utils/MicrosoftButton';
+import CustomGoogleButton from '@utils/GoogleButton';
+import CustomMSButton from '@utils/MicrosoftButton';
 
 const Login = () => {
-    const { googleSignIn, MSSignIn, user, emailSignIn } = UserAuth()
-    const navigate = useNavigate()
+    //import the signin functions from the userAuth context.
+    const { googleSignIn, MSSignIn, user, emailSignIn } = UserAuth();
+
+    //Declare navigate function
+    const navigate = useNavigate();
+
+    //Declare state variables
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+
+    //Declar refs for email and password sign in.
     const emailRef = useRef();
     const passwordRef = useRef();
 
+    //Execute the Google Sign In
     const handleGoogleSignIn = async(event) => {
-        event.preventDefault()
+        event.preventDefault();
         try {
-            await googleSignIn()
-            navigate('/projects')
+            await googleSignIn();
+            navigate('/projects');
         } catch(error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
+    //Execute the MS Sign In
     const handleMSSignIn = async(event) => {
-        event.preventDefault()
+        event.preventDefault();
         try {
-            await MSSignIn()
-            navigate('/projects')
+            await MSSignIn();
+            navigate('/projects');
         } catch(error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
+    //Execute the Email and Password Sign In.
     const handleEmailSignIn = async(event) => {
-        event.preventDefault()
-
+        event.preventDefault();
         try {
-            setError('')
-            setLoading(true)
-            await emailSignIn(emailRef.current.value, passwordRef.current.value)
-            navigate('/projects')
+            setError('');
+            setLoading(true);
+            await emailSignIn(emailRef.current.value, passwordRef.current.value);
+            navigate('/projects');
         } catch {
-            setError('Failed to sign in')
+            setError('Failed to sign in');
         }
-        setLoading(false)
+        setLoading(false);
     }
 
+    //Redirect an authenticated user to the home page.
     useEffect(() => {
         if(user != null) {
-            navigate('/projects')
+            navigate('/projects');
         }
     }, [user])
 
@@ -58,7 +68,7 @@ const Login = () => {
             <div className={styles.welcome}>
                 <div className={styles.profloLogoWrapper}>
                     <img 
-                        src={require('./../images/proflo-logo.png')} 
+                        src={require('@images/proflo-logo.png')} 
                         alt={'ProFlo Logo'}
                         className={styles.profloLogo}
                     />

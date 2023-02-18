@@ -1,8 +1,8 @@
 import React from 'react'
-import styles from '../../styles/Home.module.css'
+import styles from '@styles/Home.module.css'
 import { UserAuth } from '../../contexts/AuthContext'
 
-const HomeHeader = ({ headerStyle }) => {
+const HomeHeader = ({headerStyle}) => {
 
     const { logOut, user } = UserAuth()
 

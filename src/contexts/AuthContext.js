@@ -1,59 +1,36 @@
 import { useContext, createContext, useEffect, useState } from "react";
-import { 
-    GoogleAuthProvider,
-    signInWithPopup,
-    getAuth,
-    signOut,
-    onAuthStateChanged,
-    OAuthProvider,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail,
-    updateProfile
-} from 'firebase/auth';
-import {
-    setDoc,
-    getFirestore,
-    doc,
-    updateDoc,
-    getDoc
-} from 'firebase/firestore'
+import { GoogleAuthProvider, signInWithPopup, getAuth, signOut, onAuthStateChanged, OAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile} from 'firebase/auth';
+import { setDoc, getFirestore, doc, getDoc} from 'firebase/firestore'
 
+//Create a Context
 const AuthContext = createContext()
 
+//Define the Context
 export const AuthContextProvider = ({children}) => {
 
+    //Declare state variables - user and the reference database for that user.
     const [user, setUser] = useState()
     const [userRef, setUserRef] = useState()
-    const [companyRef, setCompanyRef] = useState()
 
-    console.log(companyRef)
-
+    //Declare the google Sign In function
     const googleSignIn = async() => {
         const provider = new GoogleAuthProvider();
         await signInWithPopup(getAuth(), provider)
-        .then(userCredential => assignUserCompany(userCredential))
+        .then(userCredential => assignUser(userCredential))
     };
 
-    const assignUserCompany = async(userCredential) => {
-        const userSnap = await getDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`));
-        if (userSnap.data() === undefined) {
-            saveUser(userCredential)
-        // } if (userSnap.data() === undefined) {
-        //     assignCompany(userCredential)
-        }
-    }
-
+    //Declare the MS Sign In function
     const MSSignIn = async() => {
         const provider = new OAuthProvider('microsoft.com');
         await signInWithPopup(getAuth(), provider)
-        .then(userCredential => assignUserCompany(userCredential))
+        .then(userCredential => assignUser(userCredential))
     };
 
+    //Declare the Sign Up function
     const signUp = (email, password, firstName, lastName) => {
         createUserWithEmailAndPassword(getAuth(), email, password)
         .then((userCredential) => {
-            assignUserCompany(userCredential)
+            assignUser(userCredential)
             const user = userCredential.user;
             const username = firstName + ' ' + lastName;
             updateProfile(user, {
@@ -62,65 +39,50 @@ export const AuthContextProvider = ({children}) => {
         })
     };
 
+    //If the user has not signed in before, create an entry for the user within the database
+    const assignUser = async(userCredential) => {
+        const userSnap = await getDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`));
+        if (userSnap.data() === undefined) {
+            saveUser(userCredential)
+        }
+    }
+
+    //Create the user entry in the database and add initial data.
     const saveUser = async(userCredential) => {
         await setDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`), {
             name: userCredential.user.displayName
         })
     }
 
-    // const assignCompany = async(userCredential) => {
-    //     const companyUID = makeid(30);
-    //     await updateDoc(doc(getFirestore(), 'users', `${userCredential.user.uid}`), {
-    //         company: companyUID
-    //     });
-    //     await setDoc(doc(getFirestore(), 'companies', `${companyUID}`), {
-    //         adminUID: userCredential.user.uid,
-    //         adminName: userCredential.user.displayName
-    //     })
-    //     const companyDB = await doc(getFirestore(), 'companies', `${companyUID}`);
-    //     setDoc(doc(companyDB, 'users', `${userCredential.user.uid}`), {
-    //         name: userCredential.user.displayName
-    //     })
-    // }
-
+    //Define the sign in with Email and Password function.
     const emailSignIn = (email, password) => {
         return signInWithEmailAndPassword(getAuth(), email, password);
     };
 
+    //Define the reset password function
     const resetPassword = (email) => {
         return sendPasswordResetEmail(getAuth(), email);
     }
 
+    //Define the logout function
     const logOut = () => {
         return signOut(getAuth())
     }
 
-    // const makeid = (length) => {
-    //     let result = '';
-    //     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    //     const charactersLength = characters.length;
-    //     let counter = 0;
-    //     while (counter < length) {
-    //         result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    //         counter += 1;
-    //     }
-    //     return result
-    // }
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
-            setUser(currentUser);
+            if (currentUser) {
+                setUser(currentUser);
+                setUserRef(doc(getFirestore(), 'users', `${currentUser.uid}`));
+            }
         });
-        onAuthStateChanged(getAuth(), async(currentUser) => {
-            await (setUserRef(doc(getFirestore(), 'users', `${currentUser.uid}`)))
-        })
         return () => {
-            unsubscribe()
+            unsubscribe();
         }
     }, [])
 
     return (
-        <AuthContext.Provider value = {{ googleSignIn, MSSignIn, signUp, emailSignIn, logOut, resetPassword, userRef, companyRef, user }}>
+        <AuthContext.Provider value = {{ googleSignIn, MSSignIn, signUp, emailSignIn, logOut, resetPassword, userRef, user }}>
             {children}
         </AuthContext.Provider>
     )

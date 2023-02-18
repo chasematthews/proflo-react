@@ -14,6 +14,8 @@
   "main": "index.js",
   "dependencies": {
     "apify-client": "^2.6.2",
+    "cors": "^2.8.5",
+    "firebase": "^9.16.0",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0"
   },

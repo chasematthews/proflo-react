@@ -1,8 +1,22 @@
-import React from 'react';
-import styles from './../../styles/Home.module.css'
+import React, {useRef} from 'react';
+import styles from '@styles/Home.module.css'
 import CloseIcon from '@mui/icons-material/Close';
+import { httpsCallable, getFunctions } from 'firebase/functions';
 
-const AddTeamModal = ({modal, toggleModal}) => {
+const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, members}) => {
+
+    const getUserUID = httpsCallable(getFunctions(), 'getUserUID');
+
+    const memberRef = useRef();
+
+    const addMember = async(event) => {
+        event.preventDefault();
+        console.log(await getUserUID({email: 'chase.matt@outlook.com'}));
+        await setMembers(members.concat(memberRef.current.value))
+        memberRef.current.value='';
+        onChange(event)
+    }
+
     return (
         <>
             {modal && (
@@ -15,24 +29,48 @@ const AddTeamModal = ({modal, toggleModal}) => {
                             <input
                                 type='text'
                                 name='name'
-
+                                value={team.name}
+                                onChange={(event) => onChange(event)}
+                                className={styles.addProjectInput}
                             />
                             <h3>Team Description</h3>
                             <textarea
                                 cols='60'
                                 rows='5'
                                 name='description'
+                                value={team.description}
+                                onChange={(event) => onChange(event)}
+                                className={styles.addProjectInput}
                             />
-                            <h3>Team</h3>
-                            <input
-                                type='text'
-                                name='team'
-                            />
+                            <div className={styles.addMemberWrapper}>
+                                <div className={styles.addMemberInputWrapper}>
+                                    <h3>Team</h3>
+                                    <input
+                                        type='text'
+                                        name='member'
+                                        placeholder='Member email'
+                                        ref={memberRef}
+                                        className={styles.addProjectInput}
+                                    />
+                                    <button
+                                        className={styles.addProjectButton}
+                                        onClick = {event => {
+                                            addMember(event)
+                                        }}
+                                    >Add Member</button>
+                                </div>
+                                <div className={styles.membersListWrapper}>
+                                    {members.map((member, key) => {
+                                        return (
+                                            <h3 className={styles.memberWrapper} key={key}>{member}</h3>
+                                        )
+                                    })}
+                                </div>
+                            </div>
                             <button 
                                 className={styles.addProjectButton}
                                 onClick={(event) => {
-                                    event.preventDefault();
-                                    toggleModal();
+                                    addTeam(event)
                                 }}
                             >Create New Group</button>
                         </form>
