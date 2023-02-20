@@ -9,6 +9,7 @@ import { setDoc, doc, getFirestore, getDoc, updateDoc } from 'firebase/firestore
 import { UserAuth } from '@contexts/AuthContext';
 
 const Home = ({ projects, setProjects, teams, setTeams}) => {
+
     //Import the user database from the AuthContext
     const { userRef } = UserAuth();
 
@@ -28,9 +29,19 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         description: '',
         members: [],
     })
-    const [members, setMembers] = useState([])
+    const [member, setMember] = useState({
+        email: '',
+        UID: ''
+    })
+
+    const [members, setMembers] = useState([{
+        email: 'chase.matt@outlook.com',
+        UID: 'wefwfefwefwefwefwefwfwef'
+    }])
     const [projectModal, setProjectModal] = useState(false);
     const [teamModal, setTeamModal] = useState(false);
+
+    console.log(members)
 
     //Define Toggle Project Modal Function - makes the project Modal appear
     const toggleProjectModal = () => {
@@ -106,7 +117,7 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         setTeam(team => ({
             ...team,
             [name]: value,
-            members: ['chase.matt@outlook.com'].concat(members)
+            members: members.concat(members)
         }))
     }
 
@@ -180,8 +191,10 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
                 addTeam={addTeam}
                 team={team}
                 onChange={handleTeamChange}
+                member={member}
                 members={members}
-                setMembers={setMembers} 
+                setMember={setMember} 
+                setMembers={setMembers}
             />
             <HomeHeader
                 headerStyle={headerStyle}

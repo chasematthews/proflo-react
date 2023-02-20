@@ -1,9 +1,9 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import styles from '@styles/Home.module.css'
 import CloseIcon from '@mui/icons-material/Close';
 import { httpsCallable, getFunctions } from 'firebase/functions';
 
-const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, members}) => {
+const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, members, member, setMember}) => {
 
     const getUserUID = httpsCallable(getFunctions(), 'getUserUID');
 
@@ -11,12 +11,24 @@ const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, 
 
     const addMember = async(event) => {
         event.preventDefault();
-        // console.log(memberRef.current.value)
-        await getUserUID({email: `${memberRef.current.value}`}).then(result => {console.log(result.data)})
-        await setMembers(members.concat(memberRef.current.value));
+        await getUserUID({email: `${memberRef.current.value}`}).then(async(result) => {
+            const UserUID = await result.data;
+            const UserEmail = await memberRef.current.value;
+            await setMember(member => ({
+                ...member,
+                email: UserEmail,
+                UID: UserUID
+            }));
+        })
         memberRef.current.value='';
         onChange(event)
     }
+
+    useEffect(() => {
+        if (member.email !== "") {
+            setMembers(members.concat(member))
+        } 
+    }, [member])
 
     return (
         <>
@@ -62,9 +74,11 @@ const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, 
                                 </div>
                                 <div className={styles.membersListWrapper}>
                                     {members.map((member, key) => {
-                                        return (
-                                            <h3 className={styles.memberWrapper} key={key}>{member}</h3>
-                                        )
+                                        if ( key > 0) {
+                                            return (
+                                                <h3 className={styles.memberWrapper} key={key}>{member.email}</h3>
+                                            )
+                                        }
                                     })}
                                 </div>
                             </div>
