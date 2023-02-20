@@ -11,8 +11,9 @@ const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, 
 
     const addMember = async(event) => {
         event.preventDefault();
-        console.log(await getUserUID({email: 'chase.matt@outlook.com'}));
-        await setMembers(members.concat(memberRef.current.value))
+        // console.log(memberRef.current.value)
+        await getUserUID({email: `${memberRef.current.value}`}).then(result => {console.log(result.data)})
+        await setMembers(members.concat(memberRef.current.value));
         memberRef.current.value='';
         onChange(event)
     }

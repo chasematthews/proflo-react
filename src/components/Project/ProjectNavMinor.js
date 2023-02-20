@@ -1,14 +1,16 @@
 import React from 'react'
 import SidebarRow from '../Home/SidebarRow';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import AddIcon from '@mui/icons-material/Add';
 import styles from '../../styles/Project.module.css';
 
-const ProjectNavMinor = () => {
+const ProjectNavMinor = ({toggleDocumentModal, documents}) => {
 
     const sidebarStyle = styles.sidebarRowMinor
 
     const designButtonsContent = [
-        {icon: AccountTreeIcon, text: 'PFDs', id: 'PFDs'}
+        {icon: AccountTreeIcon, text: 'PFDs', id: 'PFDs'},
+        {icon: AddIcon, text: 'Add Doc', id: 'Add Doc', handleClick: toggleDocumentModal}
     ]
 
     return (
