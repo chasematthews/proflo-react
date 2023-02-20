@@ -13,7 +13,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import AddIcon from '@mui/icons-material/Add';
 import GroupsIcon from '@mui/icons-material/Groups';
 
-const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick}) => {
+const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, teams}) => {
 
     const { userRef } = UserAuth();
     // const { companyRef } = UserAuth();
@@ -125,6 +125,15 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick}) =>
                         />
                 })}
                 <hr></hr>
+                {teams.map((team, key) => {
+                    return <SidebarRow
+                        Icon={GroupsIcon}
+                        text={team.name}
+                        key={key}
+                        handleClick={null}
+                        style={sidebarStyle}
+                    />
+                })}
             </div>
         </div>
     )

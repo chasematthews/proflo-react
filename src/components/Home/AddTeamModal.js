@@ -36,7 +36,7 @@ const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, 
                 <div className={styles.modal}>
                     <div className={styles.overlay}>
                         <CloseIcon onClick={toggleModal} className={styles.formExitBtn}/>
-                        <form>
+                        <form onSubmit={(event) => {addTeam(event)}}>
                             <h2 className={styles.formTitle}>Start a new Group</h2>
                             <h3>Group Name</h3>
                             <input
@@ -84,9 +84,7 @@ const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, 
                             </div>
                             <button 
                                 className={styles.addProjectButton}
-                                onClick={(event) => {
-                                    addTeam(event)
-                                }}
+                                type="submit"
                             >Create New Group</button>
                         </form>
                     </div>

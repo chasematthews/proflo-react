@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from '@styles/Home.module.css';
 import HomeHeader from '@components/Home/HomeHeader';
 import HomeNav from '@components/Home/HomeNav';
@@ -13,6 +13,9 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
     //Import the user database from the AuthContext
     const { userRef } = UserAuth();
 
+    //Import the current user info from the AuthContext
+    const { user } = UserAuth();
+
     //Define State Variables
     const [project, setProject] = useState({
         name: '',
@@ -24,24 +27,27 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         projectStage: '',
         team: '',
     });
-    const [team, setTeam] = useState({
+    const initialTeamState = {
         name: '',
         description: '',
         members: [],
-    })
+    }
+    const [team, setTeam] = useState(initialTeamState)
+
     const [member, setMember] = useState({
         email: '',
-        UID: ''
+        UID: '',
     })
 
-    const [members, setMembers] = useState([{
-        email: 'chase.matt@outlook.com',
-        UID: 'wefwfefwefwefwefwefwfwef'
-    }])
+    const initialMembersState = [{
+        email: user.email,
+        UID: user.uid,
+    }]
+
+    const [members, setMembers] = useState(initialMembersState)
+
     const [projectModal, setProjectModal] = useState(false);
     const [teamModal, setTeamModal] = useState(false);
-
-    console.log(members)
 
     //Define Toggle Project Modal Function - makes the project Modal appear
     const toggleProjectModal = () => {
@@ -107,6 +113,10 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         if (userRef) {
             saveTeamToUser(team)
         }
+
+        setTeam(initialTeamState)
+        setMembers(initialMembersState)
+        event.target.reset()
     }
 
     //Updates the project information when the form data is entered
@@ -117,48 +127,51 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         setTeam(team => ({
             ...team,
             [name]: value,
-            members: members.concat(members)
         }))
     }
 
     //Saves project within the user collection of a database
     const saveTeamToUser = async(team) => {
+        const teamID = await makeid();
         try {
-            await setDoc(doc(userRef, 'teams', `${team.name}`), {
-                name: team.name,
+            await setDoc(doc(userRef, 'teams', `${teamID}`), {
+                id: teamID
             });
         }
         catch(error) {
             console.log('Error writing new project to Firebase Database');
         }
-        saveTeamToDB(team);
+        saveTeamToDB(team, teamID);
     }
 
     //Save project to the database as a separate collection
-    const saveTeamToDB = async(team) => {
-        const teamID = await makeid();
+    const saveTeamToDB = async(team, teamID) => {
+        console.log(team.members)
         try {
             await setDoc(doc(getFirestore(), 'teams', `${teamID}`), {
                 name: team.name,
                 description: team.description,
+                members: team.members
             });
         }
         catch(error) {
             console.log('Error writing new project to Firebase Database')
         }
-        updateMembersinDB(team, teamID)
+        saveTeamToMembers(team, teamID)
     }
 
-    const updateMembersinDB = async(team, teamID) => {
-        // const teamDB = await getDoc(doc(getFirestore(), 'teams', `${teamID}`))
-        // await setDoc((teamDB, 'members', `${team.members[0]}`), {
-        //     email: team.members[0]
-        // })
-        // // team.members.map(async(member) => {
-        // //     await setDoc((teamDB, 'users', `${member}`), {
-        // //         email: member
-        // //     })
-        // // })
+    const saveTeamToMembers = async(team, teamID) => {
+        team.members.map(async(member, key) => {
+            const userDB = doc(getFirestore(), 'users', `${member.UID}`)
+            try {
+                await setDoc(doc(userDB, 'teams', `${teamID}`), {
+                    id: teamID
+                })
+            }
+            catch(error) {
+                console.log(error)
+            }
+        })
     }
 
     //Generate a random ID which will be assigned to the group
@@ -173,6 +186,13 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         }
         return result
     }
+
+    useEffect(() => {
+        setTeam(team => ({
+            ...team,
+            members: members
+        }))
+    }, [members])
 
     const headerStyle = styles.header;
 
@@ -202,6 +222,7 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
             <HomeNav
                 toggleProjectModalHandleClick = {toggleProjectModal}
                 toggleTeamModalHandleClick = {toggleTeamModal}
+                teams = {teams}
             />
             <HomeMain 
                 projects = {projects}

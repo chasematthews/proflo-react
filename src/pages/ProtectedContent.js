@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Routes, Route } from 'react-router-dom'
 import Home from './ProtectedContent/Home';
 import Project from "./ProtectedContent/Project";
-import {query, collection, onSnapshot} from 'firebase/firestore'
+import {query, collection, onSnapshot, getFirestore, doc, getDoc} from 'firebase/firestore'
 import Protected from '@utils/Protected';
 import { UserAuth } from '@contexts/AuthContext';
 
@@ -23,9 +23,23 @@ const ProtectedContent = () => {
     })
   }
 
+  const loadTeams = () => {
+    const teamsQuery = query(collection(userRef, 'teams'))
+    let teamsList = [];
+    onSnapshot(teamsQuery, async(snapshot) => {
+      snapshot.docs.map(async(docs) => {
+        const teamInfoQuery = await getDoc(doc(getFirestore(), 'teams', `${docs.data().id}`))
+        teamsList = teamsList.concat(teamInfoQuery.data())
+        setTeams(teamsList)
+      })
+    })
+  }
+
+
   useEffect(() => {
     if (userRef) {
       loadProjects();
+      loadTeams();
     }
   }, [userRef])
 
