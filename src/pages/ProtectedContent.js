@@ -66,6 +66,13 @@ const ProtectedContent = () => {
   return (
   <Routes>
       <Route element={<Protected><Home projects={projects} teams={teams} setProjects={setProjects} setTeams={setTeams}/></Protected>} path='/*' />
+      {projects.projects.map((project) => {
+        return (
+          <Route key={project.name} element={<Protected><Project project={project}/></Protected>} path={`/projects/${project.name.replace(/\s+/g, '-')}/*`}/>
+        )
+      })}
+      
+      {console.log(projects.projects)}
       {teams.map((team) => {
         return (
           projects[team.id] && projects[team.id].map((project) => {

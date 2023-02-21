@@ -7,7 +7,12 @@ const ProjectCard = ({project, team}) => {
     const navigate = useNavigate();
 
     const goToProject = () => {
-        navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/design`)
+        if (team !== undefined) {
+            navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/design`)
+        } else {
+            console.log(project.name)
+            navigate(`/projects/${project.name.replace(/\s+/g, '-')}/design`)
+        }
     }
 
     return (
