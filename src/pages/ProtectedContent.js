@@ -14,6 +14,7 @@ const ProtectedContent = () => {
   //Declare the state variables for the list of individual projects and the teams. Initialising them here because need to add different pages for each project. They are set in nested components.
   const [projects, setProjects] = useState([]);
   const [teams, setTeams] = useState([])
+  const [activeTeam, setActiveTeam] = useState('projects')
 
   //Define the load projects function - pulling the required information from the database and setting it to the state variable every load.
   const loadProjects = () => {

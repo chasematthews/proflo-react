@@ -139,7 +139,8 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
             await setDoc(doc(getFirestore(), 'teams', `${teamID}`), {
                 name: team.name,
                 description: team.description,
-                members: team.members
+                members: team.members,
+                id: teamID
             });
         }
         catch(error) {
@@ -155,7 +156,8 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
                 await setDoc(doc(userDB, 'teams', `${teamID}`), {
                     name: team.name,
                     description: team.description,
-                    members: team.members
+                    members: team.members,
+                    id: teamID
                 })
             }
             catch(error) {

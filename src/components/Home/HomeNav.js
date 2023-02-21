@@ -25,6 +25,9 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
     const buttonUploadRef = useRef()
     const companyNameRef = useRef()
 
+    const [activeTeam, setActiveTeam] = useState('projects')
+    console.log(activeTeam)
+
     const toggleUploadDialogue = (event) => {
         event.preventDefault();
         buttonUploadRef.current.click();
@@ -75,11 +78,7 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
             snapshot.data() && setCompanyName((snapshot.data().name));
         })
     }
-
-    const goToTeam = (team) => {
-        navigate(`/${team.name.replace(/\s+/g, '-')}`)
-    }
-    
+   
     useEffect(() => {
         loadLogo();
         loadCompanyName();
@@ -88,17 +87,15 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
     const sidebarStyle = styles.sidebarRow
 
     const homeButtonsContent = [
-        {icon: ContentPasteIcon, text: 'Projects', id: 'Projects', handleClick: function() {navigate('/projects')}},
+        {icon: ContentPasteIcon, text: 'Projects', id: 'Projects', handleClick: function() {navigate('/projects'); setActiveTeam('projects')}},
         {icon: CheckBoxIcon, text: 'Actions', id: 'Actions', handleClick: function() {navigate('/actions')}},
         {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: toggleProjectModalHandleClick},
         {icon: GroupsIcon, text: 'New Group', id: 'New Group', handleClick: toggleTeamModalHandleClick}
     ]
 
     const teamRender = teams.map(team => {
-        return {icon: GroupsIcon, text: `${team.name}`, id: `${team.name}`, handleClick: function() {navigate(`/${team.name.replace(/\s+/g, '-')}`)}}
+        return {icon: GroupsIcon, text: `${team.name}`, id: `${team.name}`, handleClick: function() {navigate(`/${team.name.replace(/\s+/g, '-')}`); setActiveTeam(`${team.id}`)}}
     })
-
-    console.log(teamRender)
 
     return (
         <div className={styles.navigator}>

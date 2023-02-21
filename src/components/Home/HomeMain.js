@@ -6,17 +6,15 @@ import ActionsRegister from './Actions/Actions';
 
 const HomeMain = ({projects, teams}) => {
 
-    console.log(teams)
-
     return (
         <Routes>
-            <Route element={<ProjectDashboard projects={projects}/>} path='projects'/>
+            <Route element={<ProjectDashboard title={"My Individual Projects"} projects={projects} team={null}/>} path='projects'/>
             {teams.map((team, key) => {
                 return (
-                <Route key={key} element={<ProjectDashboard projects={projects}/>} path={`/${team.name.replace(/\s+/g, '-')}/*`} />
+                <Route key={key} element={<ProjectDashboard title={team.name} projects={projects} team={team}/>} path={`/${team.name.replace(/\s+/g, '-')}/*`} />
                 )
             })}
-            <Route element={<ActionsRegister />} path='/actions'/>
+            <Route element={<ActionsRegister title={"Actions Register"}/>} path='/actions'/>
         </Routes>
     )
 }
