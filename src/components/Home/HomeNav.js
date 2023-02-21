@@ -75,6 +75,10 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
             snapshot.data() && setCompanyName((snapshot.data().name));
         })
     }
+
+    const goToTeam = (team) => {
+        navigate(`/${team.name.replace(/\s+/g, '-')}`)
+    }
     
     useEffect(() => {
         loadLogo();
@@ -89,6 +93,12 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
         {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: toggleProjectModalHandleClick},
         {icon: GroupsIcon, text: 'New Group', id: 'New Group', handleClick: toggleTeamModalHandleClick}
     ]
+
+    const teamRender = teams.map(team => {
+        return {icon: GroupsIcon, text: `${team.name}`, id: `${team.name}`, handleClick: function() {navigate(`/${team.name.replace(/\s+/g, '-')}`)}}
+    })
+
+    console.log(teamRender)
 
     return (
         <div className={styles.navigator}>
@@ -125,13 +135,13 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
                         />
                 })}
                 <hr></hr>
-                {teams.map((team, key) => {
+                {teamRender.map((team, key) => {
                     // console.log(teams)
                     return <SidebarRow
-                        Icon={GroupsIcon}
-                        text={team.name}
-                        key={key}
-                        handleClick={null}
+                        Icon={team.icon}
+                        text={team.text}
+                        key={team.id}
+                        handleClick={team.handleClick}
                         style={sidebarStyle}
                     />
                 })}
