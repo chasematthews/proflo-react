@@ -126,6 +126,7 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
                 })}
                 <hr></hr>
                 {teams.map((team, key) => {
+                    // console.log(teams)
                     return <SidebarRow
                         Icon={GroupsIcon}
                         text={team.name}
