@@ -2,12 +2,12 @@ import React from 'react';
 import styles from '../../../styles/Home.module.css';
 import { useNavigate } from 'react-router-dom';
 
-const ProjectCard = ({project}) => {
+const ProjectCard = ({project, team}) => {
 
     const navigate = useNavigate();
 
     const goToProject = () => {
-        navigate(`/${project.name.replace(/\s+/g, '-')}/design`)
+        navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/design`)
     }
 
     return (

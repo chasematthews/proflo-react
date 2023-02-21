@@ -111,6 +111,8 @@ const Project = ({project}) => {
     }, [])
 
     const headerStyle = styles.header
+    
+
 
     return (
         <div className={styles.container}>

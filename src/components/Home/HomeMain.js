@@ -11,7 +11,7 @@ const HomeMain = ({projects, teams}) => {
             <Route element={<ProjectDashboard title={"My Individual Projects"} projects={projects} team={null}/>} path='projects'/>
             {teams.map((team, key) => {
                 return (
-                <Route key={key} element={<ProjectDashboard title={team.name} projects={projects} team={team}/>} path={`/${team.name.replace(/\s+/g, '-')}/*`} />
+                <Route key={key} element={<ProjectDashboard title={team.name} projects={projects} team={team}/>} path={`/${team.name.replace(/\s+/g, '-')}`} />
                 )
             })}
             <Route element={<ActionsRegister title={"Actions Register"}/>} path='/actions'/>
