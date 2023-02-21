@@ -26,6 +26,7 @@ const ProtectedContent = () => {
     })
   }
 
+  //Define the load teams function - pulling the required information from the database and setting it to the state variable every load.
   const loadTeams = () => {
     const teamsQuery = query(collection(userRef, 'teams'))
     onSnapshot(teamsQuery, (snapshot) => {
@@ -33,57 +34,12 @@ const ProtectedContent = () => {
     })
   }
 
-  // const loadTeams = () => {
-  //   const teamsQuery = query(collection(userRef, 'teams'))
-  //   let teamsList = []
-  //   onSnapshot(teamsQuery, async(snapshot) => {
-  //     getTeams(snapshot).then(result => {readData(result)})
-      // await snapshot.docs.map(async(document) => {
-        // console.log(team)
-        // setTeams(teams.concat(team))
-        // teamsList.concat('1')
-        // console.log(teamsList)
-        // teamsList.concat(team)
-        // console.log(team)
-        // return team;
-        // console.log(team)
-        // setTeams(teams.concat(team))
-        // setProjects(projects.concat(await (await getDoc(doc(getFirestore(), 'teams', `${document.data().id}`))).data()))
-        // console.log(await (await getDoc(doc(getFirestore(), 'teams', `${document.data().id}`))).data())
-        // let teamsList = [];
-        // console.log(document.data().id)
-        // const teamInfoQuery = await getDoc(doc(getFirestore(), 'teams', `${document.data().id}`))
-        // teamsList = teamsList.concat(teamInfoQuery.data())
-        // console.log(teamsList)
-        // setTeams(teamsList)
-      // })
-  //   })
-  // }
-
-  // const readData = (arg) => {
-  //   console.log(arg)
-  // }
-
-
-
-  // const getTeams = async (snapshot) => {
-  //   const teamsList = []
-  //   await snapshot.docs.map(async(document) => {
-  //     const team = await getDoc(doc(getFirestore(), 'teams', `${document.data().id}`));
-  //     console.log(team.data())
-  //     teamsList.concat(team.data())
-  //   })
-  //   return teamsList
-  // }
-
   useEffect(() => {
     if (userRef) {
       loadProjects();
       loadTeams();
     }
   }, [])
-
-  
 
   return (
   <Routes>

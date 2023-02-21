@@ -10,8 +10,6 @@ import { UserAuth } from '@contexts/AuthContext';
 
 const Home = ({ projects, setProjects, teams, setTeams}) => {
 
-    // console.log(teams)
-
     //Import the user database from the AuthContext
     const { userRef } = UserAuth();
 
@@ -110,7 +108,7 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         toggleTeamModal();
 
         await setTeams(
-            teams.concat(team), console.log('hello')
+            teams.concat(team)
         )
 
         const teamID = await makeid();
@@ -119,16 +117,8 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         saveTeamToDB(team, teamID)
             .then(saveTeamToMembers(team, teamID))
 
-        
-        // {
-        //     if (userRef) {
-        //         // console.log(userRef);
-        //         saveTeamToUser(team);
-        //     }
-        // }
-
-        await setTeam(initialTeamState, console.log('hello1'))
-        await setMembers(initialMembersState, console.log('hello2'))
+        await setTeam(initialTeamState)
+        await setMembers(initialMembersState)
         event.target.reset()
     }
 
@@ -143,30 +133,8 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         }))
     }
 
-    //Saves project within the user collection of a database
-    // const saveTeamToUser = async(team, teamID) => {
-    //     // console.log('hello3')
-    //     // console.log(teams)
-    //     try {
-    //         await setDoc(doc(userRef, 'teams', `${teamID}`), {
-    //             name: team.name,
-    //             description: team.description,
-    //             members: team.members
-    //         });
-    //     }
-    //     catch(error) {
-    //         console.log('Error writing new project to Firebase Database');
-    //     }
-    // }
-
     // Save project to the database as a separate collection
     const saveTeamToDB = async(team, teamID) => {
-        console.log('hello4')
-        // await setDoc(doc(getFirestore(), 'teams', `${teamID}`), {
-        //     name: team.name,
-        //     description: team.description,
-        //     members: team.members
-        // });
         try {
             await setDoc(doc(getFirestore(), 'teams', `${teamID}`), {
                 name: team.name,
@@ -179,6 +147,7 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         }
     }
 
+    // Save the project to each users own database
     const saveTeamToMembers = async(team, teamID) => {
         team.members.map(async(member, key) => {
             const userDB = await doc(getFirestore(), 'users', `${member.UID}`)
