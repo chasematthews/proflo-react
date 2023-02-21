@@ -10,6 +10,8 @@ import { UserAuth } from '@contexts/AuthContext';
 
 const Home = ({ projects, setProjects, teams, setTeams}) => {
 
+    console.log(projects)
+
     //Import the user database from the AuthContext
     const { userRef } = UserAuth();
 
@@ -49,6 +51,10 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
     const [projectModal, setProjectModal] = useState(false);
     const [teamModal, setTeamModal] = useState(false);
 
+    const [activeTeam, setActiveTeam] = useState('projects')
+
+    console.log(activeTeam)
+
     //Define Toggle Project Modal Function - makes the project Modal appear
     const toggleProjectModal = () => {
         setProjectModal(!projectModal)
@@ -59,9 +65,10 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         event.preventDefault();
         toggleProjectModal();
 
-        setProjects(
-            projects.concat(project)
-        )
+        setProjects(projects => ({
+            ...projects,
+            [activeTeam]: projects[activeTeam].concat(project)
+        }))
         if (userRef) {
             saveProject(project)
         }
@@ -80,20 +87,20 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
 
     //Saves project to database
     const saveProject = async(project) => {
-        try {
-            await setDoc(doc(userRef, 'projects', `${project.name}`), {
-                name: project.name,
-                client: project.client,
-                description: project.description,
-                capacity: project.capacity,
-                rawMaterial: project.rawMaterial,
-                product: project.product,
-                projectStage: project.projectStage,
-                team: project.team
-            });
-        }
-        catch(error) {
-            console.log('Error writing new project to Firebase Database');
+        if (activeTeam === 'projects') {
+            try {
+                await setDoc(doc(userRef, 'projects', `${project.name}`), project);
+            }
+            catch(error) {
+                console.log('Error writing new project to Firebase Database');
+            }
+        } else {
+            const teamRef = await doc(getFirestore(), 'teams', `${activeTeam}`)
+            try {
+                await setDoc(doc(teamRef, 'projects', `${project.name}`), project)
+            }
+            catch(error) {
+                console.log('Error writing new project to Firebase Database');            }
         }
     }
 
@@ -112,6 +119,10 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         )
 
         const teamID = await makeid();
+        await setProjects(projects => ({
+            ...projects,
+            [teamID]: []
+        }))
 
         // await saveTeamToUser(team, teamID)
         saveTeamToDB(team, teamID)
@@ -215,6 +226,7 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
                 toggleProjectModalHandleClick = {toggleProjectModal}
                 toggleTeamModalHandleClick = {toggleTeamModal}
                 teams = {teams}
+                setActiveTeam = {setActiveTeam}
             />
             <HomeMain 
                 projects = {projects}

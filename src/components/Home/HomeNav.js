@@ -13,7 +13,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import AddIcon from '@mui/icons-material/Add';
 import GroupsIcon from '@mui/icons-material/Groups';
 
-const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, teams}) => {
+const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, teams, setActiveTeam}) => {
 
     const { userRef } = UserAuth();
     // const { companyRef } = UserAuth();
@@ -25,8 +25,6 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
     const buttonUploadRef = useRef()
     const companyNameRef = useRef()
 
-    const [activeTeam, setActiveTeam] = useState('projects')
-    console.log(activeTeam)
 
     const toggleUploadDialogue = (event) => {
         event.preventDefault();

@@ -12,9 +12,8 @@ const ProtectedContent = () => {
   const {userRef} = UserAuth();
 
   //Declare the state variables for the list of individual projects and the teams. Initialising them here because need to add different pages for each project. They are set in nested components.
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState({projects: []});
   const [teams, setTeams] = useState([])
-  const [activeTeam, setActiveTeam] = useState('projects')
 
   //Define the load projects function - pulling the required information from the database and setting it to the state variable every load.
   const loadProjects = () => {
@@ -34,7 +33,7 @@ const ProtectedContent = () => {
 
   useEffect(() => {
     if (userRef) {
-      loadProjects();
+      // loadProjects();
       loadTeams();
     }
   }, [])
@@ -42,11 +41,11 @@ const ProtectedContent = () => {
   return (
   <Routes>
       <Route element={<Protected><Home projects={projects} teams={teams} setProjects={setProjects} setTeams={setTeams}/></Protected>} path='/*' />
-      {projects.map((project, key) => {
+      {/* {projects.map((project, key) => {
           return (
           <Route key={key} element={<Protected><Project project={project}/></Protected>} path={`/${project.name.replace(/\s+/g, '-')}/*`} />
           )
-      })}
+      })} */}
   </Routes>
   );
 }

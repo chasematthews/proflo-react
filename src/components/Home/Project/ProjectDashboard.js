@@ -7,14 +7,14 @@ const ProjectDashboard = ({title, projects, team}) => {
     return (
         <div className={styles.main}>
             <h2>{title}</h2>
-            {projects.map((project, key) => {
+            {/* {projects.map((project, key) => {
                 return (
                     <ProjectCard
                         project = {project}
                         key = {key}
                     />
                 )
-            })}
+            })} */}
         </div>
     )
 }
