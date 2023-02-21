@@ -15,28 +15,55 @@ const ProtectedContent = () => {
   const [projects, setProjects] = useState({projects: []});
   const [teams, setTeams] = useState([])
 
+  console.log(projects)
+
   //Define the load projects function - pulling the required information from the database and setting it to the state variable every load.
   const loadProjects = () => {
-    const projectsQuery = query(collection(userRef, 'projects'))
-    onSnapshot(projectsQuery, (snapshot) => {
-      setProjects(snapshot.docs.map(doc => doc.data()));
+    const individprojectsQuery = query(collection(userRef, 'projects'))
+    onSnapshot(individprojectsQuery, (snapshot) => {
+      setProjects(projects => ({
+        ...projects,
+        projects: snapshot.docs.map(doc => doc.data())
+      }));
+    })
+    teams.map(team => {
+      const teamRef = doc(getFirestore(), 'teams', `${team.id}`)
+      const teamprojectsQuery = query(collection(teamRef, 'projects'))
+      onSnapshot(teamprojectsQuery, (snapshot) => {
+        setProjects(projects => ({
+          ...projects,
+          [team.id]: snapshot.docs.map(doc => doc.data())
+        }))
+      })
     })
   }
 
   //Define the load teams function - pulling the required information from the database and setting it to the state variable every load.
-  const loadTeams = () => {
+  const loadTeams = async() => {
     const teamsQuery = query(collection(userRef, 'teams'))
-    onSnapshot(teamsQuery, (snapshot) => {
-      setTeams(snapshot.docs.map(doc => doc.data()));
+    await onSnapshot(teamsQuery, (snapshot) => {
+      setTeams(snapshot.docs.map(doc => doc.data()), loadProjects());
     })
   }
 
   useEffect(() => {
     if (userRef) {
-      // loadProjects();
       loadTeams();
+      loadProjects()
     }
   }, [])
+
+  useEffect(() => {
+    teams.map(team => {
+      setProjects(projects => ({
+        ...projects,
+        [team.id]: []
+      }))
+    })
+    if (userRef) {
+      loadProjects()
+    }
+  }, [teams])
 
   return (
   <Routes>

@@ -10,8 +10,6 @@ import { UserAuth } from '@contexts/AuthContext';
 
 const Home = ({ projects, setProjects, teams, setTeams}) => {
 
-    console.log(projects)
-
     //Import the user database from the AuthContext
     const { userRef } = UserAuth();
 
@@ -52,8 +50,6 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
     const [teamModal, setTeamModal] = useState(false);
 
     const [activeTeam, setActiveTeam] = useState('projects')
-
-    console.log(activeTeam)
 
     //Define Toggle Project Modal Function - makes the project Modal appear
     const toggleProjectModal = () => {
