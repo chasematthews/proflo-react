@@ -12,6 +12,10 @@ const Drawing = ({toggleCommentModal, project, team}) => {
     const[htmlFileString, setHtmlFileString] = useState();
     const[streamNumbersList, setStreamNumbersList] = useState([]);
     const[displayTable, setDisplayTable] = useState([]);
+    const[pdfUploaded, setPDFUploaded] = useState(false);
+    const[pdfName, setPDFName] = useState();
+    const[dataUploaded, setDataUploaded] = useState(false);
+    const[dataName, setDataName] = useState();
     const[drawingURL, setDrawingURL] = useState();
     const[dataURL, setDataURL] = useState();
     const[IDPattern, setIDPattern] = useState();
@@ -130,6 +134,8 @@ const Drawing = ({toggleCommentModal, project, team}) => {
         let publicImageUrl = await getDownloadURL(newImageRef)
         PDFtoHTML({ URL: publicImageUrl }).then(result => saveURL(result.data))
         savePDFURL(publicImageUrl)
+        setPDFName(file.name)
+        setPDFUploaded(true)
     }
 
     const onXLSXFileSelected = async(event) => {
@@ -140,6 +146,8 @@ const Drawing = ({toggleCommentModal, project, team}) => {
         const fileSnapshot = await uploadBytesResumable(newImageRef, file);
         const XLSXURL = await getDownloadURL(newImageRef);
         saveXLSX(XLSXURL)
+        setDataName(file.name)
+        setDataUploaded(true)
     }
 
     const toggleUploadDialoguePDF = (event) => {
@@ -299,17 +307,24 @@ const Drawing = ({toggleCommentModal, project, team}) => {
                                 src={require('./../../../images/pdf-logo.png')}
                                 alt={'PDF Logo'}
                                 className={styles.addItemLogo}
-                            ></img>Add a Drawing</button>
+                            ></img>{pdfUploaded ? `${pdfName}` : `Add a Drawing`}</button>
                         <input className={styles.addItemInput} ref={pdfUploadRef} onChange={(event) => onPDFFileSelected(event)} type="file" />
-                        <button className={styles.addItemBtn} onClick={(event) => toggleUploadDialogueXLSX(event)}>
-                            <img 
-                                src={require('./../../../images/xlsx-logo.png')}
-                                alt={'XLSX Logo'}
-                                className={styles.addItemLogo}
-                            ></img>Add Data</button>
-                        <input className={styles.addItemInput} ref={xlsxUploadRef} onChange={(event) => onXLSXFileSelected(event)} type="file" />
-                        <input ref={idRef} type="text" />
-                        <button onClick={event => addIDPattern(event)}>OK</button>
+                        <div className={styles.addDataWrapper}>
+                            <button className={styles.addItemBtn} onClick={(event) => toggleUploadDialogueXLSX(event)}>
+                                <img
+                                    src={require('./../../../images/xlsx-logo.png')}
+                                    alt={'XLSX Logo'}
+                                    className={styles.addItemLogo}
+                                ></img>{dataUploaded ? `${dataName}` : `Add Data`}</button>
+                            <input className={styles.addItemInput} ref={xlsxUploadRef} onChange={(event) => onXLSXFileSelected(event)} type="file" />
+                            <div>
+                                <h2 className={styles.addStringHeading}>Add the reference string</h2>
+                                <div className={styles.addStringWrapper}>
+                                    <input ref={idRef} type="text" className={styles.addStringInput}/>
+                                    <button onClick={event => addIDPattern(event)} className={styles.addStringBtn}>OK</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             }

@@ -183,8 +183,54 @@
 
 .documentUploadForm {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: var(--spacing-l);
+    align-items: center;
+}
+
+.addDataWrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-l);
+}
+
+.addStringWrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-s);
+}
+
+.addStringInput {
+    margin: 0px;
+    padding: var(--spacing-xxs);
+    border-width: 1px;
+    border-radius: var(--border-radius-s);
+    font-size: 12px;
+}
+
+.addStringBtn {
+    padding: var(--spacing-xxs) var(--spacing-xs);
+    border-radius: var(--border-radius-xs);
+    border: solid 1px black;
+    font-size: 12px;
+    margin: 0px;
+    background-color: var(--light-green);
+    font-weight: 600;
+}
+
+.addStringBtn:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
+
+.addStringHeading {
+    margin-bottom: var(--spacing-xs);
+    font-size: 12px;
+}
+
+.companyNameBtn:hover {
+    cursor: pointer;
+    filter: brightness(90%);
 }
 
 .addItemBtn {
@@ -206,7 +252,7 @@
 }
 
 .addItemLogo {
-    height: 12vh;
+    height: 6vh;
 }
 
 .addItemInput {
