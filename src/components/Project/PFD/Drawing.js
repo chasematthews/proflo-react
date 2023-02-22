@@ -7,7 +7,7 @@ import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/
 import { UserAuth } from '../../../contexts/AuthContext';
 import { updateDoc, doc, query, onSnapshot, getFirestore } from 'firebase/firestore';
 
-const Drawing = ({toggleCommentModal, project, team}) => {
+const Drawing = ({toggleCommentModal, project, team, document}) => {
 
     const[htmlFileString, setHtmlFileString] = useState();
     const[streamNumbersList, setStreamNumbersList] = useState([]);
@@ -282,7 +282,7 @@ const Drawing = ({toggleCommentModal, project, team}) => {
 
     return (
         <div className={styles.main}>
-            <h2>Process Flow Diagram</h2>
+            <h2>{document.documentName}</h2>
             {drawingURL && dataURL ? 
                 <div className={styles.PFDWrapper}>
                     <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>

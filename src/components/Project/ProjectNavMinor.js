@@ -3,10 +3,13 @@ import SidebarRow from '../Home/SidebarRow';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AddIcon from '@mui/icons-material/Add';
 import styles from '../../styles/Project.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectNavMinor = ({toggleDocumentModal, documents}) => {
 
     console.log(documents)
+
+    const navigate = useNavigate();
 
     const sidebarStyle = styles.sidebarRowMinor
 
@@ -15,7 +18,7 @@ const ProjectNavMinor = ({toggleDocumentModal, documents}) => {
     ]
 
     const documentRender = documents.map(document => {
-        return {icon: AccountTreeIcon, text: `${document.documentName}`, id: `${document.name}`, handleClick: null}
+        return {icon: AccountTreeIcon, text: `${document.documentName}`, id: `${document.name}`, handleClick: function() {navigate(`${document.documentName.replace(/\s+/g, '-')}`)}}
     })
 
     return (

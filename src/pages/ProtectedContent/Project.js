@@ -124,7 +124,7 @@ const Project = ({project, team}) => {
             />
             <ProjectNavMain project={project} team={team}/>
             <ProjectNavMinor toggleDocumentModal={toggleDocumentModal} documents={documents}/>
-            <ProjectMain toggleCommentModal={toggleCommentModal} comments={comments} project={project} team={team}/>
+            <ProjectMain toggleCommentModal={toggleCommentModal} documents={documents} comments={comments} project={project} team={team}/>
             <AddCommentModal 
                 handleCommentChange = {handleCommentChange}
                 comment = {comment}
