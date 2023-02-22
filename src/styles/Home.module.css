@@ -162,20 +162,17 @@ input, textarea {
     background-color: aliceblue;
     border-radius: var(--border-radius-l);
     padding: var(--spacing-s);
-    display: flex;
-    flex-direction: column;
 }
 
 .projectImageWrapper {
     width: 100%;
-    /* display: flex; */
+    display: flex;
     margin-bottom: var(--spacing-xs);
 }
 
 .projectImage {
     width: 100%;
     border-radius: var(--border-radius-s);
-    overflow: none;
 }
 
 .tagsWrapper {

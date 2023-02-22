@@ -71,8 +71,8 @@ export const AuthContextProvider = ({children}) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
+            setUser(currentUser);
             if (currentUser) {
-                setUser(currentUser);
                 setUserRef(doc(getFirestore(), 'users', `${currentUser.uid}`));
             }
         });

@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from '@styles/Home.module.css'
 import { UserAuth } from '../../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const HomeHeader = ({headerStyle}) => {
 

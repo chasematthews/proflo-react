@@ -72,7 +72,6 @@ const ProtectedContent = () => {
         )
       })}
       
-      {console.log(projects.projects)}
       {teams.map((team) => {
         return (
           projects[team.id] && projects[team.id].map((project) => {

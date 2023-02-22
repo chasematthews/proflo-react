@@ -15,22 +15,9 @@ const ProjectCard = ({project, team}) => {
         }
     }
 
-    const [numPage, setNumPages] = useState(null)
-    const [pageNumber, setPageNumber] = useState(1)
-
-    const onDocumentLoadSuccess = ({numPages}) => {
-        setNumPages(numPage);
-        setPageNumber(1);
-    }
-    
-    console.log(project.PDFURL)
-
     return (
         <div className={styles.projectCard} onClick={goToProject}>
             <div className={styles.projectImageWrapper}>
-                {/* <Drawing project={project} /> */}
-                {/* <Thumbnail url="https://www.npmjs.com/package/react-webpage-thumbnail" /> */}
-                {/* <img src={require('./../../../images/ProjectImage.jpg')} className={styles.projectImage} alt='Project'/> */}
                 {project.PDFURL ? 
                     <object data={`${project.PDFURL}`} type="application/pdf" width="100%" height="100%">
                         <p>Alternative text - include a link <a href={`${project.PDFURL}`}>to the PDF!</a></p>
