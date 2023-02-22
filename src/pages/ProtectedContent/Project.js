@@ -6,7 +6,7 @@ import ProjectNavMinor from "../../components/Project/ProjectNavMinor"
 import AddCommentModal from "../../components/Project/PFD/AddCommentModal"
 import AddDocumentModal from "../../components/Project/AddDocumentModal"
 import styles from '@styles/Project.module.css'
-import { collection, addDoc, query, onSnapshot, setDoc } from 'firebase/firestore'
+import { collection, addDoc, query, onSnapshot, setDoc, doc, getFirestore } from 'firebase/firestore'
 import { UserAuth } from "../../contexts/AuthContext"
 
 const Project = ({project, team}) => {
@@ -84,17 +84,22 @@ const Project = ({project, team}) => {
     const toggleDocumentModal = () => {
         setDocumentsModal(!documentsModal)
     }
-
-    const addDocument = (event) => {
-        event.preventDefault();
-
-        setDocuments(
-            documents.concat(document)
-        )
-
-        toggleDocumentModal()
+    
+    const loadDocuments = async () => {
+        let projectRef
+        if (team !== null) {
+            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
+            projectRef = await doc(teamRef, 'projects', `${project.name}`)
+        } else {
+            projectRef = await doc(userRef, 'projects', `${project.name}`)
+        }
+        const docQuery = await query(collection(projectRef, 'documents'))
+    
+        onSnapshot(docQuery, (snapshot) => {
+            setDocuments(snapshot.docs.map(doc => doc.data()));
+        })
     }
-
+    
     const handleDocumentChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -104,15 +109,14 @@ const Project = ({project, team}) => {
             [name]: value
         }))
     }    
-    
+
     useEffect(() => {
         loadComments();
+        loadDocuments();
     }, [])
 
     const headerStyle = styles.header
     
-
-
     return (
         <div className={styles.container}>
             <HomeHeader
@@ -133,10 +137,11 @@ const Project = ({project, team}) => {
             <AddDocumentModal 
                 handleDocumentChange={handleDocumentChange}
                 document={document}
-                onSubmitDocument={addDocument}
                 modal={documentsModal}
                 toggleDocumentModal={toggleDocumentModal}
                 setDocument={setDocument}
+                documents={documents}
+                setDocuments={setDocuments}
                 team={team}
                 project={project}
             />

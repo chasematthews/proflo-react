@@ -5,10 +5,9 @@ import { getStorage, uploadBytesResumable, getDownloadURL, ref } from 'firebase/
 import { getFirestore, doc, updateDoc, setDoc } from 'firebase/firestore';
 import { httpsCallable, getFunctions } from 'firebase/functions';
 import { UserAuth } from '../../contexts/AuthContext';
+import CloseIcon from '@mui/icons-material/Close';
 
-const AddDocumentModal = ({document, handleDocumentChange, onSubmitDocument, modal, team, project, setDocument}) => {
-
-    console.log(team)
+const AddDocumentModal = ({document, handleDocumentChange, toggleDocumentModal, modal, team, project, setDocument, documents, setDocuments}) => {
 
     const pdfUploadRef = useRef();
     const xlsxUploadRef = useRef();
@@ -89,22 +88,24 @@ const AddDocumentModal = ({document, handleDocumentChange, onSubmitDocument, mod
 
     const submitDocument = async(event) => {
         event.preventDefault()
+        toggleDocumentModal()
         await PDFtoHTML({ URL: document.PDFURL }).then(result => {
             setDocument(document => ({
                 ...document,
                 drawingURL: result.data,
             }))
         })
+        setDocuments(documents.concat(document))
         saveDoc();
     }
 
     const saveDoc = async () => {
-        console.log(team)
         if (team !== null) {
             const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
             const projectRef = await doc(teamRef, 'projects', `${project.name}`)
             await setDoc(doc(projectRef, 'documents', `${document.documentName}`), {
                 documentType: document.documentType,
+                documentName: document.documentName,
                 PDFURL: document.PDFURL,
                 drawingURL: document.drawingURL,
                 data: document.data
@@ -114,6 +115,7 @@ const AddDocumentModal = ({document, handleDocumentChange, onSubmitDocument, mod
             const projectRef = await doc(userRef, 'projects', `${project.name}`)
             await setDoc(doc(projectRef, 'documents', `${document.documentName}`), {
                 documentType: document.documentType,
+                documentName: document.documentName,
                 PDFURL: document.PDFURL,
                 drawingURL: document.drawingURL,
                 data: document.data
@@ -126,6 +128,7 @@ const AddDocumentModal = ({document, handleDocumentChange, onSubmitDocument, mod
             {modal && (
                 <div className={styles.modal}>
                     <div className={styles.overlay}>
+                        <CloseIcon onClick={toggleDocumentModal} className={styles.formExitBtn}/>
                         <form className={styles.newDocForm}>
                             <h2 className={styles.formTitle}>Add a Document</h2>
                             <h3>Document Name</h3>

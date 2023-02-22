@@ -6,11 +6,17 @@ import styles from '../../styles/Project.module.css';
 
 const ProjectNavMinor = ({toggleDocumentModal, documents}) => {
 
+    console.log(documents)
+
     const sidebarStyle = styles.sidebarRowMinor
 
     const designButtonsContent = [
         {icon: AddIcon, text: 'Add Doc', id: 'Add Doc', handleClick: toggleDocumentModal}
     ]
+
+    const documentRender = documents.map(document => {
+        return {icon: AccountTreeIcon, text: `${document.documentName}`, id: `${document.name}`, handleClick: null}
+    })
 
     return (
         <div className={styles.navigatorMinor}>
@@ -23,6 +29,15 @@ const ProjectNavMinor = ({toggleDocumentModal, documents}) => {
                         handleClick={designButtonContent.handleClick}
                         style={sidebarStyle}
                         />
+                })}
+                {documentRender.map((document) => {
+                    return <SidebarRow
+                        Icon={document.icon}
+                        text={document.text}
+                        key={document.id}
+                        handleClick={document.handleClick}
+                        style={sidebarStyle}
+                    />
                 })}
             </div>
         </div>

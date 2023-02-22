@@ -264,3 +264,15 @@
     flex-direction: column;
     align-items: center;
 }
+
+.formExitBtn {
+    position: absolute;
+    top: 0.5vw;
+    right: 0.5vw;
+    background-color: var(--white);
+}
+
+.formExitBtn:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
