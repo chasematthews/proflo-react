@@ -6,7 +6,7 @@ import ProjectNavMinor from "../../components/Project/ProjectNavMinor"
 import AddCommentModal from "../../components/Project/PFD/AddCommentModal"
 import AddDocumentModal from "../../components/Project/AddDocumentModal"
 import styles from '@styles/Project.module.css'
-import { collection, addDoc, query, onSnapshot } from 'firebase/firestore'
+import { collection, addDoc, query, onSnapshot, setDoc } from 'firebase/firestore'
 import { UserAuth } from "../../contexts/AuthContext"
 
 const Project = ({project, team}) => {
@@ -19,8 +19,9 @@ const Project = ({project, team}) => {
     });
 
     const [document, setDocument] = useState({
-        documentName: '',
-        documentType: '',
+        drawingURL: '',
+        PDFURL: '',
+        data: [],
     })
 
     const {userRef} = UserAuth();
@@ -126,6 +127,8 @@ const Project = ({project, team}) => {
                 onSubmitComment = {addComment}
                 modal = {commentModal}
                 toggleCommentModal={toggleCommentModal}
+                team = {team}
+                project = {project}
             />
             <AddDocumentModal 
                 handleDocumentChange={handleDocumentChange}
@@ -133,6 +136,9 @@ const Project = ({project, team}) => {
                 onSubmitDocument={addDocument}
                 modal={documentsModal}
                 toggleDocumentModal={toggleDocumentModal}
+                setDocument={setDocument}
+                team={team}
+                project={project}
             />
         </div>
     )

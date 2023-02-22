@@ -86,7 +86,6 @@ const Drawing = ({toggleCommentModal, project, team}) => {
     }
 
     const showTable = (span) => {
-        console.log(span)
         setDisplayTable((displayTable) => displayTable.concat(span.textContent))
     }
     

@@ -258,3 +258,9 @@
 .addItemInput {
     display: none;
 }
+
+.newDocForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
