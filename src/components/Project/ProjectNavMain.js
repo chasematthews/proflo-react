@@ -6,16 +6,34 @@ import SidebarRow from '../Home/SidebarRow';
 import styles from '../../styles/Project.module.css'
 import { useNavigate } from 'react-router-dom';
 
-const ProjectNavMain = ({project}) => {
+const ProjectNavMain = ({project, team}) => {
 
     const navigate = useNavigate()
 
     const sidebarStyle = styles.sidebarRow
 
+    const navigateDesign = () => {
+        if (team !== null) {
+            navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/design`)
+        } else {
+            navigate(`/projects/${project.name.replace(/\s+/g, '-')}/design`)
+        }
+    }
+
+    const navigateComments = () => {
+        if (team !== null) {
+            navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/comments`)
+        } else {
+            navigate(`/projects/${project.name.replace(/\s+/g, '-')}/comments`)
+        }
+    }
+
+    console.log(team)
+
     const projectButtonsContent = [
         {icon: HomeIcon, text: 'Home', id: 'Home', handleClick: function() {navigate('/projects')}},
-        {icon: WebAssetIcon, text: 'Design', id: 'Design', handleClick: function() {navigate(`/${project.name.replace(/\s+/g, '-')}/design`)}},
-        {icon: CommentIcon, text: 'Comments Register', id: 'CommentsRegister', handleClick: function() {navigate(`/${project.name.replace(/\s+/g, '-')}/comments`)}},
+        {icon: WebAssetIcon, text: 'Design', id: 'Design', handleClick: navigateDesign},
+        {icon: CommentIcon, text: 'Comments Register', id: 'CommentsRegister', handleClick: navigateComments},
     ]
 
     return (

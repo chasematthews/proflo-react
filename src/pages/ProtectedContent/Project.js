@@ -9,7 +9,7 @@ import styles from '@styles/Project.module.css'
 import { collection, addDoc, query, onSnapshot } from 'firebase/firestore'
 import { UserAuth } from "../../contexts/AuthContext"
 
-const Project = ({project}) => {
+const Project = ({project, team}) => {
 
     const [comment, setComment] = useState({
         comment: '',
@@ -119,7 +119,7 @@ const Project = ({project}) => {
             <HomeHeader
                 headerStyle={headerStyle} 
             />
-            <ProjectNavMain project={project}/>
+            <ProjectNavMain project={project} team={team}/>
             <ProjectNavMinor toggleDocumentModal={toggleDocumentModal} documents={documents}/>
             <ProjectMain toggleCommentModal={toggleCommentModal} comments={comments} project={project}/>
             <AddCommentModal 
