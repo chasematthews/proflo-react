@@ -128,6 +128,7 @@ const Drawing = ({toggleCommentModal, project}) => {
         const fileSnapshot = await uploadBytesResumable(newImageRef, file);
         let publicImageUrl = await getDownloadURL(newImageRef)
         PDFtoHTML({ URL: publicImageUrl }).then(result => saveURL(result.data))
+        savePDFURL(publicImageUrl)
     }
 
     const onXLSXFileSelected = async(event) => {
@@ -148,6 +149,17 @@ const Drawing = ({toggleCommentModal, project}) => {
     const toggleUploadDialogueXLSX = (event) => {
         event.preventDefault();
         xlsxUploadRef.current.click();
+    }
+
+    const savePDFURL = async(PDFURL) => {
+        try {
+            await updateDoc(doc(userRef, 'projects', `${project.name}`), {
+                PDFURL: PDFURL,
+            });
+        }
+        catch(error) {
+            console.log('Error writing logo information to Firebase Database');
+        }
     }
 
     const saveURL = async(drawingURL) => {
