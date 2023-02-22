@@ -9,7 +9,6 @@ const ProjectNavMinor = ({toggleDocumentModal, documents}) => {
     const sidebarStyle = styles.sidebarRowMinor
 
     const designButtonsContent = [
-        {icon: AccountTreeIcon, text: 'PFDs', id: 'PFDs'},
         {icon: AddIcon, text: 'Add Doc', id: 'Add Doc', handleClick: toggleDocumentModal}
     ]
 

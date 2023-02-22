@@ -8,11 +8,18 @@ const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommen
 
     const span = streamNumber.querySelector("span")
 
+    console.log(span)
+
     let position = streamNumber.getBoundingClientRect()
     let showTable = displayTable.includes(span.textContent)
 
+    const clientHeight = streamNumber.parentNode.parentNode.parentNode.clientHeight
+
     const [positionLeft, setPositionLeft] = useState(position.left + position.width);
-    const [positionTop, setPositionTop] = useState(position.top + position.height);
+    const [positionTop, setPositionTop] = useState((position.top + position.height) - Math.floor((position.top + position.height)/clientHeight)*clientHeight);
+
+
+    console.log((position.top + position.height) - Math.floor((position.top + position.height)/clientHeight)*clientHeight)
 
     let pos1 = 0;
     let pos2 = 0;

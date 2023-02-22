@@ -5,9 +5,9 @@ import { getFunctions, httpsCallable } from 'firebase/functions'
 import { getAuth } from 'firebase/auth'
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { UserAuth } from '../../../contexts/AuthContext';
-import { updateDoc, doc, query, onSnapshot } from 'firebase/firestore';
+import { updateDoc, doc, query, onSnapshot, getFirestore } from 'firebase/firestore';
 
-const Drawing = ({toggleCommentModal, project}) => {
+const Drawing = ({toggleCommentModal, project, team}) => {
 
     const[htmlFileString, setHtmlFileString] = useState();
     const[streamNumbersList, setStreamNumbersList] = useState([]);
@@ -82,6 +82,7 @@ const Drawing = ({toggleCommentModal, project}) => {
     }
 
     const showTable = (span) => {
+        console.log(span)
         setDisplayTable((displayTable) => displayTable.concat(span.textContent))
     }
     
@@ -152,35 +153,41 @@ const Drawing = ({toggleCommentModal, project}) => {
     }
 
     const savePDFURL = async(PDFURL) => {
-        try {
+        if (team !== null) {
+            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
+            await updateDoc(doc(teamRef, 'projects', `${project.name}`), {
+                PDFURL: PDFURL,
+            });
+        } else {
             await updateDoc(doc(userRef, 'projects', `${project.name}`), {
                 PDFURL: PDFURL,
             });
         }
-        catch(error) {
-            console.log('Error writing logo information to Firebase Database');
-        }
     }
 
     const saveURL = async(drawingURL) => {
-        try {
+        if (team !== null) {
+            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
+            await updateDoc(doc(teamRef, 'projects', `${project.name}`), {
+                drawingURL: drawingURL,
+            });
+        } else {
             await updateDoc(doc(userRef, 'projects', `${project.name}`), {
                 drawingURL: drawingURL,
             });
         }
-        catch(error) {
-            console.log('Error writing logo information to Firebase Database');
-        }
     }
 
     const saveXLSX = async(XLSXURL) => {
-        try {
+        if (team !== null) {
+            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
+            await updateDoc(doc(teamRef, 'projects', `${project.name}`), {
+                XLSXURL: XLSXURL,
+            });
+        } else {
             await updateDoc(doc(userRef, 'projects', `${project.name}`), {
                 XLSXURL: XLSXURL,
             });
-        }
-        catch(error) {
-            console.log('Error writing logo information to Firebase Database');
         }
     }
 
@@ -190,38 +197,61 @@ const Drawing = ({toggleCommentModal, project}) => {
     }
 
     const saveIDPattern = async(idRef) => {
-        try {
+        if (team !== null) {
+            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
+            await updateDoc(doc(teamRef, 'projects', `${project.name}`), {
+                IDReference: idRef.current.value,
+            });
+        } else {
             await updateDoc(doc(userRef, 'projects', `${project.name}`), {
                 IDReference: idRef.current.value,
             });
         }
-        catch(error) {
-            console.log('Error writing company name to Firebase Database');
-        }
     }
 
-    const loadDrawingURL = () => {
-        const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
+    const loadDrawingURL = async() => {
+        let recentMessagesQuery;
+
+        if (team !== null) {
+            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
+            recentMessagesQuery = query(doc(teamRef, 'projects', `${project.name}`))
+        } else {
+            recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
+        }
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setDrawingURL((snapshot.data().drawingURL));
         })
     }
 
-    const loadDataURL = () => {
-        const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
+    const loadDataURL = async() => {
+        let recentMessagesQuery;
+
+        if (team !== null) {
+            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
+            recentMessagesQuery = query(doc(teamRef, 'projects', `${project.name}`))
+        } else {
+            recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
+        }
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setDataURL((snapshot.data().XLSXURL));
-        })
+        })        
     }
 
-    const loadIDPattern = () => {
-        const recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
+    const loadIDPattern = async() => {
+        let recentMessagesQuery;
+
+        if (team !== null) {
+            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
+            recentMessagesQuery = query(doc(teamRef, 'projects', `${project.name}`))
+        } else {
+            recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
+        }
 
         onSnapshot(recentMessagesQuery, (snapshot) => {
             snapshot.data() && setIDPattern((snapshot.data().IDReference));
-        })
+        })   
     }
 
     useEffect(() => {

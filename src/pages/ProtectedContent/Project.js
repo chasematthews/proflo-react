@@ -31,8 +31,6 @@ const Project = ({project, team}) => {
 
     const [documents, setDocuments] = useState([]);
     const [documentsModal, setDocumentsModal] = useState(false);
-
-    console.log(documents)
     
     const toggleCommentModal = () => {
         setCommentModal(!commentModal)
@@ -121,7 +119,7 @@ const Project = ({project, team}) => {
             />
             <ProjectNavMain project={project} team={team}/>
             <ProjectNavMinor toggleDocumentModal={toggleDocumentModal} documents={documents}/>
-            <ProjectMain toggleCommentModal={toggleCommentModal} comments={comments} project={project}/>
+            <ProjectMain toggleCommentModal={toggleCommentModal} comments={comments} project={project} team={team}/>
             <AddCommentModal 
                 handleCommentChange = {handleCommentChange}
                 comment = {comment}

@@ -28,8 +28,6 @@ const ProjectNavMain = ({project, team}) => {
         }
     }
 
-    console.log(team)
-
     const projectButtonsContent = [
         {icon: HomeIcon, text: 'Home', id: 'Home', handleClick: function() {navigate('/projects')}},
         {icon: WebAssetIcon, text: 'Design', id: 'Design', handleClick: navigateDesign},
