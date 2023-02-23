@@ -16,6 +16,8 @@ const Project = ({project, team}) => {
         assignedTo: '',
         dueDate: '',
         severity: '',
+        ID: '',
+        document: '',
     });
 
     const [document, setDocument] = useState({
@@ -34,6 +36,19 @@ const Project = ({project, team}) => {
 
     const [documents, setDocuments] = useState([]);
     const [documentsModal, setDocumentsModal] = useState(false);
+
+    const [activeDocument, setActiveDocument] = useState('');
+
+    const initiateComment = (event) => {
+        setComment(comment => ({
+            ...comment,
+            ID: event.target.id,
+            document: activeDocument,
+            team: team.name,
+            proejct: project.name
+        }))
+        toggleCommentModal()
+    }
     
     const toggleCommentModal = () => {
         setCommentModal(!commentModal)
@@ -62,23 +77,42 @@ const Project = ({project, team}) => {
     }
 
     const saveComment = async(comment) => {
-        try {
-            await addDoc(collection(userRef, 'comments'), {
+        if (team !== null) {
+            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
+            const projectRef = await doc(teamRef, 'projects', `${project.name}`)
+            await addDoc(collection(projectRef, 'comments'), {
                 comment: comment.comment,
                 assignedTo: comment.assignedTo,
                 dueDate: comment.dueDate,
                 severity: comment.severity,
+                ID: comment.ID,
+                document: comment.document
             });
-        }
-        catch(error) {
-            console.log('Error writing new project to Firebase Database');
+        } 
+        else {
+            const projectRef = await doc(userRef, 'projects', `${project.name}`)
+            await addDoc(collection(projectRef, 'comments'), {
+                comment: comment.comment,
+                assignedTo: comment.assignedTo,
+                dueDate: comment.dueDate,
+                severity: comment.severity,
+                ID: comment.ID,
+                document: comment.document
+            });
         }
     }
 
-    const loadComments = () => {
-        const recentMessagesQuery = query(collection(userRef, 'comments'))
+    const loadComments = async() => {
+        let projectRef
+        if (team !== null) {
+            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
+            projectRef = await doc(teamRef, 'projects', `${project.name}`)
+        } else {
+            projectRef = await doc(userRef, 'projects', `${project.name}`)
+        }
+        const commentQuery = await query(collection(projectRef, 'comments'))
     
-        onSnapshot(recentMessagesQuery, (snapshot) => {
+        onSnapshot(commentQuery, (snapshot) => {
             setComments(snapshot.docs.map(doc => doc.data()));
         })
     }
@@ -126,7 +160,15 @@ const Project = ({project, team}) => {
             />
             <ProjectNavMain project={project} team={team}/>
             <ProjectNavMinor toggleDocumentModal={toggleDocumentModal} documents={documents}/>
-            <ProjectMain toggleCommentModal={toggleCommentModal} documents={documents} comments={comments} project={project} team={team}/>
+            <ProjectMain 
+                toggleCommentModal={toggleCommentModal} 
+                initiateComment={initiateComment}
+                documents={documents} 
+                comments={comments} 
+                project={project} 
+                team={team}
+                setActiveDocument = {setActiveDocument}
+            />
             <AddCommentModal 
                 handleCommentChange = {handleCommentChange}
                 comment = {comment}

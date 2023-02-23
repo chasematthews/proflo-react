@@ -42,6 +42,7 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
     const initialMembersState = [{
         email: user.email,
         UID: user.uid,
+        name: user.displayName,
     }]
 
     const [members, setMembers] = useState(initialMembersState)

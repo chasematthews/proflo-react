@@ -29,13 +29,13 @@ export const AuthContextProvider = ({children}) => {
     //Declare the Sign Up function
     const signUp = (email, password, firstName, lastName) => {
         createUserWithEmailAndPassword(getAuth(), email, password)
-        .then((userCredential) => {
-            assignUser(userCredential)
+        .then(async(userCredential) => {
             const user = userCredential.user;
             const username = firstName + ' ' + lastName;
-            updateProfile(user, {
+            await updateProfile(user, {
                 displayName: username,
             })
+            assignUser(userCredential)
         })
     };
 

@@ -2,11 +2,12 @@ import React, {useState, useEffect, useRef} from 'react';
 import styles from '../../../styles/Project.module.css'
 import StreamTable from './StreamTable';
 
-const Drawing = ({toggleCommentModal, project, team, appDocument}) => {
+const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDocument}) => {
+
+    setActiveDocument(appDocument.documentName)
     
     const[htmlFileString, setHtmlFileString] = useState();
     const[streamNumbersList, setStreamNumbersList] = useState([]);
-    const[streamNumbers, setStreamNumbers] = useState([])
     const[displayTable, setDisplayTable] = useState([]);
 
     // streamNumbersList && streamNumbersList.map(streamNumber => {
@@ -132,12 +133,13 @@ const Drawing = ({toggleCommentModal, project, team, appDocument}) => {
                             return (
                                 // <div>Hello</div>
                                 <StreamTable
-                                key={streamNumber.textContent}
+                                key={streamNumber.className}
                                 exitStreamTable = {exitStreamTable}
                                 streamNumber = {streamNumber}
                                 displayTable = {displayTable}
                                 toggleCommentModal = {toggleCommentModal}
                                 dataURL = {appDocument.data[string].XLSXURL}
+                                initiateComment = {initiateComment}
                                 />
                             )
                         })

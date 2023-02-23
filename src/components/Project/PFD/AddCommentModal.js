@@ -1,12 +1,15 @@
 import React from 'react';
 import styles from '../../../styles/Project.module.css'
+import CloseIcon from '@mui/icons-material/Close';
 
-const AddCommentModal = ({comment, handleCommentChange, onSubmitComment, modal}) => {
+const AddCommentModal = ({comment, handleCommentChange, toggleCommentModal, onSubmitComment, modal, team}) => {
+
     return (
         <>
             {modal && (
                 <div className={styles.modal}>
                     <div className={styles.overlay}>
+                        <CloseIcon onClick={toggleCommentModal} className={styles.formExitBtn}/>
                         <form>
                             <h2 className={styles.formTitle}>Add a Comment</h2>
                             <h3>Comment</h3>
@@ -18,12 +21,19 @@ const AddCommentModal = ({comment, handleCommentChange, onSubmitComment, modal})
                                 onChange={(event) => handleCommentChange(event)}
                             />
                             <h3>Assigned To</h3>
-                            <input
-                                type='text'
-                                name='assignedTo'
-                                value={comment.assignedTo}
-                                onChange={(event) => handleCommentChange(event)}
+                            <input 
+                                value={comment.assignedTo} 
+                                name="assignedTo" 
+                                list="assignedTo"
+                                onChange={(event) => handleCommentChange(event)}                                
                             />
+                            <datalist id = "assignedTo">
+                                {team.members.map((member, key) => {
+                                    return (
+                                        <option key={key} value={`${member.name}`}/>
+                                    )
+                                })}
+                            </datalist>
                             <h3>Due Date</h3>
                             <input
                                 type='date'
@@ -32,12 +42,17 @@ const AddCommentModal = ({comment, handleCommentChange, onSubmitComment, modal})
                                 onChange={(event) => handleCommentChange(event)}
                             />
                             <h3>Severity</h3>
-                            <input
-                                type='text'
-                                name='severity'
+                            <input 
                                 value={comment.severity}
-                                onChange={(event) => handleCommentChange(event)}
+                                name="severity" 
+                                list="severity"
+                                onChange={(event) => handleCommentChange(event)}                                
                             />
+                            <datalist id = "severity">
+                                <option value="Low"/>
+                                <option value="Medium"/>
+                                <option value="High"/>
+                            </datalist>
                             <button 
                                 className={styles.newProjectBtn}
                                 onClick={onSubmitComment}

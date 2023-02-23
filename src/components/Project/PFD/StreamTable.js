@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import styles from './../../../styles/Project.module.css'
 
 
-const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommentModal, dataURL }) => {
+const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommentModal, dataURL, initiateComment, appDocument }) => {
 
     const span = streamNumber.querySelector("span")
 
@@ -68,7 +68,7 @@ const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommen
                 <CloseIcon id={span.textContent} onClick={exitStreamTable} className={styles.streamTableExitBtn}/>
             </div>
             <StreamTableInfo streamNumber = {span} dataURL={dataURL}/>
-            <button className={styles.addCommentButton} onClick={toggleCommentModal}>Add Comment</button>
+            <button id={streamNumber.textContent} className={styles.addCommentButton} onClick={initiateComment}>Add Comment</button>
         </div>
     )
 }

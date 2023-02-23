@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import styles from '@styles/Home.module.css'
 import CloseIcon from '@mui/icons-material/Close';
 import { httpsCallable, getFunctions } from 'firebase/functions';
+import {doc, getFirestore, getDoc} from 'firebase/firestore'
 
 const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, members, member, setMember}) => {
 
@@ -14,10 +15,13 @@ const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, 
         await getUserUID({email: `${memberRef.current.value}`}).then(async(result) => {
             const UserUID = await result.data;
             const UserEmail = await memberRef.current.value;
+            const UserName = await (await getDoc(doc(getFirestore(), 'users', `${UserUID}`))).data().name
+
             await setMember(member => ({
                 ...member,
                 email: UserEmail,
-                UID: UserUID
+                UID: UserUID,
+                name: UserName
             }));
         })
         memberRef.current.value='';
