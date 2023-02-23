@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../../../styles/Project.module.css'
 import CloseIcon from '@mui/icons-material/Close';
 
-const AddCommentModal = ({comment, handleCommentChange, toggleCommentModal, onSubmitComment, modal, team}) => {
+const AddCommentModal = ({comment, handleCommentChange, toggleCommentModal, initiateComment, onSubmitComment, modal, team}) => {
 
     return (
         <>
