@@ -86,15 +86,16 @@ const AddDocumentModal = ({document, handleDocumentChange, toggleDocumentModal, 
         setDataUploaded(false)
     }
 
-    const submitDocument = async(event) => {
+    const submitDocument = (event) => {
         event.preventDefault()
         toggleDocumentModal()
-        await PDFtoHTML({ URL: document.PDFURL }).then(async(result) => {
-            await setDocument(document => ({
+        PDFtoHTML({ URL: document.PDFURL }).then((result) => {
+            setDocument(document => ({
                 ...document,
                 drawingURL: result.data,
             }))
-            await setDocuments(documents.concat(document))
+            // console.log(document.drawingURL)
+            // saveDoc()
         })
     }
 
@@ -123,7 +124,15 @@ const AddDocumentModal = ({document, handleDocumentChange, toggleDocumentModal, 
     }
 
     useEffect(() => {
-        saveDoc(document)
+        if (document.drawingURL !== "") {
+            setDocuments(documents.concat(document))
+        }
+    }, [document.drawingURL])
+
+    useEffect(() => {
+        if (documents.length !== 0) {
+            saveDoc()
+        }
     }, [documents])
 
     return (

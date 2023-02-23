@@ -6,9 +6,12 @@ const Drawing = ({toggleCommentModal, project, team, appDocument}) => {
     
     const[htmlFileString, setHtmlFileString] = useState();
     const[streamNumbersList, setStreamNumbersList] = useState([]);
+    const[streamNumbers, setStreamNumbers] = useState([])
     const[displayTable, setDisplayTable] = useState([]);
 
-    console.log(streamNumbersList)
+    // streamNumbersList && streamNumbersList.map(streamNumber => {
+    //     return (console.log(streamNumber.textContent))
+    // })
 
     async function fetchHtml() {
         setHtmlFileString(await ( await fetch(`${appDocument.drawingURL}`)).text());
@@ -16,17 +19,21 @@ const Drawing = ({toggleCommentModal, project, team, appDocument}) => {
 
     const getElements = () => {
         const identifiers = document.getElementById("PFD").querySelectorAll("div");
-        let streamNumbers = findStreamNumbers(identifiers);
 
-        setStreamNumbersList(streamNumbersList.concat(streamNumbers), streamNumberStyling(identifiers))
+        appDocument.data.map((dataSet) => {
+            findStreamNumbers(identifiers, dataSet.IDReference).then(result => {
+                result.length !== 0 && setStreamNumbersList(streamNumbersList => [...streamNumbersList, result])
+            });
+            streamNumberStyling(identifiers, dataSet.IDReference)
+        })     
     }
 
-    const streamNumberStyling = (identifiers) => {
+    const streamNumberStyling = (identifiers, stringRef) => {
 
         let regexString = "";
 
-        for (let i = 0; i < appDocument.data[0].IDReference.length; i++) {
-            let char = appDocument.data[0].IDReference.charAt(i);
+        for (let i = 0; i < stringRef.length; i++) {
+            let char = stringRef.charAt(i);
             if (char === "^") {
                 regexString += "\\d"
             } else if (char === "*") {
@@ -70,12 +77,12 @@ const Drawing = ({toggleCommentModal, project, team, appDocument}) => {
         setDisplayTable((displayTable) => displayTable.concat(span.textContent))
     }
     
-    const findStreamNumbers = (identifiers) => {
+    const findStreamNumbers = (identifiers, stringRef) => {
 
         let regexString = "";
 
-        for (let i = 0; i < appDocument.data[0].IDReference.length; i++) {
-            let char = appDocument.data[0].IDReference.charAt(i);
+        for (let i = 0; i < stringRef.length; i++) {
+            let char = stringRef.charAt(i);
             if (char === "^") {
                 regexString += "\\d"
             } else if (char === "*") {
@@ -95,7 +102,8 @@ const Drawing = ({toggleCommentModal, project, team, appDocument}) => {
                 }    
             }       
         });
-        return streamNumbers;
+
+        return new Promise((resolve, reject) => resolve(streamNumbers));
     }
 
     const exitStreamTable = (event) => {
@@ -113,22 +121,26 @@ const Drawing = ({toggleCommentModal, project, team, appDocument}) => {
         getElements()
     }, [htmlFileString])
     
-
     return (
         <div className={styles.main}>
             <h2>{document.documentName}</h2>
             <div className={styles.PFDWrapper}>
                 <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
-                {streamNumbersList.map((streamNumber, key) => {
+                {streamNumbersList !== undefined && streamNumbersList.map((idArray, string) => {
                     return (
-                        <StreamTable
-                        key={key}
-                        exitStreamTable = {exitStreamTable}
-                        streamNumber = {streamNumber}
-                        displayTable = {displayTable}
-                        toggleCommentModal = {toggleCommentModal}
-                        dataURL = {appDocument.data[0].XLSXURL}
-                        />
+                        idArray.map(streamNumber => {
+                            return (
+                                // <div>Hello</div>
+                                <StreamTable
+                                key={streamNumber.textContent}
+                                exitStreamTable = {exitStreamTable}
+                                streamNumber = {streamNumber}
+                                displayTable = {displayTable}
+                                toggleCommentModal = {toggleCommentModal}
+                                dataURL = {appDocument.data[string].XLSXURL}
+                                />
+                            )
+                        })
                     )
                 })}
             </div>
