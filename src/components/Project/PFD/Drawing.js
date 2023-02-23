@@ -1,19 +1,14 @@
 import React, {useState, useEffect, useRef} from 'react';
 import styles from '../../../styles/Project.module.css'
 import StreamTable from './StreamTable';
-import { getFunctions, httpsCallable } from 'firebase/functions'
-import { getAuth } from 'firebase/auth'
-import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
-import { UserAuth } from '../../../contexts/AuthContext';
-import { updateDoc, doc, query, onSnapshot, getFirestore } from 'firebase/firestore';
 
 const Drawing = ({toggleCommentModal, project, team, appDocument}) => {
-
-    console.log(appDocument.drawingURL)
     
     const[htmlFileString, setHtmlFileString] = useState();
     const[streamNumbersList, setStreamNumbersList] = useState([]);
     const[displayTable, setDisplayTable] = useState([]);
+
+    console.log(streamNumbersList)
 
     async function fetchHtml() {
         setHtmlFileString(await ( await fetch(`${appDocument.drawingURL}`)).text());
