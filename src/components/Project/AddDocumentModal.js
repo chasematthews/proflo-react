@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from '@styles/Project.module.css';
 import { getAuth } from 'firebase/auth';
 import { getStorage, uploadBytesResumable, getDownloadURL, ref } from 'firebase/storage';
@@ -89,14 +89,13 @@ const AddDocumentModal = ({document, handleDocumentChange, toggleDocumentModal, 
     const submitDocument = async(event) => {
         event.preventDefault()
         toggleDocumentModal()
-        await PDFtoHTML({ URL: document.PDFURL }).then(result => {
-            setDocument(document => ({
+        await PDFtoHTML({ URL: document.PDFURL }).then(async(result) => {
+            await setDocument(document => ({
                 ...document,
                 drawingURL: result.data,
             }))
+            await setDocuments(documents.concat(document))
         })
-        setDocuments(documents.concat(document))
-        saveDoc();
     }
 
     const saveDoc = async () => {
@@ -122,6 +121,10 @@ const AddDocumentModal = ({document, handleDocumentChange, toggleDocumentModal, 
             });
         }
     }
+
+    useEffect(() => {
+        saveDoc(document)
+    }, [documents])
 
     return (
         <>

@@ -19,6 +19,8 @@ const Project = ({project, team}) => {
     });
 
     const [document, setDocument] = useState({
+        documentName: '',
+        documentType: '',
         drawingURL: '',
         PDFURL: '',
         data: [],

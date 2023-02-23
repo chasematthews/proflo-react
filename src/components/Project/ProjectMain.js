@@ -6,10 +6,9 @@ const ProjectMain = ({toggleCommentModal, comments, project, team, documents}) =
 
     return (
         <Routes>
-            <Route element={<Drawing project={project} toggleCommentModal={toggleCommentModal} team={team}/>} path='/design'/>
             {documents.map((document, key) => {
                 return (
-                    <Route element={<Drawing document={document} project={project} toggleCommentModal={toggleCommentModal} team={team}/>} path={`${document.documentName.replace(/\s+/g, '-')}`}/>
+                    <Route key={key} element={<Drawing appDocument={document} project={project} toggleCommentModal={toggleCommentModal} team={team}/>} path={`${document.documentName.replace(/\s+/g, '-')}`}/>
                 )
             })}
             <Route element={<Comments comments={comments}/>} path='/comments'></Route>

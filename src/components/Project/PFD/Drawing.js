@@ -7,30 +7,16 @@ import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/
 import { UserAuth } from '../../../contexts/AuthContext';
 import { updateDoc, doc, query, onSnapshot, getFirestore } from 'firebase/firestore';
 
-const Drawing = ({toggleCommentModal, project, team, document}) => {
+const Drawing = ({toggleCommentModal, project, team, appDocument}) => {
 
+    console.log(appDocument.drawingURL)
+    
     const[htmlFileString, setHtmlFileString] = useState();
     const[streamNumbersList, setStreamNumbersList] = useState([]);
     const[displayTable, setDisplayTable] = useState([]);
-    const[pdfUploaded, setPDFUploaded] = useState(false);
-    const[pdfName, setPDFName] = useState();
-    const[dataUploaded, setDataUploaded] = useState(false);
-    const[dataName, setDataName] = useState();
-    const[drawingURL, setDrawingURL] = useState();
-    const[dataURL, setDataURL] = useState();
-    const[IDPattern, setIDPattern] = useState();
-
-    const { userRef } = UserAuth();
-    // const { companyRef } = UserAuth();
-
-    const pdfUploadRef = useRef();
-    const xlsxUploadRef = useRef();
-    const idRef = useRef();
-
-    const PDFtoHTML = httpsCallable(getFunctions(), 'PDFtoHTML');
 
     async function fetchHtml() {
-        setHtmlFileString(await ( await fetch(`${drawingURL}`)).text());
+        setHtmlFileString(await ( await fetch(`${appDocument.drawingURL}`)).text());
     }
 
     const getElements = () => {
@@ -44,8 +30,8 @@ const Drawing = ({toggleCommentModal, project, team, document}) => {
 
         let regexString = "";
 
-        for (let i = 0; i < IDPattern.length; i++) {
-            let char = IDPattern.charAt(i);
+        for (let i = 0; i < appDocument.data[0].IDReference.length; i++) {
+            let char = appDocument.data[0].IDReference.charAt(i);
             if (char === "^") {
                 regexString += "\\d"
             } else if (char === "*") {
@@ -60,7 +46,7 @@ const Drawing = ({toggleCommentModal, project, team, document}) => {
         identifiers.forEach(identifier => {
             if (identifier.textContent.match(regex) && identifier.className[0] === "t") {
                 let indexStart = identifier.textContent.match(regex).index;
-                let indexEnd = indexStart + IDPattern.length
+                let indexEnd = indexStart + appDocument.data[0].IDReference.length
                 let string = identifier.textContent
                 let pre = string.substring(0, indexStart)
                 let phrase = string.substring(indexStart, indexEnd)
@@ -93,8 +79,8 @@ const Drawing = ({toggleCommentModal, project, team, document}) => {
 
         let regexString = "";
 
-        for (let i = 0; i < IDPattern.length; i++) {
-            let char = IDPattern.charAt(i);
+        for (let i = 0; i < appDocument.data[0].IDReference.length; i++) {
+            let char = appDocument.data[0].IDReference.charAt(i);
             if (char === "^") {
                 regexString += "\\d"
             } else if (char === "*") {
@@ -124,209 +110,33 @@ const Drawing = ({toggleCommentModal, project, team, document}) => {
         }
     }
 
-    const onPDFFileSelected = async(event) => {
-        event.preventDefault();
-        let file = event.target.files[0];
-        const filePath = `${getAuth().currentUser.uid}/${file.name}`;
-        const newImageRef = ref(getStorage(), filePath);
-        const fileSnapshot = await uploadBytesResumable(newImageRef, file);
-        let publicImageUrl = await getDownloadURL(newImageRef)
-        PDFtoHTML({ URL: publicImageUrl }).then(result => saveURL(result.data))
-        savePDFURL(publicImageUrl)
-        setPDFName(file.name)
-        setPDFUploaded(true)
-    }
-
-    const onXLSXFileSelected = async(event) => {
-        event.preventDefault();
-        let file = event.target.files[0];
-        const filePath = `${getAuth().currentUser.uid}/${file.name}`;
-        const newImageRef = ref(getStorage(), filePath);
-        const fileSnapshot = await uploadBytesResumable(newImageRef, file);
-        const XLSXURL = await getDownloadURL(newImageRef);
-        saveXLSX(XLSXURL)
-        setDataName(file.name)
-        setDataUploaded(true)
-    }
-
-    const toggleUploadDialoguePDF = (event) => {
-        event.preventDefault();
-        pdfUploadRef.current.click();
-    }
-
-    const toggleUploadDialogueXLSX = (event) => {
-        event.preventDefault();
-        xlsxUploadRef.current.click();
-    }
-
-    const savePDFURL = async(PDFURL) => {
-        if (team !== null) {
-            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
-            await updateDoc(doc(teamRef, 'projects', `${project.name}`), {
-                PDFURL: PDFURL,
-            });
-        } else {
-            await updateDoc(doc(userRef, 'projects', `${project.name}`), {
-                PDFURL: PDFURL,
-            });
-        }
-    }
-
-    const saveURL = async(drawingURL) => {
-        if (team !== null) {
-            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
-            await updateDoc(doc(teamRef, 'projects', `${project.name}`), {
-                drawingURL: drawingURL,
-            });
-        } else {
-            await updateDoc(doc(userRef, 'projects', `${project.name}`), {
-                drawingURL: drawingURL,
-            });
-        }
-    }
-
-    const saveXLSX = async(XLSXURL) => {
-        if (team !== null) {
-            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
-            await updateDoc(doc(teamRef, 'projects', `${project.name}`), {
-                XLSXURL: XLSXURL,
-            });
-        } else {
-            await updateDoc(doc(userRef, 'projects', `${project.name}`), {
-                XLSXURL: XLSXURL,
-            });
-        }
-    }
-
-    const addIDPattern = (event) => {
-        event.preventDefault();
-        saveIDPattern(idRef);
-    }
-
-    const saveIDPattern = async(idRef) => {
-        if (team !== null) {
-            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
-            await updateDoc(doc(teamRef, 'projects', `${project.name}`), {
-                IDReference: idRef.current.value,
-            });
-        } else {
-            await updateDoc(doc(userRef, 'projects', `${project.name}`), {
-                IDReference: idRef.current.value,
-            });
-        }
-    }
-
-    const loadDrawingURL = async() => {
-        let recentMessagesQuery;
-
-        if (team !== null) {
-            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
-            recentMessagesQuery = query(doc(teamRef, 'projects', `${project.name}`))
-        } else {
-            recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
-        }
-
-        onSnapshot(recentMessagesQuery, (snapshot) => {
-            snapshot.data() && setDrawingURL((snapshot.data().drawingURL));
-        })
-    }
-
-    const loadDataURL = async() => {
-        let recentMessagesQuery;
-
-        if (team !== null) {
-            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
-            recentMessagesQuery = query(doc(teamRef, 'projects', `${project.name}`))
-        } else {
-            recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
-        }
-
-        onSnapshot(recentMessagesQuery, (snapshot) => {
-            snapshot.data() && setDataURL((snapshot.data().XLSXURL));
-        })        
-    }
-
-    const loadIDPattern = async() => {
-        let recentMessagesQuery;
-
-        if (team !== null) {
-            const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
-            recentMessagesQuery = query(doc(teamRef, 'projects', `${project.name}`))
-        } else {
-            recentMessagesQuery = query(doc(userRef, 'projects', `${project.name}`))
-        }
-
-        onSnapshot(recentMessagesQuery, (snapshot) => {
-            snapshot.data() && setIDPattern((snapshot.data().IDReference));
-        })   
-    }
+    useEffect(() => {
+        fetchHtml()
+    }, [appDocument.drawingURL])
 
     useEffect(() => {
-        if(drawingURL && dataURL) {
-            fetchHtml()
-        }
-    }, [drawingURL])
-
-    useEffect(() => {
-        if(drawingURL && dataURL) {
-            getElements()
-        }
-    }, [htmlFileString, drawingURL])
-
-    useEffect(() => {
-        loadDrawingURL();
-        loadDataURL();
-        loadIDPattern();
-    }, [])
+        getElements()
+    }, [htmlFileString])
     
 
     return (
         <div className={styles.main}>
             <h2>{document.documentName}</h2>
-            {drawingURL && dataURL ? 
-                <div className={styles.PFDWrapper}>
-                    <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
-                    {streamNumbersList.map((streamNumber, key) => {
-                        return (
-                            <StreamTable
-                            key={key}
-                            exitStreamTable = {exitStreamTable}
-                            streamNumber = {streamNumber}
-                            displayTable = {displayTable}
-                            toggleCommentModal = {toggleCommentModal}
-                            dataURL = {dataURL}
-                            />
-                        )
-                    })}
-                </div> :
-                <div className={styles.documentUploadBox}>
-                    <form className={styles.documentUploadForm}>
-                        <button className={styles.addItemBtn} onClick={(event) => toggleUploadDialoguePDF(event)}>
-                            <img 
-                                src={require('./../../../images/pdf-logo.png')}
-                                alt={'PDF Logo'}
-                                className={styles.addItemLogo}
-                            ></img>{pdfUploaded ? `${pdfName}` : `Add a Drawing`}</button>
-                        <input className={styles.addItemInput} ref={pdfUploadRef} onChange={(event) => onPDFFileSelected(event)} type="file" />
-                        <div className={styles.addDataWrapper}>
-                            <button className={styles.addItemBtn} onClick={(event) => toggleUploadDialogueXLSX(event)}>
-                                <img
-                                    src={require('./../../../images/xlsx-logo.png')}
-                                    alt={'XLSX Logo'}
-                                    className={styles.addItemLogo}
-                                ></img>{dataUploaded ? `${dataName}` : `Add Data`}</button>
-                            <input className={styles.addItemInput} ref={xlsxUploadRef} onChange={(event) => onXLSXFileSelected(event)} type="file" />
-                            <div>
-                                <h2 className={styles.addStringHeading}>Add the reference string</h2>
-                                <div className={styles.addStringWrapper}>
-                                    <input ref={idRef} type="text" className={styles.addStringInput}/>
-                                    <button onClick={event => addIDPattern(event)} className={styles.addStringBtn}>OK</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            }
+            <div className={styles.PFDWrapper}>
+                <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
+                {streamNumbersList.map((streamNumber, key) => {
+                    return (
+                        <StreamTable
+                        key={key}
+                        exitStreamTable = {exitStreamTable}
+                        streamNumber = {streamNumber}
+                        displayTable = {displayTable}
+                        toggleCommentModal = {toggleCommentModal}
+                        dataURL = {appDocument.data[0].XLSXURL}
+                        />
+                    )
+                })}
+            </div>
         </div>
     )
 }
