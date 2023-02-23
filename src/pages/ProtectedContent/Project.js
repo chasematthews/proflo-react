@@ -64,6 +64,8 @@ const Project = ({project, team}) => {
         toggleCommentModal()
 
         saveComment(comment)
+
+        saveCommentToUser(comment)
     }
 
     const handleCommentChange = (event) => {
@@ -74,6 +76,20 @@ const Project = ({project, team}) => {
             ...comment,
             [name]: value
         }))
+    }
+
+    const saveCommentToUser = async(comment) => {
+        const membersUID = team.members.map(member => member.UID)
+        const membersNames = team.members.map(member => member.name)
+        const assignedToUID = membersUID[membersNames.indexOf(comment.assignedTo)]
+        const assignedToRef = await doc(getFirestore(), 'users', `${assignedToUID}`)
+        await addDoc(collection(assignedToRef, 'actions'), {
+            comment: comment.comment,
+            dueDate: comment.dueDate,
+            severity: comment.severity,
+            ID: comment.ID,
+            document: comment.document
+        })
     }
 
     const saveComment = async(comment) => {
