@@ -42,7 +42,7 @@ const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, 
                         <CloseIcon onClick={toggleModal} className={styles.formExitBtn}/>
                         <form onSubmit={(event) => {addTeam(event)}}>
                             <h2 className={styles.formTitle}>Start a new Group</h2>
-                            <h3>Group Name</h3>
+                            <h3 className={styles.formLabel}>Group Name</h3>
                             <input
                                 type='text'
                                 name='name'
@@ -50,7 +50,7 @@ const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, 
                                 onChange={(event) => onChange(event)}
                                 className={styles.addProjectInput}
                             />
-                            <h3>Team Description</h3>
+                            <h3 className={styles.formLabel}>Team Description</h3>
                             <textarea
                                 cols='60'
                                 rows='5'
@@ -61,7 +61,7 @@ const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, 
                             />
                             <div className={styles.addMemberWrapper}>
                                 <div className={styles.addMemberInputWrapper}>
-                                    <h3>Team</h3>
+                                    <h3 className={styles.formLabel}>Team</h3>
                                     <input
                                         type='text'
                                         name='member'

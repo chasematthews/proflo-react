@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from '@styles/Home.module.css'
 
 const SidebarRow = ({Icon, text, handleClick, style, team}) => {
 
@@ -13,7 +14,7 @@ const SidebarRow = ({Icon, text, handleClick, style, team}) => {
     return (
         <div className={style} onClick={handleClick}>
             {<Icon />}
-            <h2>{text}</h2>
+            <h2 className={styles.sideBarText}>{text}</h2>
         </div>
     );
 };

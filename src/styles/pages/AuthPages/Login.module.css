@@ -3,21 +3,24 @@
     height: 100vh;
     background-color: var(--blue-green);
     justify-content: center;
-    align-items: center;
+    align-items: top;
+    padding: 120px;
+    overflow: hidden;
 }
 
 .welcome {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 90%;
+    min-width: 720px;
+    min-height: 720px;
     background-color: var(--white);
     border-radius: var(--border-radius-l);
-    padding: var(--spacing-l) var(--spacing-xl);
+    padding: min(20px, 4vw) min(20px, 8vw);
 }
 
 .profloLogo {
-    height: 8vw;
+    height: 150px;
 }
 
 .signInForm {
@@ -26,51 +29,46 @@
 }
 
 .title {
-    margin-bottom: var(--spacing-s);
-    font-size: 2vw;
+    margin-bottom: 12px;
+    font-size: 48px;
     text-align: center;
 }
 
 .welcomeInstructions {
-    margin-bottom: var(--spacing-m);
-    font-size: 0.8vw;
+    margin-bottom: 40px;
+    font-size: 18px;
     font-weight: 400;
     text-align: center;
 }
 
 .signInFormLabel {
-    font-size: 0.8vw;
+    font-size: 18px;
     font-weight: 600;
 }
 
-.signInFormInput, .signInFormButton {
-    padding: var(--spacing-xs);
+.signInFormInput, .signInFormButton, .signInFormInputPassword {
+    padding: 8px;
     border-radius: var(--border-radius-xs);
     border: solid 1px black;
-    width: 20vw;
-    font-size: 0.8vw;
-    margin-bottom: var(--spacing-s);
-
+    width: 500px;
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
 .signInFormInputPassword {
-    padding: var(--spacing-xs);
-    border-radius: var(--border-radius-xs);
-    border: solid 1px black;
-    width: 20vw;
-    font-size: 0.8vw;
-    margin-bottom: var(--spacing-xxxs);
+    margin-bottom: 4px;
 }
 
 .forgotPassWord {
-    font-size: 0.7vw;
+    font-size: 14px;
     font-weight: 400;
-    margin-bottom: var(--spacing-s);
+    margin-bottom: 20px;
 }
 
 .signInFormButton {
     background-color: var(--blue-green-dark);
     font-weight: 600;
+    font-size: 18px;
 }
 
 .signInFormButton:hover {
@@ -85,15 +83,15 @@ hr {
 
 .googleButton {
     background-color: #4285F4;
-    height: 2vw;
+    height: 40px;
     border: none;
     box-shadow: var(--shadow);
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: 20px;
 }
 
 .googleButtonContentWrapper {
     display: flex;
-    padding: 1px;
+    padding: 2px;
     height: 100%;
 }
 
@@ -126,11 +124,12 @@ hr {
 
 .googleButton:hover {
     cursor: pointer;
+    filter: brightness(90%);
 }
 
 .MSButton {
     background-color: white;
-    height: 2vw;
+    height: 40px;
     border: 1px solid #737373;
     box-shadow: var(--shadow);
     margin-bottom: var(--spacing-xs);
@@ -171,12 +170,13 @@ hr {
 
 .MSButton:hover {
     cursor: pointer;
+    filter: brightness(90%);
 }
 
 .nameWrapper {
     display: flex;
     justify-content: space-between;
-    gap: 2vw;
+    gap: 20px;
 }
 
 .firstNameWrapper, .lastNameWrapper {
@@ -185,10 +185,10 @@ hr {
 }
 
 .signInFormInputName {
-    padding: var(--spacing-xs);
+    padding: 8px;
     border-radius: var(--border-radius-xs);
     border: solid 1px black;
-    width: 9vw;
-    font-size: 0.8vw;
-    margin-bottom: var(--spacing-s);
+    width: 240px;
+    font-size: 18px;
+    margin-bottom: 20px;
 }

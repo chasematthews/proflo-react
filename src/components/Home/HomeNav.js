@@ -119,9 +119,9 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
                 }
                 <hr />
             </div>
-            <div className={styles.projectButtonsWrapper}>
+            <div className={styles.projectButtonsWrapperMain}>
                 {homeButtonsContent.map((homeButtonContent) => {
-                    return <SidebarRow 
+                    return <SidebarRow
                         Icon={homeButtonContent.icon}
                         text={homeButtonContent.text}
                         key={homeButtonContent.id}
@@ -129,7 +129,9 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
                         style={sidebarStyle}
                         />
                 })}
-                <hr></hr>
+            </div>
+            <hr></hr>
+            <div className={styles.projectButtonsWrapperTeams}>
                 {teamRender.map((team, key) => {
                     // console.log(teams)
                     return <SidebarRow

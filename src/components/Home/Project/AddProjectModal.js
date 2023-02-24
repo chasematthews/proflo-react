@@ -11,7 +11,7 @@ const AddProjectModal = ({modal, toggleModal, addProject, project, onChange}) =>
                         <CloseIcon onClick={toggleModal} className={styles.formExitBtn}/>
                         <form>
                             <h2 className={styles.formTitle}>Add a Project</h2>
-                            <h3>Project Name</h3>
+                            <h3 className={styles.formLabel}>Project Name</h3>
                             <input
                                 type='text'
                                 name='name'
@@ -19,7 +19,7 @@ const AddProjectModal = ({modal, toggleModal, addProject, project, onChange}) =>
                                 onChange={(event) => onChange(event)}
                                 className={styles.addProjectInput}
                             />
-                            <h3>Project Description</h3>
+                            <h3 className={styles.formLabel}>Project Description</h3>
                             <textarea
                                 cols='60'
                                 rows='5'
@@ -28,7 +28,7 @@ const AddProjectModal = ({modal, toggleModal, addProject, project, onChange}) =>
                                 onChange={(event) => onChange(event)}
                                 className={styles.addProjectInput}
                             />
-                            <h3>Client</h3>
+                            <h3 className={styles.formLabel}>Client</h3>
                             <input
                                 type='text'
                                 name='client'
@@ -36,7 +36,7 @@ const AddProjectModal = ({modal, toggleModal, addProject, project, onChange}) =>
                                 onChange={(event) => onChange(event)}
                                 className={styles.addProjectInput}
                             />
-                            <h3>Capacity</h3>
+                            <h3 className={styles.formLabel}>Capacity</h3>
                             <input
                                 type='text'
                                 name='capacity'
@@ -44,7 +44,7 @@ const AddProjectModal = ({modal, toggleModal, addProject, project, onChange}) =>
                                 onChange={(event) => onChange(event)}
                                 className={styles.addProjectInput}
                             />
-                            <h3>Raw Material</h3>
+                            <h3 className={styles.formLabel}>Raw Material</h3>
                             <input
                                 type='text'
                                 name='rawMaterial'
@@ -52,7 +52,7 @@ const AddProjectModal = ({modal, toggleModal, addProject, project, onChange}) =>
                                 onChange={(event) => onChange(event)}
                                 className={styles.addProjectInput}
                             />
-                            <h3>Product</h3>
+                            <h3 className={styles.formLabel}>Product</h3>
                             <input
                                 type='text'
                                 name='product'
@@ -60,7 +60,7 @@ const AddProjectModal = ({modal, toggleModal, addProject, project, onChange}) =>
                                 onChange={(event) => onChange(event)}
                                 className={styles.addProjectInput}
                             />
-                            <h3>Level of Engineering</h3>
+                            <h3 className={styles.formLabel}>Level of Engineering</h3>
                             <input
                                 type='text'
                                 name='projectStage'
@@ -68,7 +68,7 @@ const AddProjectModal = ({modal, toggleModal, addProject, project, onChange}) =>
                                 onChange={(event) => onChange(event)}
                                 className={styles.addProjectInput}
                             />
-                            <h3>Team</h3>
+                            <h3 className={styles.formLabel}>Team</h3>
                             <input
                                 type='text'
                                 name='team'

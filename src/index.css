@@ -19,10 +19,10 @@
     --spacing-xxxs: 0.1vw;
     --spacing-xxs: 0.25vw;
     --spacing-xs: 0.5vw;
-    --spacing-s: 1vw;
-    --spacing-m: 2vw;
-    --spacing-l: 4vw;
-    --spacing-xl: 8vw;
+    --spacing-s: min(1vw, 20px);
+    --spacing-m: min(2vw, 40px);
+    --spacing-l: min(4vw, 80px);
+    --spacing-xl: min(8vw, 160px);
     --spacing-xxl: 16vw;
     --spacing-xxxl: 32vw
 }

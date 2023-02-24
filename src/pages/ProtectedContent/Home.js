@@ -219,16 +219,18 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
             <HomeHeader
                 headerStyle={headerStyle}
             />
-            <HomeNav
-                toggleProjectModalHandleClick = {toggleProjectModal}
-                toggleTeamModalHandleClick = {toggleTeamModal}
-                teams = {teams}
-                setActiveTeam = {setActiveTeam}
-            />
-            <HomeMain 
-                projects = {projects}
-                teams = {teams}
-            />
+            <div className={styles.bodyContent}>
+                <HomeNav
+                    toggleProjectModalHandleClick = {toggleProjectModal}
+                    toggleTeamModalHandleClick = {toggleTeamModal}
+                    teams = {teams}
+                    setActiveTeam = {setActiveTeam}
+                />
+                <HomeMain
+                    projects = {projects}
+                    teams = {teams}
+                />
+            </div>
         </div>
     )
 }
