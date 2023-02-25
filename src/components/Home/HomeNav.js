@@ -82,8 +82,12 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
         deleteFromDB(removeID)
     }
 
-    const deleteFromDB = (removeID) => {
-        deleteDoc(doc(getFirestore(), 'teams', `${removeID}`))
+    const deleteFromDB = async (removeID) => {
+        const team = await getDoc(doc(getFirestore(), 'teams', `${removeID}`))
+        team.data().members.map(async(member) => {
+            const userDB = await doc(getFirestore(), 'users', `${member.UID}`)
+            deleteDoc(doc(userDB, 'teams', `${removeID}`))
+        })
     }
    
     useEffect(() => {
