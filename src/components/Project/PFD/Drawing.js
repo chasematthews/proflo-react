@@ -142,7 +142,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
 
     useEffect(() => {
         setTimeout(() => loadImages(), 1000)
-    }, [])
+    })
 
     useEffect(() => {
         fetchHtml()

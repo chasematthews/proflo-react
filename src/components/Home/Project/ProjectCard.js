@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import styles from '../../../styles/Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import {Document, Page} from 'react-pdf/dist/esm/entry.webpack5'
-import { doc, getDoc, getFirestore, getCollection, onSnapshot, query, collection } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, getCollection, onSnapshot, query, collection, onSnapshotsInSync } from 'firebase/firestore';
 import { UserAuth } from '../../../contexts/AuthContext';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const ProjectCard = ({project, team}) => {
+const ProjectCard = ({project, team, onBinClick}) => {
 
     const[imageURL, setImageURL] = useState('')
 
@@ -28,16 +29,44 @@ const ProjectCard = ({project, team}) => {
             projectDB = await doc(userRef, 'projects', `${project.name}`)
             const docQuery = query(collection(projectDB, 'documents'))
             onSnapshot(docQuery, (snapshot) => {
-                setImageURL(snapshot.docs[0].data().screenGrab)
+                if (snapshot.docs.length !== 0) {
+                    setImageURL(snapshot.docs[0].data().screenGrab)
+                }
             })
         } else {
             const teamDB = await doc(getFirestore(), 'teams', `${team.id}`)
             projectDB = await doc(teamDB, 'projects', `${project.name}`)
             const docQuery = query(collection(projectDB, 'documents'))
             onSnapshot(docQuery, (snapshot) => {
-                setImageURL(snapshot.docs[0].data().screenGrab)
+                if (snapshot.docs.length !== 0) {
+                    setImageURL(snapshot.docs[0].data().screenGrab)
+                }
             })
         }
+    }
+
+    const[clickFunction, setClickFunction] = useState({goToProject})
+    const [optionsModal, setOptionsModal] = useState(false)
+
+    const showOptionsButton = () => {
+        setOptionsModal(true)
+    }
+
+    const hideOptionsButton = () => {
+        setOptionsModal(false)
+    }
+
+    const cancelClickFunction = () => {
+        setClickFunction(null)
+    }
+
+    const reinstateClickFunction = () => {
+        setClickFunction({goToProject})
+    }
+
+    const optionsClick = () => {
+        // console.log(project)
+        onBinClick(project.name)
     }
 
     useEffect(() => {
@@ -45,13 +74,10 @@ const ProjectCard = ({project, team}) => {
     })
 
     return (
-        <div className={styles.projectCard} onClick={goToProject}>
+        <div className={styles.projectCard} onClick={clickFunction && clickFunction.handleClick} onMouseOver={showOptionsButton} onMouseOut={hideOptionsButton}>
             <div className={styles.projectImageWrapper}>
                 {imageURL ? 
                     <img className={styles.previewImage} src={`${imageURL}`} alt='Document Preview' /> :
-                    // <object data={`${project.PDFURL}`} type="application/pdf" width="100%" height="100%">
-                    //     <p>Alternative text - include a link <a href={`${project.PDFURL}`}>to the PDF!</a></p>
-                    // </object> :
                     <div></div>
                 }
             </div>
@@ -61,6 +87,7 @@ const ProjectCard = ({project, team}) => {
                 <h4>{project.rawMaterial}</h4>
                 <h4>{project.product}</h4>
             </div>
+            {optionsModal && <div className={styles.optionsBtnWrapper}><DeleteIcon onMouseOver={cancelClickFunction} onMouseOut={reinstateClickFunction} onClick={optionsClick} className={styles.moreOptions}/></div>}
         </div>
     )
 }

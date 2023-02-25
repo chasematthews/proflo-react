@@ -233,6 +233,7 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
                 <HomeMain
                     projects = {projects}
                     teams = {teams}
+                    setProjects = {setProjects}
                 />
             </div>
         </div>
