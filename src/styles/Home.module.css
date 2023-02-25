@@ -42,6 +42,8 @@
 
 .main {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header component CSS */
@@ -348,26 +350,20 @@ input, textarea {
 
 .mainGrid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-gap: 3vw;    
+    grid-template-columns: repeat(auto-fill, 350px);
+    grid-gap: 3vw;
+    overflow: scroll;
 }
 
 .projectCard {
     background-color: aliceblue;
     border-radius: var(--border-radius-l);
-    padding: var(--spacing-s);
+    padding: 20px;
 }
 
 .projectImageWrapper {
-    width: 100%;
     display: flex;
-    margin-bottom: var(--spacing-xs);
-}
-
-.projectImage {
-    width: 100%;
-    border-radius: var(--border-radius-s);
+    margin-bottom: 10px;
 }
 
 .tagsWrapper {
@@ -380,6 +376,11 @@ input, textarea {
 .projectCard:hover {
     cursor: pointer;
     filter: brightness(90%); 
+}
+
+.previewImage {
+    width: 100%;
+    border-radius: var(--border-radius-s);
 }
 
 /* General CSS */
