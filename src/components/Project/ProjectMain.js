@@ -8,7 +8,7 @@ const ProjectMain = ({toggleCommentModal, initiateComment, comments, project, te
         <Routes>
             {documents.map((document, key) => {
                 return (
-                    <Route key={key} element={<Drawing initiateComment = {initiateComment} setActiveDocument={setActiveDocument} appDocument={document} project={project} toggleCommentModal={toggleCommentModal} team={team}/>} path={`${document.documentName.replace(/\s+/g, '-')}`}/>
+                    <Route key={key} element={<Drawing project={project} team={team} initiateComment = {initiateComment} setActiveDocument={setActiveDocument} appDocument={document} project={project} toggleCommentModal={toggleCommentModal} team={team}/>} path={`${document.documentName.replace(/\s+/g, '-')}`}/>
                 )
             })}
             <Route element={<Comments comments={comments}/>} path='/comments'></Route>

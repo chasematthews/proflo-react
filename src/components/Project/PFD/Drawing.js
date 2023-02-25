@@ -1,8 +1,10 @@
+import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
+import html2canvas from 'html2canvas';
 import React, {useState, useEffect, useRef} from 'react';
 import styles from '../../../styles/Project.module.css'
 import StreamTable from './StreamTable';
 
-const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDocument}) => {
+const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDocument, team, project}) => {
 
     setActiveDocument(appDocument.documentName)
     
@@ -114,6 +116,34 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
         }
     }
 
+    const loadImages = async() => {
+        const teamDB = await doc(getFirestore(), 'teams', `${team.id}`)
+        const projectDB = await doc(teamDB, 'projects', `${project.name}`)
+        const imageURL = await (await getDoc(doc(projectDB, 'documents', `${appDocument.documentName}`))).data().screenGrab
+        if (imageURL === undefined) {
+            exportAsImage();
+        }
+    }
+
+    const exportAsImage = async() => {
+        const element = document.getElementById('previewImage');
+        const canvas = await html2canvas(element, {scrollY: -window.scrollY, scrollX: -window.scrollX});
+        const image = await canvas.toDataURL('image/png', 1.0)
+        saveImage(image)
+    }
+
+    const saveImage = async(image) => {
+        const teamDB = await doc(getFirestore(), 'teams', `${team.id}`)
+        const projectDB = await doc(teamDB, 'projects', `${project.name}`)
+        await updateDoc(doc(projectDB, 'documents', `${appDocument.documentName}`), {
+            screenGrab: image
+        })
+    }
+
+    useEffect(() => {
+        setTimeout(() => loadImages(), 1000)
+    }, [])
+
     useEffect(() => {
         fetchHtml()
     }, [appDocument.drawingURL])
@@ -125,7 +155,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
     return (
         <div className={styles.main}>
             <h2>{document.documentName}</h2>
-            <div className={styles.PFDWrapper}>
+            <div className={styles.PFDWrapper} id='previewImage'>
                 <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
                 {streamNumbersList !== undefined && streamNumbersList.map((idArray, string) => {
                     return (

@@ -342,6 +342,10 @@ input, textarea {
 
 /* Main CSS */
 
+.projectDashboardTitle {
+    font-size: 20px;
+}
+
 .mainGrid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -372,8 +376,6 @@ input, textarea {
     gap: var(--spacing-xs);
     margin-top: var(--spacing-xs);
 }
-
-
 
 .projectCard:hover {
     cursor: pointer;
