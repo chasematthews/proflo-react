@@ -3,7 +3,7 @@ import styles from '../../styles/Home.module.css'
 import SidebarRow from './SidebarRow';
 import { getAuth } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { setDoc, doc, query, onSnapshot, getDoc, deleteDoc } from 'firebase/firestore';
+import { setDoc, doc, query, onSnapshot, getDoc, deleteDoc, getFirestore } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../../contexts/AuthContext';
 
@@ -13,7 +13,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import AddIcon from '@mui/icons-material/Add';
 import GroupsIcon from '@mui/icons-material/Groups';
 
-const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, teams, setActiveTeam}) => {
+const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, teams, setActiveTeam, setTeams}) => {
 
     const { userRef } = UserAuth();
     // const { companyRef } = UserAuth();
@@ -76,6 +76,15 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
             snapshot.data() && setCompanyName((snapshot.data().name));
         })
     }
+
+    const deleteTeam = (removeID) => {
+        setTeams(teams => teams.filter(team => team.id !== `${removeID}`))
+        deleteFromDB(removeID)
+    }
+
+    const deleteFromDB = (removeID) => {
+        deleteDoc(doc(getFirestore(), 'teams', `${removeID}`))
+    }
    
     useEffect(() => {
         loadLogo();
@@ -85,14 +94,14 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
     const sidebarStyle = styles.sidebarRow
 
     const homeButtonsContent = [
-        {icon: ContentPasteIcon, text: 'Projects', id: 'Projects', handleClick: function() {navigate('/projects'); setActiveTeam('projects')}},
-        {icon: CheckBoxIcon, text: 'Actions', id: 'Actions', handleClick: function() {navigate('/actions')}},
-        {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: toggleProjectModalHandleClick},
-        {icon: GroupsIcon, text: 'New Group', id: 'New Group', handleClick: toggleTeamModalHandleClick}
+        {icon: ContentPasteIcon, text: 'Projects', id: 'Projects', handleClick: function() {navigate('/projects'); setActiveTeam('projects')}, onClickBin: null, infoID: null},
+        {icon: CheckBoxIcon, text: 'Actions', id: 'Actions', handleClick: function() {navigate('/actions')}, onClickBin: null, infoID: null},
+        {icon: AddIcon, text: 'New Project', id: 'New Project', handleClick: toggleProjectModalHandleClick, onClickBin: null, infoID: null},
+        {icon: GroupsIcon, text: 'New Group', id: 'New Group', handleClick: toggleTeamModalHandleClick, onClickBin: null, infoID: null}
     ]
 
     const teamRender = teams.map(team => {
-        return {icon: GroupsIcon, text: `${team.name}`, id: `${team.name}`, handleClick: function() {navigate(`/${team.name.replace(/\s+/g, '-')}`); setActiveTeam(`${team.id}`)}}
+        return {icon: GroupsIcon, text: `${team.name}`, id: `${team.name}`, handleClick: function() {navigate(`/${team.name.replace(/\s+/g, '-')}`); setActiveTeam(`${team.id}`)}, onClickBin: deleteTeam, infoID: team.id}
     })
 
     return (
@@ -127,6 +136,8 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
                         key={homeButtonContent.id}
                         handleClick={homeButtonContent.handleClick}
                         style={sidebarStyle}
+                        onClickBin={homeButtonContent.onClickBin}
+                        infoID={homeButtonContent.infoID}
                         />
                 })}
             </div>
@@ -140,6 +151,9 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
                         key={team.id}
                         handleClick={team.handleClick}
                         style={sidebarStyle}
+                        team={team}
+                        onClickBin={team.onClickBin}
+                        infoID={team.infoID}
                     />
                 })}
             </div>

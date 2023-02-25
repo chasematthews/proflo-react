@@ -62,28 +62,30 @@ const AddTeamModal = ({modal, toggleModal, team, onChange, addTeam, setMembers, 
                             <div className={styles.addMemberWrapper}>
                                 <div className={styles.addMemberInputWrapper}>
                                     <h3 className={styles.formLabel}>Team</h3>
-                                    <input
-                                        type='text'
-                                        name='member'
-                                        placeholder='Member email'
-                                        ref={memberRef}
-                                        className={styles.addProjectInput}
-                                    />
-                                    <button
-                                        className={styles.addProjectButton}
-                                        onClick = {event => {
-                                            addMember(event)
-                                        }}
-                                    >Add Member</button>
-                                </div>
-                                <div className={styles.membersListWrapper}>
-                                    {members.map((member, key) => {
-                                        if ( key > 0) {
-                                            return (
-                                                <h3 className={styles.memberWrapper} key={key}>{member.email}</h3>
-                                            )
-                                        }
-                                    })}
+                                    <div className={styles.addMemberInputAndBtn}>
+                                        <input
+                                            type='text'
+                                            name='member'
+                                            placeholder='Member email'
+                                            ref={memberRef}
+                                            className={styles.addTeamInput}
+                                        />
+                                        <button
+                                            className={styles.addTeamButton}
+                                            onClick = {event => {
+                                                addMember(event)
+                                            }}
+                                        >Add Member</button>
+                                    </div>
+                                    <div className={styles.membersListWrapper}>
+                                        {members.map((member, key) => {
+                                            if ( key > 0) {
+                                                return (
+                                                    <h3 className={styles.memberWrapper} key={key}>{member.name}</h3>
+                                                )
+                                            }
+                                        })}
+                                    </div>
                                 </div>
                             </div>
                             <button 

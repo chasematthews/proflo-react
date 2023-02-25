@@ -201,17 +201,37 @@
     padding: 8px;
     border-radius: var(--border-radius-s);
     font-size: 12px;
+    position: relative;
+    z-index: 0;
 }
 
 .sidebarRow:hover {
     cursor: pointer;
-    filter: brightness(90%);
+    background-color: rgb(231, 231, 231);
 }
 
 hr {
     margin-bottom: 16px;
     margin-top: 16px;
     height: 1px;
+}
+
+.optionsBtnWrapper {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    height: 25px;
+    width: 25px;
+    border: var(--border-radius-s);
+    z-index: 1;
+}
+
+.moreOptions:hover {
+    background-color: white;
+}
+
+.optionsList {
+    position: fixed;
 }
 
 /* Modal CSS */
@@ -266,6 +286,60 @@ input, textarea {
     filter: brightness(90%);
 }
 
+.addProjectInput {
+    border-radius: var(--border-radius-xs);
+    padding: 4px;
+}
+
+.addProjectButton {
+    border-radius: var(--border-radius-xs);
+    padding: 4px;
+    background-color: var(--light-green);
+    font-weight: 600;
+}
+
+.addProjectButton:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
+
+.addMemberInputAndBtn {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 20px;
+}
+.addTeamInput {
+    border-radius: var(--border-radius-xs);
+    padding: 4px;
+    margin: 0px;
+    flex-grow: 1;
+}
+
+.addTeamButton {
+    border-radius: var(--border-radius-xs);
+    padding: 4px;
+    background-color: var(--light-green);
+    font-weight: 600;
+}
+
+.addTeamButton:hover {
+    filter: brightness(90%);
+    cursor: pointer;
+}
+
+.membersListWrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 8px;
+    margin-bottom: 20px;
+}
+
+.memberWrapper {
+    font-weight: 300;
+    font-size: 16px;
+}
+
 /* Main CSS */
 
 .mainGrid {
@@ -299,22 +373,7 @@ input, textarea {
     margin-top: var(--spacing-xs);
 }
 
-.addProjectInput {
-    border-radius: var(--border-radius-xs);
-    padding: var(--spacing-xxs);
-}
 
-.addProjectButton {
-    border-radius: var(--border-radius-xs);
-    padding: var(--spacing-xxs);
-    background-color: var(--light-green);
-    font-weight: 600;
-}
-
-.addProjectButton:hover {
-    cursor: pointer;
-    filter: brightness(90%);
-}
 
 .projectCard:hover {
     cursor: pointer;

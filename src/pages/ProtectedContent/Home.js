@@ -27,30 +27,33 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         projectStage: '',
         team: '',
     });
+
     const initialTeamState = {
         name: '',
         description: '',
         members: [],
-    }
-    const [team, setTeam] = useState(initialTeamState)
+    };
+
+    const [team, setTeam] = useState(initialTeamState);
 
     const [member, setMember] = useState({
         email: '',
         UID: '',
-    })
+    });
 
     const initialMembersState = [{
         email: user.email,
         UID: user.uid,
         name: user.displayName,
-    }]
+    }];
 
-    const [members, setMembers] = useState(initialMembersState)
+    const [members, setMembers] = useState(initialMembersState);
 
     const [projectModal, setProjectModal] = useState(false);
+
     const [teamModal, setTeamModal] = useState(false);
 
-    const [activeTeam, setActiveTeam] = useState('projects')
+    const [activeTeam, setActiveTeam] = useState('projects');
 
     //Define Toggle Project Modal Function - makes the project Modal appear
     const toggleProjectModal = () => {
@@ -225,6 +228,7 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
                     toggleTeamModalHandleClick = {toggleTeamModal}
                     teams = {teams}
                     setActiveTeam = {setActiveTeam}
+                    setTeams={setTeams}
                 />
                 <HomeMain
                     projects = {projects}
