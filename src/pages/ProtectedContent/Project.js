@@ -176,7 +176,7 @@ const Project = ({project, team}) => {
             />
             <div className={styles.bodyContent}>
                 <ProjectNavMain project={project} team={team}/>
-                <ProjectNavMinor toggleDocumentModal={toggleDocumentModal} documents={documents}/>
+                <ProjectNavMinor project={project} team={team} toggleDocumentModal={toggleDocumentModal} documents={documents} setDocuments={setDocuments}/>
                 <ProjectMain
                     toggleCommentModal={toggleCommentModal}
                     initiateComment={initiateComment}

@@ -4,8 +4,12 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AddIcon from '@mui/icons-material/Add';
 import styles from '../../styles/Project.module.css';
 import { useNavigate } from 'react-router-dom';
+import { getDoc, doc, getFirestore, deleteDoc } from 'firebase/firestore';
+import { UserAuth } from '../../contexts/AuthContext';
 
-const ProjectNavMinor = ({toggleDocumentModal, documents}) => {
+const ProjectNavMinor = ({toggleDocumentModal, documents, setDocuments, team, project}) => {
+
+    const { userRef } = UserAuth();
 
     const navigate = useNavigate();
 
@@ -15,8 +19,24 @@ const ProjectNavMinor = ({toggleDocumentModal, documents}) => {
         {icon: AddIcon, text: 'Add Doc', id: 'Add Doc', handleClick: toggleDocumentModal}
     ]
 
+    const deleteDocument = (docName) => {
+        setDocuments(documents => documents.filter(document => document.documentName !== `${docName}`))
+        deleteFromDB(docName)
+    }
+
+    const deleteFromDB = async (docName) => {
+        if (team === null) {
+            const projectDB = await doc(userRef, 'projects', `${project.name}`)
+            await deleteDoc(doc(projectDB, 'documents', `${docName}`));
+        } else {
+            const teamDB = await doc(getFirestore(), 'teams', `${team.id}`)
+            const projectDB = await doc(teamDB, 'projects', `${project.name}`)
+            await deleteDoc(doc(projectDB, 'documents', `${docName}`));
+        }
+    }
+
     const documentRender = documents.map(document => {
-        return {icon: AccountTreeIcon, text: `${document.documentName}`, id: `${document.documentName}`, handleClick: function() {navigate(`${document.documentName.replace(/\s+/g, '-')}`)}}
+        return {icon: AccountTreeIcon, text: `${document.documentName}`, id: `${document.documentName}`, handleClick: function() {navigate(`${document.documentName.replace(/\s+/g, '-')}`)}, onClickBin: deleteDocument}
     })
 
     return (
@@ -38,6 +58,8 @@ const ProjectNavMinor = ({toggleDocumentModal, documents}) => {
                         key={document.id}
                         handleClick={document.handleClick}
                         style={sidebarStyle}
+                        document={document}
+                        onClickBin={document.onClickBin}
                     />
                 })}
             </div>

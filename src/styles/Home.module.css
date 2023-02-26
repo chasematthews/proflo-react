@@ -311,6 +311,7 @@ input, textarea {
     margin-bottom: 8px;
     gap: 20px;
 }
+
 .addTeamInput {
     border-radius: var(--border-radius-xs);
     padding: 4px;

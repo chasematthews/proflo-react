@@ -2,14 +2,14 @@ import React, {useEffect, useState, useRef} from 'react';
 import styles from '@styles/Home.module.css'
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const SidebarRow = ({Icon, text, handleClick, style, team, onClickBin, infoID}) => {
+const SidebarRow = ({Icon, text, handleClick, style, team, onClickBin, infoID, document}) => {
 
     const[clickFunction, setClickFunction] = useState({handleClick})
     const [optionsModal, setOptionsModal] = useState(false)
 
 
     const showOptionsButton = () => {
-        team && setOptionsModal(true)
+        (team || document) && setOptionsModal(true)
     }
 
     const hideOptionsButton = () => {
@@ -25,7 +25,11 @@ const SidebarRow = ({Icon, text, handleClick, style, team, onClickBin, infoID}) 
     }
 
     const optionsClick = () => {
-        onClickBin(infoID)
+        if (team) {
+            onClickBin(infoID)
+        } else if (document) {
+            onClickBin(document.id)
+        }
     }
 
     return (
