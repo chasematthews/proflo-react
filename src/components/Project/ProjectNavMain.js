@@ -37,6 +37,7 @@ const ProjectNavMain = ({project, team}) => {
     return (
         <div className={styles.navigator}>
             <div className={styles.projectNameWrapper}>{project.name}</div>
+            <hr></hr>
             <div className={styles.projectButtonsWrapper}>
                 {projectButtonsContent.map((projectButtonContent) => {
                     return <SidebarRow 

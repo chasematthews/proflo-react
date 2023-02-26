@@ -7,6 +7,7 @@ import AddProjectModal from '@components/Home/Project/AddProjectModal';
 import AddTeamModal from '@components/Home/AddTeamModal';
 import { setDoc, doc, getFirestore, getDoc, updateDoc } from 'firebase/firestore';
 import { UserAuth } from '@contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Home = ({ projects, setProjects, teams, setTeams}) => {
 
@@ -15,6 +16,8 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
 
     //Import the current user info from the AuthContext
     const { user } = UserAuth();
+
+    const navigate = useNavigate()
 
     //Define State Variables
     const [project, setProject] = useState({
@@ -69,9 +72,13 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
             ...projects,
             [activeTeam]: projects[activeTeam].concat(project)
         }))
+
         if (userRef) {
             saveProject(project)
         }
+
+        const teamName = teams[teams.map(function(e) {return e.id;}).indexOf(activeTeam)].name
+        navigate(`/${teamName.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/design`)
     }
 
     //Updates the project information when the form data is entered

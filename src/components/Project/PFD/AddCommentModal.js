@@ -12,20 +12,22 @@ const AddCommentModal = ({comment, handleCommentChange, toggleCommentModal, init
                         <CloseIcon onClick={toggleCommentModal} className={styles.formExitBtn}/>
                         <form>
                             <h2 className={styles.formTitle}>Add a Comment</h2>
-                            <h3>Comment</h3>
+                            <h3 className={styles.formLabel}>Comment</h3>
                             <textarea
                                 cols='40'
                                 rows='5'
                                 name='comment'
                                 value={comment.comment}
                                 onChange={(event) => handleCommentChange(event)}
+                                className={styles.formInput}                           
                             />
-                            <h3>Assigned To</h3>
+                            <h3 className={styles.formLabel}>Assigned To</h3>
                             <input 
                                 value={comment.assignedTo} 
                                 name="assignedTo" 
                                 list="assignedTo"
-                                onChange={(event) => handleCommentChange(event)}                                
+                                onChange={(event) => handleCommentChange(event)}     
+                                className={styles.formInput}                           
                             />
                             <datalist id = "assignedTo">
                                 {team.members.map((member, key) => {
@@ -34,19 +36,21 @@ const AddCommentModal = ({comment, handleCommentChange, toggleCommentModal, init
                                     )
                                 })}
                             </datalist>
-                            <h3>Due Date</h3>
+                            <h3 className={styles.formLabel}>Due Date</h3>
                             <input
                                 type='date'
                                 name='dueDate'
                                 value={comment.dueDate}
                                 onChange={(event) => handleCommentChange(event)}
+                                className={styles.formInput}                           
                             />
-                            <h3>Severity</h3>
+                            <h3 className={styles.formLabel}>Severity</h3>
                             <input 
                                 value={comment.severity}
                                 name="severity" 
                                 list="severity"
-                                onChange={(event) => handleCommentChange(event)}                                
+                                onChange={(event) => handleCommentChange(event)}      
+                                className={styles.formInput}                                                     
                             />
                             <datalist id = "severity">
                                 <option value="Low"/>
@@ -54,7 +58,7 @@ const AddCommentModal = ({comment, handleCommentChange, toggleCommentModal, init
                                 <option value="High"/>
                             </datalist>
                             <button 
-                                className={styles.newProjectBtn}
+                                className={styles.formSubmitBtn}
                                 onClick={onSubmitComment}
                             >Post Comment</button>
                         </form>

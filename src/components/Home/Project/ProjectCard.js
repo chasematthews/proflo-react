@@ -65,7 +65,6 @@ const ProjectCard = ({project, team, onBinClick}) => {
     }
 
     const optionsClick = () => {
-        // console.log(project)
         onBinClick(project.name)
     }
 
@@ -74,7 +73,7 @@ const ProjectCard = ({project, team, onBinClick}) => {
     })
 
     return (
-        <div className={styles.projectCard} onClick={clickFunction && clickFunction.handleClick} onMouseOver={showOptionsButton} onMouseOut={hideOptionsButton}>
+        <div className={styles.projectCard} onClick={clickFunction && clickFunction.goToProject} onMouseOver={showOptionsButton} onMouseOut={hideOptionsButton}>
             <div className={styles.projectImageWrapper}>
                 {imageURL ? 
                     <img className={styles.previewImage} src={`${imageURL}`} alt='Document Preview' /> :

@@ -174,17 +174,19 @@ const Project = ({project, team}) => {
             <HomeHeader
                 headerStyle={headerStyle} 
             />
-            <ProjectNavMain project={project} team={team}/>
-            <ProjectNavMinor toggleDocumentModal={toggleDocumentModal} documents={documents}/>
-            <ProjectMain 
-                toggleCommentModal={toggleCommentModal} 
-                initiateComment={initiateComment}
-                documents={documents} 
-                comments={comments} 
-                project={project} 
-                team={team}
-                setActiveDocument = {setActiveDocument}
-            />
+            <div className={styles.bodyContent}>
+                <ProjectNavMain project={project} team={team}/>
+                <ProjectNavMinor toggleDocumentModal={toggleDocumentModal} documents={documents}/>
+                <ProjectMain
+                    toggleCommentModal={toggleCommentModal}
+                    initiateComment={initiateComment}
+                    documents={documents}
+                    comments={comments}
+                    project={project}
+                    team={team}
+                    setActiveDocument = {setActiveDocument}
+                />
+            </div>
             <AddCommentModal 
                 handleCommentChange = {handleCommentChange}
                 comment = {comment}

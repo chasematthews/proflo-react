@@ -26,9 +26,6 @@ const SidebarRow = ({Icon, text, handleClick, style, team, onClickBin, infoID}) 
 
     const optionsClick = () => {
         onClickBin(infoID)
-        // if (team !== undefined) {
-        //     console.log(team)
-        // }
     }
 
     return (
