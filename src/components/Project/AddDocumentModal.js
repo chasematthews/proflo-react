@@ -130,11 +130,9 @@ const AddDocumentModal = ({document, handleDocumentChange, toggleDocumentModal, 
     }, [document.drawingURL])
 
     useEffect(() => {
-        console.log('hello')
-        if (documents.length !== 0) {
-            saveDoc();
-        }
-    }, [document.screenGrab])
+        console.log(document)
+        saveDoc()
+    }, [document.drawingURL])
 
     return (
         <>

@@ -168,7 +168,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
                                 streamNumber = {streamNumber}
                                 displayTable = {displayTable}
                                 toggleCommentModal = {toggleCommentModal}
-                                dataURL = {appDocument.data[string].XLSXURL}
+                                dataURL = {appDocument.data[0].XLSXURL}
                                 initiateComment = {initiateComment}
                                 />
                             )
