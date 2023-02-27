@@ -20,7 +20,9 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-exports.PDFtoHTML = functions.https.onCall((data, context) => {
+exports.PDFtoHTML = functions.runWith({
+  timeoutSeconds: 540
+}).https.onCall((data, context) => {
   const URL = data.URL
 
   // Initialize the ApifyClient with API token

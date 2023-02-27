@@ -127,7 +127,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
 
     const exportAsImage = async() => {
         const element = document.getElementById('previewImage');
-        const canvas = await html2canvas(element, {scrollY: -window.scrollY, scrollX: -window.scrollX});
+        const canvas = await html2canvas(element);
         const image = await canvas.toDataURL('image/png', 1.0)
         saveImage(image)
     }
