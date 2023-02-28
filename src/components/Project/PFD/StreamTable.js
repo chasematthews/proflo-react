@@ -9,7 +9,6 @@ const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommen
     const span = streamNumber.querySelector("span")
 
     let position = streamNumber.getBoundingClientRect()
-    let showTable = displayTable.includes(span.textContent)
 
     const clientHeight = streamNumber.parentNode.parentNode.parentNode.clientHeight
 
@@ -52,7 +51,7 @@ const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommen
         zIndex: '1',
         backgroundColor: '#d4f3e1',
         position: 'fixed',
-        display: `${showTable? "flex" : "none"}`,
+        display: "flex",
         overflow: 'auto',
         resize: 'both',
         flexDirection: 'column',
@@ -65,7 +64,7 @@ const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommen
     return (
         <div style={styling}>
             <div onMouseDown = {dragMouseDown} className={styles.streamInfoHeader}>
-                <CloseIcon id={span.textContent} onClick={exitStreamTable} className={styles.streamTableExitBtn}/>
+                {/* <CloseIcon id={span.textContent} onClick={exitStreamTable} className={styles.streamTableExitBtn}/> */}
             </div>
             <StreamTableInfo streamNumber = {span} dataURL={dataURL}/>
             <button id={streamNumber.textContent} className={styles.addCommentButton} onClick={initiateComment}>Add Comment</button>

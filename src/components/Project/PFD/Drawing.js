@@ -4,20 +4,25 @@ import React, {useState, useEffect, useRef} from 'react';
 import styles from '../../../styles/Project.module.css'
 import StreamTable from './StreamTable';
 
-const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDocument, team, project}) => {
-
-    setActiveDocument(appDocument.documentName)
+const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDocument, team, project, streamNumbersList, setStreamNumbersList, activeStreamNumbersList, setActiveStreamNumbersList, streamNumbersListText, setStreamNumbersListText}) => {
     
     const[htmlFileString, setHtmlFileString] = useState();
-    const[streamNumbersList, setStreamNumbersList] = useState([]);
     const[displayTable, setDisplayTable] = useState([]);
+    const[dataArray, setDataArray] = useState([]);
 
-    // streamNumbersList && streamNumbersList.map(streamNumber => {
-    //     return (console.log(streamNumber.textContent))
-    // })
+    useEffect(() => {
+        applyStyling()
+    }, [streamNumbersListText])
 
     async function fetchHtml() {
         setHtmlFileString(await ( await fetch(`${appDocument.drawingURL}`)).text());
+    }
+
+    const applyStyling = () => {
+        const identifiers = document.getElementById("PFD").querySelectorAll("div");
+        appDocument.data.map(dataSet => {
+            streamNumberStyling(identifiers, dataSet.IDReference)
+        })
     }
 
     const getElements = () => {
@@ -26,9 +31,17 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
         appDocument.data.map((dataSet) => {
             findStreamNumbers(identifiers, dataSet.IDReference).then(result => {
                 result.length !== 0 && setStreamNumbersList(streamNumbersList => [...streamNumbersList, result])
+                getSNText(result).then(streamTextArray => {
+                    streamTextArray.length !==0 && setStreamNumbersListText(streamNumbersListText => [...streamNumbersListText, streamTextArray])
+                })
             });
-            streamNumberStyling(identifiers, dataSet.IDReference)
         })     
+    }
+
+    const getSNText = (streamArray) => {
+        let streamTextArray = []
+        streamArray.map(streamID => streamTextArray.push(streamID.textContent))
+        return new Promise((resolve, reject) => resolve(streamTextArray));
     }
 
     const streamNumberStyling = (identifiers, stringRef) => {
@@ -77,8 +90,37 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
     }
 
     const showTable = (span) => {
-        setDisplayTable((displayTable) => displayTable.concat(span.textContent))
+
+        // setDisplayTable((displayTable) => displayTable.concat(span.textContent))
+        streamNumbersListText.map(async(streamNumberSet, i) => {
+            const index = await streamNumberSet.indexOf(span.textContent)
+            if (index !== -1) {
+                setActiveStreamNumbersList(activeStreamNumberList => [...activeStreamNumberList, streamNumbersList[i][index]])
+            }
+        })
     }
+
+    useEffect(() => {
+        if (activeStreamNumbersList !== undefined) {
+            if (activeStreamNumbersList.length > 0) {
+                if (activeStreamNumbersList.length !== [...new Set(activeStreamNumbersList)].length) {
+                    setActiveStreamNumbersList([...new Set(activeStreamNumbersList)])
+                }
+            }
+        }
+        setDataArray([])
+    }, [activeStreamNumbersList])
+
+    useEffect(() => {
+        if (dataArray.length === 0 && activeStreamNumbersList.length !== 0) {
+            activeStreamNumbersList.map(async(streamNumber) => {
+                const dataSet = await getDataIndex(streamNumber)
+                if (dataArray.length === 0) {
+                    setDataArray(dataArray => [...dataArray, dataSet])
+                }
+            })
+        }
+    }, [dataArray])
     
     const findStreamNumbers = (identifiers, stringRef) => {
 
@@ -130,6 +172,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
         const canvas = await html2canvas(element);
         const image = await canvas.toDataURL('image/png', 1.0)
         saveImage(image)
+        console.log(image)
     }
 
     const saveImage = async(image) => {
@@ -140,9 +183,20 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
         })
     }
 
-    useEffect(() => {
-        setTimeout(() => loadImages(), 1000)
-    })
+    const getDataIndex = async (streamNumber) => {
+        const dataIndex = await streamNumbersListText.map((streamNumberSet, i) => {
+            const index = streamNumberSet.indexOf(streamNumber.textContent)
+            if (index !== -1) {
+                return i
+            } 
+        })
+        return await dataIndex.filter(function(element) {return element !== undefined})[0]
+    }
+
+    // useEffect(() => {
+    //     setTimeout(() => loadImages(), 1000)
+    // })
+
 
     useEffect(() => {
         fetchHtml()
@@ -157,22 +211,35 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
             <h2>{document.documentName}</h2>
             <div className={styles.PFDWrapper} id='previewImage'>
                 <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
-                {streamNumbersList !== undefined && streamNumbersList.map((idArray, string) => {
+                {(activeStreamNumbersList.length !== 0 && activeStreamNumbersList.length == dataArray.length) && activeStreamNumbersList.map((streamNumber, key) => {
+                    console.log(dataArray[key])
                     return (
-                        idArray.map(streamNumber => {
-                            return (
-                                // <div>Hello</div>
-                                <StreamTable
-                                key={streamNumber.className}
-                                exitStreamTable = {exitStreamTable}
-                                streamNumber = {streamNumber}
-                                displayTable = {displayTable}
-                                toggleCommentModal = {toggleCommentModal}
-                                dataURL = {appDocument.data[0].XLSXURL}
-                                initiateComment = {initiateComment}
-                                />
-                            )
-                        })
+                        <StreamTable
+                            streamNumber={streamNumber}
+                            key={key}
+                            toggleCommentModal = {toggleCommentModal}
+                            dataURL = {appDocument.data[dataArray[key]].XLSXURL}
+                            initiateComment = {initiateComment}
+                        />
+
+
+
+
+
+                        // idArray.map(streamNumber => {
+                        //     return (
+                        //         // <div>Hello</div>
+                        //         <StreamTable
+                        //         key={streamNumber.className}
+                        //         exitStreamTable = {exitStreamTable}
+                        //         streamNumber = {streamNumber}
+                        //         displayTable = {displayTable}
+                        //         toggleCommentModal = {toggleCommentModal}
+                        //         dataURL = {appDocument.data[0].XLSXURL}
+                        //         initiateComment = {initiateComment}
+                        //         />
+                        //     )
+                        // })
                     )
                 })}
             </div>

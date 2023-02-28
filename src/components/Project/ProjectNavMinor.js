@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { getDoc, doc, getFirestore, deleteDoc } from 'firebase/firestore';
 import { UserAuth } from '../../contexts/AuthContext';
 
-const ProjectNavMinor = ({toggleDocumentModal, documents, setDocuments, team, project}) => {
+const ProjectNavMinor = ({toggleDocumentModal, documents, setDocuments, team, project, setStreamNumbersList, setActiveStreamNumbersList, setStreamNumbersListText}) => {
 
     const { userRef } = UserAuth();
 
@@ -35,8 +35,15 @@ const ProjectNavMinor = ({toggleDocumentModal, documents, setDocuments, team, pr
         }
     }
 
+    const docNav = (docID) => {
+        navigate(`${docID.replace(/\s+/g, '-')}`);
+        setStreamNumbersList([]);
+        setActiveStreamNumbersList([]);
+        setStreamNumbersListText([]);
+    }
+
     const documentRender = documents.map(document => {
-        return {icon: AccountTreeIcon, text: `${document.documentName}`, id: `${document.documentName}`, handleClick: function() {navigate(`${document.documentName.replace(/\s+/g, '-')}`)}, onClickBin: deleteDocument}
+        return {icon: AccountTreeIcon, text: `${document.documentName}`, id: `${document.documentName}`, handleClick: docNav, onClickBin: deleteDocument}
     })
 
     return (

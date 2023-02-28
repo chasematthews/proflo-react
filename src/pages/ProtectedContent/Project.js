@@ -39,6 +39,10 @@ const Project = ({project, team}) => {
 
     const [activeDocument, setActiveDocument] = useState('');
 
+    const[streamNumbersList, setStreamNumbersList] = useState([]);
+    const[activeStreamNumbersList, setActiveStreamNumbersList] = useState([]);
+    const[streamNumbersListText, setStreamNumbersListText] = useState([]);
+
     const initiateComment = (event) => {
         setComment(comment => ({
             ...comment,
@@ -176,7 +180,17 @@ const Project = ({project, team}) => {
             />
             <div className={styles.bodyContent}>
                 <ProjectNavMain project={project} team={team}/>
-                <ProjectNavMinor project={project} team={team} toggleDocumentModal={toggleDocumentModal} documents={documents} setDocuments={setDocuments}/>
+                <ProjectNavMinor 
+                    project={project} 
+                    team={team} 
+                    toggleDocumentModal={toggleDocumentModal} 
+                    documents={documents} 
+                    setDocuments={setDocuments}
+                    setStreamNumbersList={setStreamNumbersList}
+                    setActiveStreamNumbersList={setActiveStreamNumbersList}
+                    streamNumbersListText={streamNumbersListText}
+                    setStreamNumbersListText={setStreamNumbersListText}
+                />
                 <ProjectMain
                     toggleCommentModal={toggleCommentModal}
                     initiateComment={initiateComment}
@@ -185,6 +199,12 @@ const Project = ({project, team}) => {
                     project={project}
                     team={team}
                     setActiveDocument = {setActiveDocument}
+                    streamNumbersList={streamNumbersList}
+                    setStreamNumbersList={setStreamNumbersList}
+                    activeStreamNumbersList={activeStreamNumbersList}
+                    setActiveStreamNumbersList={setActiveStreamNumbersList}
+                    streamNumbersListText={streamNumbersListText}
+                    setStreamNumbersListText={setStreamNumbersListText}
                 />
             </div>
             <AddCommentModal 

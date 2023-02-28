@@ -7,7 +7,6 @@ const SidebarRow = ({Icon, text, handleClick, style, team, onClickBin, infoID, d
     const[clickFunction, setClickFunction] = useState({handleClick})
     const [optionsModal, setOptionsModal] = useState(false)
 
-
     const showOptionsButton = () => {
         (team || document) && setOptionsModal(true)
     }
@@ -32,8 +31,18 @@ const SidebarRow = ({Icon, text, handleClick, style, team, onClickBin, infoID, d
         }
     }
 
+    const clickButton = () => {
+        if (clickFunction) {
+            if (document) {
+                clickFunction.handleClick(document.text)
+            } else {
+                clickFunction.handleClick()
+            }
+        }
+    }
+
     return (
-        <div className={style} onClick={clickFunction && clickFunction.handleClick} onMouseOver={showOptionsButton} onMouseOut={hideOptionsButton}>
+        <div className={style} onClick={clickButton} onMouseOver={showOptionsButton} onMouseOut={hideOptionsButton}>
             {<Icon />}
             <h2 className={styles.sideBarText}>{text}</h2>
             {optionsModal && <div className={styles.optionsBtnWrapper}><DeleteIcon onMouseOver={cancelClickFunction} onMouseOut={reinstateClickFunction} onClick={optionsClick} className={styles.moreOptions}/></div>}
