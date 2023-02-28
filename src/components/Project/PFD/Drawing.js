@@ -90,8 +90,6 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
     }
 
     const showTable = (span) => {
-
-        // setDisplayTable((displayTable) => displayTable.concat(span.textContent))
         streamNumbersListText.map(async(streamNumberSet, i) => {
             const index = await streamNumberSet.indexOf(span.textContent)
             if (index !== -1) {
@@ -152,10 +150,12 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
     }
 
     const exitStreamTable = (event) => {
-        const removeIndex = displayTable.indexOf(event.target.id)
-        if (removeIndex > -1) {
-            setDisplayTable(arr => arr.filter((_, index) => index !== removeIndex))
-        }
+        activeStreamNumbersList.map((activeStreamNumber, i) => {
+            if (activeStreamNumber.textContent === event.target.id) {
+                setActiveStreamNumbersList(array => array.filter((_,index) => index !== i))
+                setDataArray(array => array.filter((_,index) => index !== i))
+            }
+        })
     }
 
     const loadImages = async() => {
@@ -212,7 +212,6 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
             <div className={styles.PFDWrapper} id='previewImage'>
                 <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
                 {(activeStreamNumbersList.length !== 0 && activeStreamNumbersList.length == dataArray.length) && activeStreamNumbersList.map((streamNumber, key) => {
-                    console.log(dataArray[key])
                     return (
                         <StreamTable
                             streamNumber={streamNumber}
@@ -220,26 +219,8 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
                             toggleCommentModal = {toggleCommentModal}
                             dataURL = {appDocument.data[dataArray[key]].XLSXURL}
                             initiateComment = {initiateComment}
+                            exitStreamTable = {exitStreamTable}
                         />
-
-
-
-
-
-                        // idArray.map(streamNumber => {
-                        //     return (
-                        //         // <div>Hello</div>
-                        //         <StreamTable
-                        //         key={streamNumber.className}
-                        //         exitStreamTable = {exitStreamTable}
-                        //         streamNumber = {streamNumber}
-                        //         displayTable = {displayTable}
-                        //         toggleCommentModal = {toggleCommentModal}
-                        //         dataURL = {appDocument.data[0].XLSXURL}
-                        //         initiateComment = {initiateComment}
-                        //         />
-                        //     )
-                        // })
                     )
                 })}
             </div>
