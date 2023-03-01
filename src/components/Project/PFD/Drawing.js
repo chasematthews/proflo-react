@@ -29,6 +29,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
         const identifiers = document.getElementById("PFD").querySelectorAll("div");
 
         appDocument.data.map((dataSet) => {
+            console.log(dataSet)
             findStreamNumbers(identifiers, dataSet.IDReference).then(result => {
                 result.length !== 0 && setStreamNumbersList(streamNumbersList => [...streamNumbersList, result])
                 getSNText(result).then(streamTextArray => {
