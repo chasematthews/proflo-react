@@ -8,8 +8,11 @@ import AddDocumentModal from "../../components/Project/AddDocumentModal"
 import styles from '@styles/Project.module.css'
 import { collection, addDoc, query, onSnapshot, setDoc, doc, getFirestore } from 'firebase/firestore'
 import { UserAuth } from "../../contexts/AuthContext"
+import { useNavigate } from 'react-router-dom';
 
 const Project = ({project, team}) => {
+
+    const navigate = useNavigate();
 
     const [comment, setComment] = useState({
         comment: '',
@@ -42,6 +45,8 @@ const Project = ({project, team}) => {
     const[streamNumbersList, setStreamNumbersList] = useState([]);
     const[activeStreamNumbersList, setActiveStreamNumbersList] = useState([]);
     const[streamNumbersListText, setStreamNumbersListText] = useState([]);
+
+    const[docLoading, setDocLoading] = useState(false)
 
     const initiateComment = (event) => {
         setComment(comment => ({
@@ -171,6 +176,15 @@ const Project = ({project, team}) => {
         loadDocuments();
     }, [])
 
+    useEffect(() => {
+        if (activeDocument !== "" && docLoading === false) {
+            navigate(`${activeDocument.replace(/\s+/g, '-')}`)
+            setStreamNumbersList([]);
+            setActiveStreamNumbersList([]);
+            setStreamNumbersListText([]);
+        }
+    }, [docLoading])
+
     const headerStyle = styles.header
     
     return (
@@ -226,6 +240,10 @@ const Project = ({project, team}) => {
                 setDocuments={setDocuments}
                 team={team}
                 project={project}
+                docLoading={docLoading}
+                setDocLoading={setDocLoading}
+                activeDocument={activeDocument}
+                setActiveDocument={setActiveDocument}
             />
         </div>
     )

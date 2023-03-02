@@ -29,7 +29,6 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
         const identifiers = document.getElementById("PFD").querySelectorAll("div");
 
         appDocument.data.map((dataSet) => {
-            console.log(dataSet)
             findStreamNumbers(identifiers, dataSet.IDReference).then(result => {
                 result.length !== 0 && setStreamNumbersList(streamNumbersList => [...streamNumbersList, result])
                 getSNText(result).then(streamTextArray => {
@@ -213,6 +212,10 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
             <div className={styles.PFDWrapper} id='previewImage'>
                 <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
                 {(activeStreamNumbersList.length !== 0 && activeStreamNumbersList.length == dataArray.length) && activeStreamNumbersList.map((streamNumber, key) => {
+                    console.log(appDocument.data)
+                    console.log(dataArray)
+                    console.log(key)
+                    console.log(appDocument.data[dataArray[key]])
                     return (
                         <StreamTable
                             streamNumber={streamNumber}
