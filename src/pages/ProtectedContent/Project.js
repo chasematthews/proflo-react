@@ -9,6 +9,7 @@ import styles from '@styles/Project.module.css'
 import { collection, addDoc, query, onSnapshot, setDoc, doc, getFirestore } from 'firebase/firestore'
 import { UserAuth } from "../../contexts/AuthContext"
 import { useNavigate } from 'react-router-dom';
+import LoadingModal from "../../components/Project/LoadingModal"
 
 const Project = ({project, team}) => {
 
@@ -245,6 +246,9 @@ const Project = ({project, team}) => {
                 activeDocument={activeDocument}
                 setActiveDocument={setActiveDocument}
             />
+            {docLoading && (
+                <LoadingModal />
+            )}
         </div>
     )
 }
