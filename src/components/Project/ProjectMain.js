@@ -3,7 +3,7 @@ import Drawing from './PFD/Drawing'
 import Comments from './Comments/Comments'
 import {Routes, Route} from 'react-router-dom';
 
-const ProjectMain = ({toggleCommentModal, initiateComment, comments, project, team, documents, setActiveDocument, streamNumbersList, setStreamNumbersList, activeStreamNumbersList, setActiveStreamNumbersList, streamNumbersListText, setStreamNumbersListText}) => {
+const ProjectMain = ({toggleCommentModal, initiateComment, comments, project, team, documents, setActiveDocument, streamNumbersList, setStreamNumbersList, activeStreamNumbersList, setActiveStreamNumbersList, streamNumbersListText, setStreamNumbersListText, setDocSwitchLoading, docSwitchLoading}) => {
 
     return (
         <Routes>
@@ -22,6 +22,8 @@ const ProjectMain = ({toggleCommentModal, initiateComment, comments, project, te
                         setActiveStreamNumbersList={setActiveStreamNumbersList}
                         streamNumbersListText={streamNumbersListText}
                         setStreamNumbersListText={setStreamNumbersListText}
+                        setDocSwitchLoading={setDocSwitchLoading}
+                        docSwitchLoading={docSwitchLoading}
                     />} path={`${document.documentName.replace(/\s+/g, '-')}`}/>
                 )
             })}

@@ -48,6 +48,7 @@ const Project = ({project, team}) => {
     const[streamNumbersListText, setStreamNumbersListText] = useState([]);
 
     const[docLoading, setDocLoading] = useState(false)
+    const[docSwitchLoading, setDocSwitchLoading] = useState(false)
 
     const initiateComment = (event) => {
         setComment(comment => ({
@@ -205,6 +206,8 @@ const Project = ({project, team}) => {
                     setActiveStreamNumbersList={setActiveStreamNumbersList}
                     streamNumbersListText={streamNumbersListText}
                     setStreamNumbersListText={setStreamNumbersListText}
+                    setDocSwitchLoading={setDocSwitchLoading}
+                    docSwitchLoading={docSwitchLoading}
                 />
                 <ProjectMain
                     toggleCommentModal={toggleCommentModal}
@@ -220,6 +223,8 @@ const Project = ({project, team}) => {
                     setActiveStreamNumbersList={setActiveStreamNumbersList}
                     streamNumbersListText={streamNumbersListText}
                     setStreamNumbersListText={setStreamNumbersListText}
+                    setDocSwitchLoading={setDocSwitchLoading}
+                    docSwitchLoading={docSwitchLoading}
                 />
             </div>
             <AddCommentModal 
@@ -245,6 +250,8 @@ const Project = ({project, team}) => {
                 setDocLoading={setDocLoading}
                 activeDocument={activeDocument}
                 setActiveDocument={setActiveDocument}
+                setDocSwitchLoading={setDocSwitchLoading}
+                docSwitchLoading={docSwitchLoading}
             />
             {docLoading && (
                 <LoadingModal />

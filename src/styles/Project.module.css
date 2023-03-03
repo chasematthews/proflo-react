@@ -381,3 +381,12 @@
     cursor: pointer;
     filter: brightness(90%);
 }
+
+/* Doc Loading Modal */
+
+.docLoadModal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}

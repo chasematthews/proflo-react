@@ -36,7 +36,11 @@ const SidebarRow = ({Icon, text, handleClick, style, team, onClickBin, infoID, d
             if (document) {
                 clickFunction.handleClick(document.text)
             } else {
-                clickFunction.handleClick()
+                if (team) {
+                    clickFunction.handleClick(team)
+                } else {
+                    clickFunction.handleClick()
+                }
             }
         }
     }

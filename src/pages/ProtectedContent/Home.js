@@ -77,6 +77,11 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
             saveProject(project)
         }
 
+        // console.log(activeTeam)
+        teams.map(team => {
+            console.log(team.id)
+        })
+
         const teamName = teams[teams.map(function(e) {return e.id;}).indexOf(activeTeam)].name
         navigate(`/${teamName.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/design`)
     }
@@ -203,6 +208,10 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
             members: members
         }))
     }, [members])
+
+    useEffect(() => {
+        console.log(activeTeam)
+    }, [activeTeam])
 
     const headerStyle = styles.header;
 

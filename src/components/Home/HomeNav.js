@@ -104,8 +104,13 @@ const HomeNav = ({toggleProjectModalHandleClick, toggleTeamModalHandleClick, tea
         {icon: GroupsIcon, text: 'New Group', id: 'New Group', handleClick: toggleTeamModalHandleClick, onClickBin: null, infoID: null}
     ]
 
+    const teamClick = (team) => {
+        navigate(`/${team.text.replace(/\s+/g, '-')}`)
+        setActiveTeam(`${team.infoID}`)
+    }
+
     const teamRender = teams.map(team => {
-        return {icon: GroupsIcon, text: `${team.name}`, id: `${team.name}`, handleClick: function() {navigate(`/${team.name.replace(/\s+/g, '-')}`); setActiveTeam(`${team.id}`)}, onClickBin: deleteTeam, infoID: team.id}
+        return {icon: GroupsIcon, text: `${team.name}`, id: `${team.name}`, handleClick: teamClick, onClickBin: deleteTeam, infoID: team.id}
     })
 
     return (

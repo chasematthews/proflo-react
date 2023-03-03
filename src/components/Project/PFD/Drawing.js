@@ -1,24 +1,22 @@
-import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 import html2canvas from 'html2canvas';
 import React, {useState, useEffect, useRef} from 'react';
 import styles from '../../../styles/Project.module.css'
 import StreamTable from './StreamTable';
+import DocLoadingModal from '../DocLoadingModal';
 
-const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDocument, team, project, streamNumbersList, setStreamNumbersList, activeStreamNumbersList, setActiveStreamNumbersList, streamNumbersListText, setStreamNumbersListText}) => {
+const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDocument, team, project, streamNumbersList, setStreamNumbersList, activeStreamNumbersList, setActiveStreamNumbersList, streamNumbersListText, setStreamNumbersListText, docSwitchLoading, setDocSwitchLoading}) => {
     
     const[htmlFileString, setHtmlFileString] = useState();
     const[displayTable, setDisplayTable] = useState([]);
     const[dataArray, setDataArray] = useState([]);
-
-    useEffect(() => {
-        applyStyling()
-    }, [streamNumbersListText])
 
     async function fetchHtml() {
         setHtmlFileString(await ( await fetch(`${appDocument.drawingURL}`)).text());
     }
 
     const applyStyling = () => {
+        console.log('helo')
         const identifiers = document.getElementById("PFD").querySelectorAll("div");
         appDocument.data.map(dataSet => {
             streamNumberStyling(identifiers, dataSet.IDReference)
@@ -203,27 +201,49 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
     }, [appDocument.drawingURL])
 
     useEffect(() => {
-        getElements()
+        if (docSwitchLoading === false) {
+            applyStyling()
+        }
+    }, [streamNumbersListText])
+
+    useEffect(() => {
+        if (docSwitchLoading === false && htmlFileString !== undefined) {
+            getElements()
+        }
+    }, [docSwitchLoading])
+
+    useEffect(() => {
+        if (htmlFileString !== undefined) {
+            setDocSwitchLoading(!docSwitchLoading)
+        }
     }, [htmlFileString])
     
     return (
         <div className={styles.main}>
-            <h2>{document.documentName}</h2>
-            <div className={styles.PFDWrapper} id='previewImage'>
-                <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
-                {(activeStreamNumbersList.length !== 0 && activeStreamNumbersList.length == dataArray.length) && activeStreamNumbersList.map((streamNumber, key) => {
-                    return (
-                        <StreamTable
-                            streamNumber={streamNumber}
-                            key={key}
-                            toggleCommentModal = {toggleCommentModal}
-                            dataURL = {appDocument.data[dataArray[key]].XLSXURL}
-                            initiateComment = {initiateComment}
-                            exitStreamTable = {exitStreamTable}
-                        />
-                    )
-                })}
-            </div>
+            {docSwitchLoading ? (
+                <div className={styles.main}>
+                    <DocLoadingModal />
+                </div>
+            ) : (
+                <div className={styles.main}>
+                    <h2>{document.documentName}</h2>
+                    <div className={styles.PFDWrapper} id='previewImage'>
+                        <div id="PFD" className={styles.PFD} dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
+                        {(activeStreamNumbersList.length !== 0 && activeStreamNumbersList.length == dataArray.length) && activeStreamNumbersList.map((streamNumber, key) => {
+                            return (
+                                <StreamTable
+                                    streamNumber={streamNumber}
+                                    key={key}
+                                    toggleCommentModal = {toggleCommentModal}
+                                    dataURL = {appDocument.data[dataArray[key]].XLSXURL}
+                                    initiateComment = {initiateComment}
+                                    exitStreamTable = {exitStreamTable}
+                                />
+                            )
+                        })}
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
