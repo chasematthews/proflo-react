@@ -15,6 +15,8 @@ const ProtectedContent = () => {
   const [projects, setProjects] = useState({projects: []});
   const [teams, setTeams] = useState([])
 
+  const[docSwitchLoading, setDocSwitchLoading] = useState(false)
+
   //Define the load projects function - pulling the required information from the database and setting it to the state variable every load.
   const loadProjects = () => {
     const individprojectsQuery = query(collection(userRef, 'projects'))
@@ -65,10 +67,10 @@ const ProtectedContent = () => {
 
   return (
   <Routes>
-      <Route element={<Protected><Home projects={projects} teams={teams} setProjects={setProjects} setTeams={setTeams}/></Protected>} path='/*' />
+      <Route element={<Protected><Home docSwitchLoading={docSwitchLoading} setDocSwitchLoading={setDocSwitchLoading} projects={projects} teams={teams} setProjects={setProjects} setTeams={setTeams}/></Protected>} path='/*' />
       {projects.projects.map((project) => {
         return (
-          <Route key={project.name} element={<Protected><Project team={null} project={project}/></Protected>} path={`/projects/${project.name.replace(/\s+/g, '-')}/*`}/>
+          <Route key={project.name} element={<Protected><Project docSwitchLoading={docSwitchLoading} setDocSwitchLoading={setDocSwitchLoading} team={null} project={project}/></Protected>} path={`/projects/${project.name.replace(/\s+/g, '-')}/*`}/>
         )
       })}
       
@@ -76,7 +78,7 @@ const ProtectedContent = () => {
         return (
           projects[team.id] && projects[team.id].map((project) => {
             return(
-              <Route key={project.name} element={<Protected><Project team={team} project={project}/></Protected>} path={`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/*`} />
+              <Route key={project.name} element={<Protected><Project docSwitchLoading={docSwitchLoading} setDocSwitchLoading={setDocSwitchLoading} team={team} project={project}/></Protected>} path={`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/*`} />
             )
           })
         )

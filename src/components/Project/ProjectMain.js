@@ -27,7 +27,13 @@ const ProjectMain = ({toggleCommentModal, initiateComment, comments, project, te
                     />} path={`${document.documentName.replace(/\s+/g, '-')}`}/>
                 )
             })}
-            <Route element={<Comments comments={comments}/>} path='/comments'></Route>
+            <Route element={<Comments 
+                                team={team} 
+                                project={project} 
+                                comments={comments}
+                                setDocSwitchLoading={setDocSwitchLoading}
+                                docSwitchLoading={docSwitchLoading}
+                            />} path='/comments'></Route>
         </Routes>
     )
 }

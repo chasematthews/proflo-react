@@ -16,7 +16,6 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
     }
 
     const applyStyling = () => {
-        console.log('helo')
         const identifiers = document.getElementById("PFD").querySelectorAll("div");
         appDocument.data.map(dataSet => {
             streamNumberStyling(identifiers, dataSet.IDReference)

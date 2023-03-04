@@ -9,7 +9,7 @@ import { setDoc, doc, getFirestore, getDoc, updateDoc } from 'firebase/firestore
 import { UserAuth } from '@contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const Home = ({ projects, setProjects, teams, setTeams}) => {
+const Home = ({ projects, setProjects, teams, setTeams, docSwitchLoading, setDocSwitchLoading}) => {
 
     //Import the user database from the AuthContext
     const { userRef } = UserAuth();
@@ -76,11 +76,6 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         if (userRef) {
             saveProject(project)
         }
-
-        // console.log(activeTeam)
-        teams.map(team => {
-            console.log(team.id)
-        })
 
         const teamName = teams[teams.map(function(e) {return e.id;}).indexOf(activeTeam)].name
         navigate(`/${teamName.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/design`)
@@ -209,10 +204,6 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
         }))
     }, [members])
 
-    useEffect(() => {
-        console.log(activeTeam)
-    }, [activeTeam])
-
     const headerStyle = styles.header;
 
     return (
@@ -250,6 +241,8 @@ const Home = ({ projects, setProjects, teams, setTeams}) => {
                     projects = {projects}
                     teams = {teams}
                     setProjects = {setProjects}
+                    docSwitchLoading = {docSwitchLoading}
+                    setDocSwitchLoading = {setDocSwitchLoading}
                 />
             </div>
         </div>

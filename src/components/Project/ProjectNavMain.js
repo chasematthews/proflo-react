@@ -6,7 +6,7 @@ import SidebarRow from '../Home/SidebarRow';
 import styles from '../../styles/Project.module.css'
 import { useNavigate } from 'react-router-dom';
 
-const ProjectNavMain = ({project, team}) => {
+const ProjectNavMain = ({project, team, setStreamNumbersList, setActiveStreamNumbersList, setStreamNumbersListText}) => {
 
     const navigate = useNavigate()
 
@@ -22,14 +22,27 @@ const ProjectNavMain = ({project, team}) => {
 
     const navigateComments = () => {
         if (team !== null) {
-            navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/comments`)
+            navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/comments`);
+            setStreamNumbersList([]);
+            setActiveStreamNumbersList([]);
+            setStreamNumbersListText([]);
         } else {
-            navigate(`/projects/${project.name.replace(/\s+/g, '-')}/comments`)
+            navigate(`/projects/${project.name.replace(/\s+/g, '-')}/comments`);
+            setStreamNumbersList([]);
+            setActiveStreamNumbersList([]);
+            setStreamNumbersListText([]);
         }
     }
 
+    const navigateHome = () => {
+        navigate('/projects');
+        setStreamNumbersList([]);
+        setActiveStreamNumbersList([]);
+        setStreamNumbersListText([]);
+    }
+
     const projectButtonsContent = [
-        {icon: HomeIcon, text: 'Home', id: 'Home', handleClick: function() {navigate('/projects')}},
+        {icon: HomeIcon, text: 'Home', id: 'Home', handleClick: navigateHome},
         {icon: WebAssetIcon, text: 'Design', id: 'Design', handleClick: navigateDesign},
         {icon: CommentIcon, text: 'Comments Register', id: 'CommentsRegister', handleClick: navigateComments},
     ]

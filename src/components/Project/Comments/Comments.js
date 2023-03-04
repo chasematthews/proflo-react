@@ -1,7 +1,11 @@
 import React from 'react';
 import styles from '../../../styles/Project.module.css'
+import { useNavigate } from 'react-router-dom';
 
-const Comments = ({comments}) => {
+const Comments = ({comments, team, project, setDocSwitchLoading, docSwitchLoading}) => {
+
+    const navigate = useNavigate()
+
     return (
         <div className={styles.main}>
             <h2>Comments Register</h2>
@@ -15,15 +19,25 @@ const Comments = ({comments}) => {
                     <td width={'10%'}>Identifier</td>
                     <td width={'10%'}>Document</td>
                 </tr>
-                    {comments.map((comment) => {
+                    {comments.map((comment, key) => {
+                        const navigateDoc = () => {
+                            setDocSwitchLoading(!docSwitchLoading)
+                            navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/${comment.document.replace(/\s+/g, '-')}`)
+                        }
+                        const linkStyle = {
+                            cursor: "pointer",
+                            fontWeight: "400",
+                            color: "blue",
+                            textDecoration: "underline"
+                        }
                         return (
-                            <tr>
+                            <tr key={key}>
                                 <td>{comment.comment}</td>
                                 <td>{comment.assignedTo}</td>
                                 <td>{comment.dueDate}</td>
                                 <td>{comment.severity}</td>
                                 <td>{comment.ID}</td>
-                                <td>{comment.document}</td>
+                                <td style={linkStyle} onClick={navigateDoc}>{comment.document}</td>
                             </tr>
                         )
                     })}

@@ -11,7 +11,7 @@ import { UserAuth } from "../../contexts/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import LoadingModal from "../../components/Project/LoadingModal"
 
-const Project = ({project, team}) => {
+const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
 
     const navigate = useNavigate();
 
@@ -48,15 +48,16 @@ const Project = ({project, team}) => {
     const[streamNumbersListText, setStreamNumbersListText] = useState([]);
 
     const[docLoading, setDocLoading] = useState(false)
-    const[docSwitchLoading, setDocSwitchLoading] = useState(false)
 
     const initiateComment = (event) => {
+
+        console.log(activeDocument)
         setComment(comment => ({
             ...comment,
             ID: event.target.id,
             document: activeDocument,
             team: team.name,
-            proejct: project.name
+            project: project.name
         }))
         toggleCommentModal()
     }
@@ -67,6 +68,8 @@ const Project = ({project, team}) => {
 
     const addComment = (event) => {
         event.preventDefault();
+
+        console.log(comment)
 
         setComments(
             comments.concat(comment)
@@ -99,7 +102,9 @@ const Project = ({project, team}) => {
             dueDate: comment.dueDate,
             severity: comment.severity,
             ID: comment.ID,
-            document: comment.document
+            document: comment.document,
+            project: comment.project,
+            team: comment.team
         })
     }
 
@@ -113,7 +118,9 @@ const Project = ({project, team}) => {
                 dueDate: comment.dueDate,
                 severity: comment.severity,
                 ID: comment.ID,
-                document: comment.document
+                document: comment.document,
+                project: comment.project,
+                team: comment.team
             });
         } 
         else {
@@ -195,7 +202,13 @@ const Project = ({project, team}) => {
                 headerStyle={headerStyle} 
             />
             <div className={styles.bodyContent}>
-                <ProjectNavMain project={project} team={team}/>
+                <ProjectNavMain 
+                    project={project} 
+                    team={team}
+                    setStreamNumbersListText={setStreamNumbersListText}
+                    setActiveStreamNumbersList={setActiveStreamNumbersList}
+                    setStreamNumbersList={setStreamNumbersList}
+                />
                 <ProjectNavMinor 
                     project={project} 
                     team={team} 
@@ -208,6 +221,7 @@ const Project = ({project, team}) => {
                     setStreamNumbersListText={setStreamNumbersListText}
                     setDocSwitchLoading={setDocSwitchLoading}
                     docSwitchLoading={docSwitchLoading}
+                    setActiveDocument={setActiveDocument}
                 />
                 <ProjectMain
                     toggleCommentModal={toggleCommentModal}

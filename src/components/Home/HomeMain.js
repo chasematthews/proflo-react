@@ -4,7 +4,7 @@ import ProjectDashboard from './Project/ProjectDashboard';
 import ActionsRegister from './Actions/Actions';
 
 
-const HomeMain = ({projects, teams, setProjects}) => {
+const HomeMain = ({projects, teams, setProjects, docSwitchLoading, setDocSwitchLoading}) => {
 
     return (
         <Routes>
@@ -14,7 +14,7 @@ const HomeMain = ({projects, teams, setProjects}) => {
                 <Route key={key} element={<ProjectDashboard setProjects={setProjects} title={team.name} projects={projects} team={team}/>} path={`/${team.name.replace(/\s+/g, '-')}`} />
                 )
             })}
-            <Route element={<ActionsRegister title={"Actions Register"}/>} path='/actions'/>
+            <Route element={<ActionsRegister docSwitchLoading={docSwitchLoading} setDocSwitchLoading={setDocSwitchLoading} title={"Actions Register"}/>} path='/actions'/>
         </Routes>
     )
 }
