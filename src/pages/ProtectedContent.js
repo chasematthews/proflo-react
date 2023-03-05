@@ -73,7 +73,6 @@ const ProtectedContent = () => {
           <Route key={project.name} element={<Protected><Project docSwitchLoading={docSwitchLoading} setDocSwitchLoading={setDocSwitchLoading} team={null} project={project}/></Protected>} path={`/projects/${project.name.replace(/\s+/g, '-')}/*`}/>
         )
       })}
-      
       {teams.map((team) => {
         return (
           projects[team.id] && projects[team.id].map((project) => {

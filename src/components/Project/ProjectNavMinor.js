@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SidebarRow from '../Home/SidebarRow';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AddIcon from '@mui/icons-material/Add';
@@ -8,7 +8,7 @@ import { getDoc, doc, getFirestore, deleteDoc } from 'firebase/firestore';
 import { UserAuth } from '../../contexts/AuthContext';
 
 const ProjectNavMinor = ({toggleDocumentModal, documents, setDocuments, team, project, setStreamNumbersList, setActiveStreamNumbersList, setStreamNumbersListText, setDocSwitchLoading, docSwitchLoading, setActiveDocument}) => {
-
+    
     const { userRef } = UserAuth();
 
     const navigate = useNavigate();

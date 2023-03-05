@@ -52,13 +52,22 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
     const initiateComment = (event) => {
 
         console.log(activeDocument)
-        setComment(comment => ({
-            ...comment,
-            ID: event.target.id,
-            document: activeDocument,
-            team: team.name,
-            project: project.name
-        }))
+        if (team !== undefined) {
+            setComment(comment => ({
+                ...comment,
+                ID: event.target.id,
+                document: activeDocument,
+                project: project.name
+            }))
+        } else {
+            setComment(comment => ({
+                ...comment,
+                ID: event.target.id,
+                document: activeDocument,
+                team: team.name,
+                project: project.name
+            }))
+        }
         toggleCommentModal()
     }
     
@@ -93,19 +102,31 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
     }
 
     const saveCommentToUser = async(comment) => {
-        const membersUID = team.members.map(member => member.UID)
-        const membersNames = team.members.map(member => member.name)
-        const assignedToUID = membersUID[membersNames.indexOf(comment.assignedTo)]
-        const assignedToRef = await doc(getFirestore(), 'users', `${assignedToUID}`)
-        await addDoc(collection(assignedToRef, 'actions'), {
-            comment: comment.comment,
-            dueDate: comment.dueDate,
-            severity: comment.severity,
-            ID: comment.ID,
-            document: comment.document,
-            project: comment.project,
-            team: comment.team
-        })
+        if (team !== undefined) {
+            const assignedToRef = await userRef
+            await addDoc(collection(assignedToRef, 'actions'), {
+                comment: comment.comment,
+                dueDate: comment.dueDate,
+                severity: comment.severity,
+                ID: comment.ID,
+                document: comment.document,
+                project: comment.project,
+            })
+        } else {
+            const membersUID = team.members.map(member => member.UID)
+            const membersNames = team.members.map(member => member.name)
+            const assignedToUID = membersUID[membersNames.indexOf(comment.assignedTo)]
+            const assignedToRef = await doc(getFirestore(), 'users', `${assignedToUID}`)
+            await addDoc(collection(assignedToRef, 'actions'), {
+                comment: comment.comment,
+                dueDate: comment.dueDate,
+                severity: comment.severity,
+                ID: comment.ID,
+                document: comment.document,
+                project: comment.project,
+                team: comment.team
+            })
+        }
     }
 
     const saveComment = async(comment) => {
@@ -195,6 +216,10 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
     }, [docLoading])
 
     const headerStyle = styles.header
+
+    useEffect(() => {
+        console.log(documents)
+    }, [documents])
     
     return (
         <div className={styles.container}>

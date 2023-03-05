@@ -21,21 +21,21 @@ const AddCommentModal = ({comment, handleCommentChange, toggleCommentModal, init
                                 onChange={(event) => handleCommentChange(event)}
                                 className={styles.formInput}                           
                             />
-                            <h3 className={styles.formLabel}>Assigned To</h3>
-                            <input 
+                            {team && <h3 className={styles.formLabel}>Assigned To</h3>}
+                            {team && <input 
                                 value={comment.assignedTo} 
                                 name="assignedTo" 
                                 list="assignedTo"
                                 onChange={(event) => handleCommentChange(event)}     
                                 className={styles.formInput}                           
-                            />
-                            <datalist id = "assignedTo">
+                            />}
+                            {team && <datalist id = "assignedTo">
                                 {team.members.map((member, key) => {
                                     return (
                                         <option key={key} value={`${member.name}`}/>
                                     )
                                 })}
-                            </datalist>
+                            </datalist>}
                             <h3 className={styles.formLabel}>Due Date</h3>
                             <input
                                 type='date'

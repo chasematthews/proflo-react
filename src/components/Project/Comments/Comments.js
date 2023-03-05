@@ -13,7 +13,7 @@ const Comments = ({comments, team, project, setDocSwitchLoading, docSwitchLoadin
                 <tbody>
                 <tr>
                     <td width={'40%'}>Comment</td>
-                    <td width={'20%'}>Assigned To</td>
+                    {team && <td width={'20%'}>Assigned To</td>}
                     <td width={'10%'}>Due Date</td>
                     <td width={'10%'}>Severity</td>
                     <td width={'10%'}>Identifier</td>
@@ -22,7 +22,11 @@ const Comments = ({comments, team, project, setDocSwitchLoading, docSwitchLoadin
                     {comments.map((comment, key) => {
                         const navigateDoc = () => {
                             setDocSwitchLoading(!docSwitchLoading)
-                            navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/${comment.document.replace(/\s+/g, '-')}`)
+                            if (team !== undefined) {
+                                navigate(`/projects/${project.name.replace(/\s+/g, '-')}/${comment.document.replace(/\s+/g, '-')}`)
+                            } else {
+                                navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/${comment.document.replace(/\s+/g, '-')}`)
+                            }
                         }
                         const linkStyle = {
                             cursor: "pointer",
@@ -33,7 +37,7 @@ const Comments = ({comments, team, project, setDocSwitchLoading, docSwitchLoadin
                         return (
                             <tr key={key}>
                                 <td>{comment.comment}</td>
-                                <td>{comment.assignedTo}</td>
+                                {team && <td>{comment.assignedTo}</td>}
                                 <td>{comment.dueDate}</td>
                                 <td>{comment.severity}</td>
                                 <td>{comment.ID}</td>

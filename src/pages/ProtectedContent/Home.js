@@ -77,8 +77,12 @@ const Home = ({ projects, setProjects, teams, setTeams, docSwitchLoading, setDoc
             saveProject(project)
         }
 
-        const teamName = teams[teams.map(function(e) {return e.id;}).indexOf(activeTeam)].name
-        navigate(`/${teamName.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/design`)
+        if (activeTeam === "projects") {
+            navigate(`/projects/${project.name.replace(/\s+/g, '-')}/design`)
+        } else {
+            const teamName = teams[teams.map(function(e) {return e.id;}).indexOf(activeTeam)].name
+            navigate(`/${teamName.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/design`)
+        }
     }
 
     //Updates the project information when the form data is entered

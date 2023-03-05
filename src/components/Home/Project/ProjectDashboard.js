@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../../styles/Home.module.css';
 import ProjectCard from './ProjectCard';
-import { getDoc, doc, getFirestore, deleteDoc } from 'firebase/firestore';
+import { getDoc, doc, getFirestore, deleteDoc, onSnapshot, query, collection } from 'firebase/firestore';
 import { UserAuth } from '../../../contexts/AuthContext';
 
 const ProjectDashboard = ({title, projects, team, setProjects}) => {
@@ -24,10 +24,29 @@ const ProjectDashboard = ({title, projects, team, setProjects}) => {
     }
 
     const deleteFromDB = async (projectName) => {
+        console.log('hello')
         if (team === null) {
-            await deleteDoc(doc(userRef, 'projects', `${projectName}`))
+            const projectDB = await doc(userRef, 'projects', `${projectName}`)
+            const documentQuery = await query(collection(projectDB, 'documents'))
+            const commentQuery = await query(collection(projectDB, 'comments'))
+            await onSnapshot(documentQuery, (snapshot) => {
+                snapshot.docs.map(doc => deleteDoc(doc.ref))
+            })
+            await onSnapshot(commentQuery, (snapshot) => {
+                snapshot.docs.map(doc => deleteDoc(doc.ref))
+            })
+            await deleteDoc(projectDB)
         } else {
             const teamDB = await doc(getFirestore(), 'teams', `${team.id}`)
+            const projectDB = await doc(teamDB, 'projects', `${projectName}`)
+            const documentQuery = await query(collection(projectDB, 'documents'))
+            const commentQuery = await query(collection(projectDB, 'comments'))
+            await onSnapshot(documentQuery, (snapshot) => {
+                snapshot.docs.map(doc => deleteDoc(doc.ref))
+            })
+            await onSnapshot(commentQuery, (snapshot) => {
+                snapshot.docs.map(doc => deleteDoc(doc.ref))
+            })
             await deleteDoc(doc(teamDB, 'projects', `${projectName}`))
         }
     }

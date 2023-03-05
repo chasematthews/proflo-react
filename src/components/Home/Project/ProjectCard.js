@@ -8,6 +8,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const ProjectCard = ({project, team, onBinClick}) => {
 
+    useEffect(() => {
+        if (team !== undefined) {
+            setClickFunction({goToProject})
+        }
+    }, [team])
+
     const[imageURL, setImageURL] = useState('')
 
     //import the user database from the AuthContext

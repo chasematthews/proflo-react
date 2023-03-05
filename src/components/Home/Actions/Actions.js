@@ -41,13 +41,21 @@ const ActionsRegister = ({docSwitchLoading, setDocSwitchLoading}) => {
                     {actions.map((action, key) => {
                         const navigateDoc = () => {
                             setDocSwitchLoading(!docSwitchLoading)
-                            navigate(`/${action.team.replace(/\s+/g, '-')}/${action.project.replace(/\s+/g, '-')}/${action.document.replace(/\s+/g, '-')}`)
+                            if (action.team === undefined) {
+                                navigate(`/projects/${action.project.replace(/\s+/g, '-')}/${action.document.replace(/\s+/g, '-')}`)
+                            } else {
+                                navigate(`/${action.team.replace(/\s+/g, '-')}/${action.project.replace(/\s+/g, '-')}/${action.document.replace(/\s+/g, '-')}`)
+                            }
                         }
                         const navigateTeam = () => {
                             navigate(`/${action.team.replace(/\s+/g, '-')}`)
                         }
                         const navigateProject = () => {
-                            navigate(`/${action.team.replace(/\s+/g, '-')}/${action.project.replace(/\s+/g, '-')}`)
+                            if (action.team === undefined) {
+                                navigate(`/projects/${action.project.replace(/\s+/g, '-')}`)
+                            } else {
+                                navigate(`/${action.team.replace(/\s+/g, '-')}/${action.project.replace(/\s+/g, '-')}`)
+                            }
                         }
                         const linkStyle = {
                             cursor: "pointer",
