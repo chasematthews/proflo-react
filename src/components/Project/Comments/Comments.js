@@ -22,7 +22,7 @@ const Comments = ({comments, team, project, setDocSwitchLoading, docSwitchLoadin
                     {comments.map((comment, key) => {
                         const navigateDoc = () => {
                             setDocSwitchLoading(!docSwitchLoading)
-                            if (team !== undefined) {
+                            if (team === undefined) {
                                 navigate(`/projects/${project.name.replace(/\s+/g, '-')}/${comment.document.replace(/\s+/g, '-')}`)
                             } else {
                                 navigate(`/${team.name.replace(/\s+/g, '-')}/${project.name.replace(/\s+/g, '-')}/${comment.document.replace(/\s+/g, '-')}`)

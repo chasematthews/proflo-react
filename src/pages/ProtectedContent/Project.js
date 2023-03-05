@@ -56,6 +56,7 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
             setComment(comment => ({
                 ...comment,
                 ID: event.target.id,
+                team: team.name,
                 document: activeDocument,
                 project: project.name
             }))
@@ -64,7 +65,6 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
                 ...comment,
                 ID: event.target.id,
                 document: activeDocument,
-                team: team.name,
                 project: project.name
             }))
         }
@@ -102,7 +102,7 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
     }
 
     const saveCommentToUser = async(comment) => {
-        if (team !== undefined) {
+        if (team === undefined) {
             const assignedToRef = await userRef
             await addDoc(collection(assignedToRef, 'actions'), {
                 comment: comment.comment,
@@ -130,7 +130,7 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
     }
 
     const saveComment = async(comment) => {
-        if (team !== null) {
+        if (team !== null) { 
             const teamRef = await doc(getFirestore(), 'teams', `${team.id}`)
             const projectRef = await doc(teamRef, 'projects', `${project.name}`)
             await addDoc(collection(projectRef, 'comments'), {
@@ -217,10 +217,6 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
 
     const headerStyle = styles.header
 
-    useEffect(() => {
-        console.log(documents)
-    }, [documents])
-    
     return (
         <div className={styles.container}>
             <HomeHeader

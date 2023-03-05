@@ -24,6 +24,10 @@ const ActionsRegister = ({docSwitchLoading, setDocSwitchLoading}) => {
         loadActions();
     }, [])
 
+    useEffect(() => {
+        console.log(actions)
+    }, [actions])
+
     return (
         <div className={styles.main}>
             <h2>Actions Register</h2>
