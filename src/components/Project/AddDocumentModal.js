@@ -7,7 +7,7 @@ import { httpsCallable, getFunctions } from 'firebase/functions';
 import { UserAuth } from '../../contexts/AuthContext';
 import CloseIcon from '@mui/icons-material/Close';
 
-const AddDocumentModal = ({document, handleDocumentChange, toggleDocumentModal, modal, team, project, setDocument, documents, setDocuments, docLoading, setDocLoading, activeDocument, setActiveDocument, docSwitchLoading, setDocSwitchLoading}) => {
+const AddDocumentModal = ({initialDocumentState, document, handleDocumentChange, toggleDocumentModal, modal, team, project, setDocument, documents, setDocuments, docLoading, setDocLoading, activeDocument, setActiveDocument, docSwitchLoading, setDocSwitchLoading}) => {
 
     const pdfUploadRef = useRef();
     const xlsxUploadRef = useRef();
@@ -131,14 +131,11 @@ const AddDocumentModal = ({document, handleDocumentChange, toggleDocumentModal, 
             setDocuments(documents.concat(document))
             saveDoc()
             setDocLoading(!docLoading)
+            setDocument(initialDocumentState)
+            setPDFUploaded(false)
+            setDataUploaded(false)
         }
     }, [document.drawingURL])
-
-    // useEffect(() => {
-    //     console.log(document)
-    //     setDocLoading(!docLoading)
-    //     saveDoc()
-    // }, [document.drawingURL])
 
     return (
         <>

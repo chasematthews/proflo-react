@@ -24,13 +24,15 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
         document: '',
     });
 
-    const [document, setDocument] = useState({
+    const initialDocumentState = {
         documentName: '',
         documentType: '',
         drawingURL: '',
         PDFURL: '',
         data: [],
-    })
+    };
+
+    const [document, setDocument] = useState(initialDocumentState)
 
     const {userRef} = UserAuth();
     // const { companyRef } = UserAuth();
@@ -287,6 +289,7 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
                 setActiveDocument={setActiveDocument}
                 setDocSwitchLoading={setDocSwitchLoading}
                 docSwitchLoading={docSwitchLoading}
+                initialDocumentState={initialDocumentState}
             />
             {docLoading && (
                 <LoadingModal />
