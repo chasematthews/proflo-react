@@ -48,6 +48,8 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
     const[streamNumbersList, setStreamNumbersList] = useState([]);
     const[activeStreamNumbersList, setActiveStreamNumbersList] = useState([]);
     const[streamNumbersListText, setStreamNumbersListText] = useState([]);
+    const[streamNumbersDivList, setStreamNumbersDivList] = useState([])
+    const[activeStreamNumbersDivList, setActiveStreamNumbersDivList] = useState([])
 
     const[docLoading, setDocLoading] = useState(false)
 
@@ -245,6 +247,8 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
                     setDocSwitchLoading={setDocSwitchLoading}
                     docSwitchLoading={docSwitchLoading}
                     setActiveDocument={setActiveDocument}
+                    setStreamNumbersDivList={setStreamNumbersDivList}
+                    setActiveStreamNumbersDivList={setActiveStreamNumbersDivList}
                 />
                 <ProjectMain
                     toggleCommentModal={toggleCommentModal}
@@ -262,6 +266,10 @@ const Project = ({project, team, docSwitchLoading, setDocSwitchLoading}) => {
                     setStreamNumbersListText={setStreamNumbersListText}
                     setDocSwitchLoading={setDocSwitchLoading}
                     docSwitchLoading={docSwitchLoading}
+                    streamNumbersDivList={streamNumbersDivList}
+                    setStreamNumbersDivList={setStreamNumbersDivList}
+                    activeStreamNumbersDivList={activeStreamNumbersDivList}
+                    setActiveStreamNumbersDivList={setActiveStreamNumbersDivList}
                 />
             </div>
             <AddCommentModal 

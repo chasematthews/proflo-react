@@ -4,13 +4,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import styles from './../../../styles/Project.module.css'
 
 
-const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommentModal, dataURL, initiateComment }) => {
+const StreamTable = ({ streamNumberDiv, streamNumber, displayTable, exitStreamTable, toggleCommentModal, dataURL, initiateComment }) => {
 
-    const span = streamNumber.querySelector("span")
+    // const span = streamNumber.querySelector("span")
 
-    let position = streamNumber.getBoundingClientRect()
+    let position = streamNumberDiv.getBoundingClientRect()
 
-    const clientHeight = streamNumber.parentNode.parentNode.parentNode.clientHeight
+    const clientHeight = streamNumberDiv.parentNode.parentNode.parentNode.clientHeight
 
     const [positionLeft, setPositionLeft] = useState(position.left + position.width);
     const [positionTop, setPositionTop] = useState((position.top + position.height) - Math.floor((position.top + position.height)/clientHeight)*clientHeight);
@@ -66,7 +66,7 @@ const StreamTable = ({ streamNumber, displayTable, exitStreamTable, toggleCommen
             <div onMouseDown = {dragMouseDown} className={styles.streamInfoHeader}>
                 <CloseIcon id={streamNumber.textContent} onClick={event => exitStreamTable(event)} className={styles.streamTableExitBtn}/>
             </div>
-            <StreamTableInfo streamNumber = {span} dataURL={dataURL}/>
+            <StreamTableInfo streamNumber = {streamNumber} dataURL={dataURL}/>
             <button id={streamNumber.textContent} className={styles.addCommentButton} onClick={initiateComment}>Add Comment</button>
         </div>
     )

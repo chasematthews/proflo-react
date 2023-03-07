@@ -5,7 +5,7 @@ import styles from '../../../styles/Project.module.css'
 import StreamTable from './StreamTable';
 import DocLoadingModal from '../DocLoadingModal';
 
-const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDocument, team, project, streamNumbersList, setStreamNumbersList, activeStreamNumbersList, setActiveStreamNumbersList, streamNumbersListText, setStreamNumbersListText, docSwitchLoading, setDocSwitchLoading}) => {
+const Drawing = ({activeStreamNumbersDivList, setActiveStreamNumbersDivList, streamNumbersDivList, setStreamNumbersDivList, toggleCommentModal, appDocument, initiateComment, setActiveDocument, team, project, streamNumbersList, setStreamNumbersList, activeStreamNumbersList, setActiveStreamNumbersList, streamNumbersListText, setStreamNumbersListText, docSwitchLoading, setDocSwitchLoading}) => {
     
     const[htmlFileString, setHtmlFileString] = useState();
     const[displayTable, setDisplayTable] = useState([]);
@@ -26,6 +26,9 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
         const identifiers = document.getElementById("PFD").querySelectorAll("div");
 
         appDocument.data.map((dataSet) => {
+            findStreamNumberDivs(identifiers, dataSet.IDReference).then(result => {
+                result.length !==0 && setStreamNumbersDivList(streamNumbersDivList => [...streamNumbersDivList, result])
+            })
             findStreamNumbers(identifiers, dataSet.IDReference).then(result => {
                 result.length !== 0 && setStreamNumbersList(streamNumbersList => [...streamNumbersList, result])
                 getSNText(result).then(streamTextArray => {
@@ -35,7 +38,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
         })     
     }
 
-    const getSNText = (streamArray) => {
+    const getSNText = (streamArray) => {    
         let streamTextArray = []
         streamArray.map(streamID => streamTextArray.push(streamID.textContent))
         return new Promise((resolve, reject) => resolve(streamTextArray));
@@ -66,7 +69,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
                 let pre = string.substring(0, indexStart)
                 let phrase = string.substring(indexStart, indexEnd)
                 let post = string.substring(indexEnd, string.length)
-                string = pre + `<span>${phrase}</span>` + [post]
+                string = pre + `<span id=${phrase}>${phrase}</span>` + [post]
                 identifier.innerHTML = string;
 
                 const span = identifier.querySelector("span")
@@ -91,6 +94,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
             const index = await streamNumberSet.indexOf(span.textContent)
             if (index !== -1) {
                 setActiveStreamNumbersList(activeStreamNumberList => [...activeStreamNumberList, streamNumbersList[i][index]])
+                setActiveStreamNumbersDivList(activeStreamNumbersDivList => [...activeStreamNumbersDivList, streamNumbersDivList[i][index]])
             }
         })
     }
@@ -134,13 +138,61 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
 
         const regex = new RegExp(regexString)
 
-        let streamNumbers = [];
+        let streamNumbers = []
+
         identifiers.forEach(identifier => {
             if (identifier.textContent.match(regex) && identifier.className[0] === "t") {
-                if (regex.test(identifier.textContent)) {
-                    streamNumbers.push((identifier));
-                }    
-            }       
+                let indexStart = identifier.textContent.match(regex).index;
+                let indexEnd = indexStart + appDocument.data[0].IDReference.length
+                let string = identifier.textContent
+                let pre = string.substring(0, indexStart)
+                let phrase = string.substring(indexStart, indexEnd)
+                let post = string.substring(indexEnd, string.length)
+                string = pre + `<span id=${phrase}>${phrase}</span>` + [post]
+                identifier.innerHTML = string;
+
+                const span = identifier.querySelector("span")
+
+                streamNumbers.push(span)
+
+            }        
+        });
+
+        return new Promise((resolve, reject) => resolve(streamNumbers));
+    }
+
+    const findStreamNumberDivs = (identifiers, stringRef) => {
+
+        let regexString = "";
+
+        for (let i = 0; i < stringRef.length; i++) {
+            let char = stringRef.charAt(i);
+            if (char === "^") {
+                regexString += "\\d"
+            } else if (char === "*") {
+                regexString += "\\w"
+            } else {
+                regexString += char
+            }
+        }
+
+        const regex = new RegExp(regexString)
+
+        let streamNumbers = []
+
+        identifiers.forEach(identifier => {
+            if (identifier.textContent.match(regex) && identifier.className[0] === "t") {
+                let indexStart = identifier.textContent.match(regex).index;
+                let indexEnd = indexStart + appDocument.data[0].IDReference.length
+                let string = identifier.textContent
+                let pre = string.substring(0, indexStart)
+                let phrase = string.substring(indexStart, indexEnd)
+                let post = string.substring(indexEnd, string.length)
+                string = pre + `<span id=${phrase}>${phrase}</span>` + [post]
+                identifier.innerHTML = string;
+
+                streamNumbers.push(identifier)
+            }        
         });
 
         return new Promise((resolve, reject) => resolve(streamNumbers));
@@ -150,6 +202,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
         activeStreamNumbersList.map((activeStreamNumber, i) => {
             if (activeStreamNumber.textContent === event.target.id) {
                 setActiveStreamNumbersList(array => array.filter((_,index) => index !== i))
+                setActiveStreamNumbersDivList(array => array.filter((_,index) => index !== i))
                 setDataArray(array => array.filter((_,index) => index !== i))
             }
         })
@@ -232,6 +285,7 @@ const Drawing = ({toggleCommentModal, appDocument, initiateComment, setActiveDoc
                             return (
                                 <StreamTable
                                     streamNumber={streamNumber}
+                                    streamNumberDiv={activeStreamNumbersDivList[key]}
                                     key={key}
                                     toggleCommentModal = {toggleCommentModal}
                                     dataURL = {appDocument.data[dataArray[key]].XLSXURL}
